@@ -42,6 +42,7 @@
   function renderAll() {
     renderStats();
     renderSlidesList();
+    renderAboutForm();
     renderNewsTable();
     renderArticlesTable();
     renderProductsTable();
@@ -87,6 +88,7 @@
   const TAB_TITLES = {
     overview: 'ภาพรวมระบบ (Overview)',
     slides: 'จัดการสไลด์หน้าแรก (Hero Slides)',
+    about: 'จัดการหน้าเกี่ยวกับเรา (About Us)',
     news: 'จัดการข่าวสารและกิจกรรม (News & Events)',
     articles: 'จัดการบทความเกษตร (Articles)',
     products: 'จัดการสินค้า (Products)',
@@ -313,6 +315,256 @@
       showToast('ลบสไลด์เรียบร้อยแล้ว');
       renderSlidesList();
       renderStats();
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     5.5 About Us (จัดการหน้าเกี่ยวกับเรา)
+     -------------------------------------------------------------------------- */
+  function renderAboutForm() {
+    if (!DS || !DS.About) return;
+    const data = DS.About.get();
+    if (!data) return;
+
+    // 1. Hero Banner
+    const hero = data.hero || {};
+    const heroBadge = document.getElementById('aboutHeroBadge');
+    const heroTitle = document.getElementById('aboutHeroTitle');
+    const heroSubtitle = document.getElementById('aboutHeroSubtitle');
+    if (heroBadge) heroBadge.value = hero.badge || '';
+    if (heroTitle) heroTitle.value = hero.title || '';
+    if (heroSubtitle) heroSubtitle.value = hero.subtitle || '';
+
+    // 2. Stats
+    const stats = data.stats || {};
+    const stat1Num = document.getElementById('aboutStat1Num');
+    const stat1Label = document.getElementById('aboutStat1Label');
+    const stat2Num = document.getElementById('aboutStat2Num');
+    const stat2Label = document.getElementById('aboutStat2Label');
+    const stat3Num = document.getElementById('aboutStat3Num');
+    const stat3Label = document.getElementById('aboutStat3Label');
+    const stat4Num = document.getElementById('aboutStat4Num');
+    const stat4Label = document.getElementById('aboutStat4Label');
+
+    if (stat1Num) stat1Num.value = stats.stat1Num || '';
+    if (stat1Label) stat1Label.value = stats.stat1Label || '';
+    if (stat2Num) stat2Num.value = stats.stat2Num || '';
+    if (stat2Label) stat2Label.value = stats.stat2Label || '';
+    if (stat3Num) stat3Num.value = stats.stat3Num || '';
+    if (stat3Label) stat3Label.value = stats.stat3Label || '';
+    if (stat4Num) stat4Num.value = stats.stat4Num || '';
+    if (stat4Label) stat4Label.value = stats.stat4Label || '';
+
+    // 3. Our Story
+    const story = data.story || {};
+    const storyCompany = document.getElementById('aboutStoryCompany');
+    const storyTitle = document.getElementById('aboutStoryTitle');
+    const storyHighlight = document.getElementById('aboutStoryHighlight');
+    const storyImage = document.getElementById('aboutStoryImage');
+    const storyBadgeYear = document.getElementById('aboutStoryBadgeYear');
+    const storyBadgeText = document.getElementById('aboutStoryBadgeText');
+    const storyDesc1 = document.getElementById('aboutStoryDesc1');
+    const storyDesc2 = document.getElementById('aboutStoryDesc2');
+
+    if (storyCompany) storyCompany.value = story.companyName || '';
+    if (storyTitle) storyTitle.value = story.title || '';
+    if (storyHighlight) storyHighlight.value = story.highlight || '';
+    if (storyImage) storyImage.value = story.image || '';
+    if (storyBadgeYear) storyBadgeYear.value = story.badgeYear || '';
+    if (storyBadgeText) storyBadgeText.value = story.badgeText || '';
+    if (storyDesc1) storyDesc1.value = story.desc1 || '';
+    if (storyDesc2) storyDesc2.value = story.desc2 || '';
+
+    const checks = story.checkpoints || [];
+    const check1 = document.getElementById('aboutStoryCheck1');
+    const check2 = document.getElementById('aboutStoryCheck2');
+    const check3 = document.getElementById('aboutStoryCheck3');
+    if (check1) check1.value = checks[0] || '';
+    if (check2) check2.value = checks[1] || '';
+    if (check3) check3.value = checks[2] || '';
+
+    updateAboutStoryImgPreview();
+
+    // 4. Vision & Mission
+    const vm = data.visionMission || {};
+    const vision = document.getElementById('aboutVision');
+    const mission = document.getElementById('aboutMission');
+    if (vision) vision.value = vm.vision || '';
+    if (mission) mission.value = vm.mission || '';
+
+    // 5. Core Values
+    const vals = data.values || [];
+    for (let i = 1; i <= 4; i++) {
+      const v = vals[i - 1] || {};
+      const iconEl = document.getElementById(`aboutVal${i}Icon`);
+      const titleEl = document.getElementById(`aboutVal${i}Title`);
+      const descEl = document.getElementById(`aboutVal${i}Desc`);
+      if (iconEl) iconEl.value = v.icon || '';
+      if (titleEl) titleEl.value = v.title || '';
+      if (descEl) descEl.value = v.desc || '';
+    }
+
+    // 6. Timeline Table
+    renderTimelineTable();
+  }
+
+  function updateAboutStoryImgPreview() {
+    const input = document.getElementById('aboutStoryImage');
+    const preview = document.getElementById('previewAboutStoryImg');
+    if (input && preview) {
+      preview.src = DS.resolveImg(input.value.trim(), '../frontend/images/picture 1.jpg');
+    }
+  }
+
+  function saveAboutForm(e) {
+    if (e) e.preventDefault();
+    const current = DS.About.get();
+
+    const updated = {
+      hero: {
+        badge: (document.getElementById('aboutHeroBadge')?.value || '').trim(),
+        title: (document.getElementById('aboutHeroTitle')?.value || '').trim(),
+        subtitle: (document.getElementById('aboutHeroSubtitle')?.value || '').trim()
+      },
+      stats: {
+        stat1Num: (document.getElementById('aboutStat1Num')?.value || '').trim(),
+        stat1Label: (document.getElementById('aboutStat1Label')?.value || '').trim(),
+        stat2Num: (document.getElementById('aboutStat2Num')?.value || '').trim(),
+        stat2Label: (document.getElementById('aboutStat2Label')?.value || '').trim(),
+        stat3Num: (document.getElementById('aboutStat3Num')?.value || '').trim(),
+        stat3Label: (document.getElementById('aboutStat3Label')?.value || '').trim(),
+        stat4Num: (document.getElementById('aboutStat4Num')?.value || '').trim(),
+        stat4Label: (document.getElementById('aboutStat4Label')?.value || '').trim()
+      },
+      story: {
+        companyName: (document.getElementById('aboutStoryCompany')?.value || '').trim(),
+        title: (document.getElementById('aboutStoryTitle')?.value || '').trim(),
+        highlight: (document.getElementById('aboutStoryHighlight')?.value || '').trim(),
+        image: (document.getElementById('aboutStoryImage')?.value || '').trim(),
+        badgeYear: (document.getElementById('aboutStoryBadgeYear')?.value || '').trim(),
+        badgeText: (document.getElementById('aboutStoryBadgeText')?.value || '').trim(),
+        desc1: (document.getElementById('aboutStoryDesc1')?.value || '').trim(),
+        desc2: (document.getElementById('aboutStoryDesc2')?.value || '').trim(),
+        checkpoints: [
+          (document.getElementById('aboutStoryCheck1')?.value || '').trim(),
+          (document.getElementById('aboutStoryCheck2')?.value || '').trim(),
+          (document.getElementById('aboutStoryCheck3')?.value || '').trim()
+        ].filter(Boolean)
+      },
+      visionMission: {
+        vision: (document.getElementById('aboutVision')?.value || '').trim(),
+        mission: (document.getElementById('aboutMission')?.value || '').trim()
+      },
+      values: [
+        {
+          id: 'v1',
+          icon: (document.getElementById('aboutVal1Icon')?.value || '').trim() || 'fa-seedling',
+          title: (document.getElementById('aboutVal1Title')?.value || '').trim(),
+          desc: (document.getElementById('aboutVal1Desc')?.value || '').trim()
+        },
+        {
+          id: 'v2',
+          icon: (document.getElementById('aboutVal2Icon')?.value || '').trim() || 'fa-truck-fast',
+          title: (document.getElementById('aboutVal2Title')?.value || '').trim(),
+          desc: (document.getElementById('aboutVal2Desc')?.value || '').trim()
+        },
+        {
+          id: 'v3',
+          icon: (document.getElementById('aboutVal3Icon')?.value || '').trim() || 'fa-users',
+          title: (document.getElementById('aboutVal3Title')?.value || '').trim(),
+          desc: (document.getElementById('aboutVal3Desc')?.value || '').trim()
+        },
+        {
+          id: 'v4',
+          icon: (document.getElementById('aboutVal4Icon')?.value || '').trim() || 'fa-book-open-reader',
+          title: (document.getElementById('aboutVal4Title')?.value || '').trim(),
+          desc: (document.getElementById('aboutVal4Desc')?.value || '').trim()
+        }
+      ],
+      timeline: current.timeline || []
+    };
+
+    DS.About.save(updated);
+    showToast('บันทึกข้อมูลหน้าเกี่ยวกับเรา (About Us) เรียบร้อยแล้ว');
+  }
+
+  function renderTimelineTable() {
+    const tbody = document.getElementById('timelineTableBody');
+    if (!tbody) return;
+
+    const data = DS.About.get();
+    const timeline = data.timeline || [];
+
+    if (timeline.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 24px;">ยังไม่มีข้อมูลหมุดไทม์ไลน์ กดปุ่ม "เพิ่มหมุดไทม์ไลน์" เพื่อสร้างรายการแรก</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = timeline.map(item => `
+      <tr>
+        <td><strong style="color: var(--primary-green); font-size: 15px;">${item.year}</strong></td>
+        <td><strong>${item.title}</strong></td>
+        <td style="color: #4a5568; font-size: 13.5px; line-height: 1.5;">${item.desc}</td>
+        <td style="text-align: center;">
+          <div class="tbl-actions" style="justify-content: center;">
+            <button class="btn btn-outline btn-sm" onclick="AdminApp.openTimelineModal('${item.id}')" title="แก้ไข">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteTimeline('${item.id}')" title="ลบ">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function openTimelineModal(id) {
+    const modal = document.getElementById('timelineModal');
+    if (!modal) return;
+
+    document.getElementById('timelineModalTitle').textContent = id ? '✏️ แก้ไขหมุดไทม์ไลน์' : '➕ เพิ่มหมุดไทม์ไลน์ใหม่';
+    document.getElementById('timelineId').value = id || '';
+
+    if (id) {
+      const data = DS.About.get();
+      const item = (data.timeline || []).find(t => t.id === id);
+      if (item) {
+        document.getElementById('timelineYear').value = item.year || '';
+        document.getElementById('timelineTitle').value = item.title || '';
+        document.getElementById('timelineDesc').value = item.desc || '';
+      }
+    } else {
+      document.getElementById('timelineForm').reset();
+    }
+
+    openModal(modal);
+  }
+
+  function saveTimeline(e) {
+    if (e) e.preventDefault();
+    const id = document.getElementById('timelineId').value;
+    const year = document.getElementById('timelineYear').value.trim();
+    const title = document.getElementById('timelineTitle').value.trim();
+    const desc = document.getElementById('timelineDesc').value.trim();
+
+    if (id) {
+      DS.About.updateTimelineItem(id, { year, title, desc });
+      showToast('แก้ไขหมุดไทม์ไลน์เรียบร้อยแล้ว');
+    } else {
+      DS.About.addTimelineItem({ year, title, desc });
+      showToast('เพิ่มหมุดไทม์ไลน์ใหม่เรียบร้อยแล้ว');
+    }
+
+    closeModal();
+    renderTimelineTable();
+  }
+
+  function deleteTimeline(id) {
+    if (confirm('คุณต้องการลบหมุดไทม์ไลน์นี้หรือไม่?')) {
+      DS.About.deleteTimelineItem(id);
+      renderTimelineTable();
+      showToast('ลบหมุดไทม์ไลน์เรียบร้อยแล้ว');
     }
   }
 
@@ -993,6 +1245,13 @@
     saveSlide,
     deleteSlide,
     updateSlideLivePreview,
+    // About Us
+    renderAboutForm,
+    saveAboutForm,
+    updateAboutStoryImgPreview,
+    openTimelineModal,
+    saveTimeline,
+    deleteTimeline,
     // News
     openNewsModal,
     saveNews,

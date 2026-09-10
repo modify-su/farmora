@@ -80,6 +80,12 @@
         </a>
       </li>
       <li>
+        <a class="sidebar-link" data-tab="about">
+          <i class="fa-solid fa-address-card"></i>
+          <span>เกี่ยวกับเรา</span>
+        </a>
+      </li>
+      <li>
         <a class="sidebar-link" data-tab="news">
           <i class="fa-solid fa-newspaper"></i>
           <span>ข่าวสารและกิจกรรม</span>
@@ -215,6 +221,9 @@
             <button class="btn btn-primary" onclick="AdminApp.openSlideModal()">
               <i class="fa-solid fa-plus"></i> เพิ่มสไลด์ใหม่
             </button>
+            <button class="btn btn-primary" onclick="AdminApp.switchTab('about')">
+              <i class="fa-solid fa-address-card"></i> จัดการหน้าเกี่ยวกับเรา
+            </button>
             <button class="btn btn-primary" onclick="AdminApp.openNewsModal()">
               <i class="fa-solid fa-plus"></i> เพิ่มข่าวสารใหม่
             </button>
@@ -271,6 +280,318 @@
           <div class="card-body">
             <div class="slides-card-list" id="slidesList">
               <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB: เกี่ยวกับเรา (ABOUT US)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-about">
+        <!-- Action Header -->
+        <div class="card" style="background: linear-gradient(135deg, #e8f5e9, #f9fbf9); border-left: 4px solid var(--primary-green); margin-bottom: 24px;">
+          <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 700; color: var(--dark-green); margin-bottom: 4px;">
+                <i class="fa-solid fa-address-card"></i> จัดการเนื้อหาหน้าเกี่ยวกับเรา (About Us)
+              </h2>
+              <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
+                แก้ไขข้อมูลส่วนหัว, สถิติความสำเร็จ, เรื่องราวความเป็นมา, วิสัยทัศน์-พันธกิจ, และหมุดไทม์ไลน์ โดยซิงค์ตรงกับหน้าเว็บไซต์จริง
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <a href="../frontend/html/about.html" target="_blank" class="btn btn-outline">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> ดูหน้าเกี่ยวกับเรา
+              </a>
+              <button type="button" class="btn btn-primary" onclick="document.getElementById('aboutSubmitBtn').click()">
+                <i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลทั้งหมด
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <form id="aboutForm" onsubmit="AdminApp.saveAboutForm(event)">
+          <!-- 1. HERO BANNER -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-flag"></i> 1. ส่วนหัวหน้าเว็บ (Hero Banner)</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                  <label class="form-label">ป้ายกำกับด้านบน (Badge Text)</label>
+                  <input type="text" id="aboutHeroBadge" class="form-control" required placeholder="เช่น Farmora Official">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                  <label class="form-label">หัวข้อหลัก (Hero Title) *</label>
+                  <input type="text" id="aboutHeroTitle" class="form-control" required placeholder="เช่น เกี่ยวกับ ฟาร์โมรา (Farmora)">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">คำบรรยายใต้หัวข้อ (Hero Subtitle) *</label>
+                <textarea id="aboutHeroSubtitle" class="form-control" rows="2" required placeholder="ระบุคำบรรยายส่วนหัว..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. STATS BAR -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-chart-simple"></i> 2. แถบสถิติความสำเร็จ (Stats Bar - 4 รายการ)</h3>
+            </div>
+            <div class="card-body">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <span style="font-weight: 700; color: var(--primary-green); font-size: 13px; display: block; margin-bottom: 8px;">สถิติที่ 1</span>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ตัวเลข (เช่น 30+)</label>
+                    <input type="text" id="aboutStat1Num" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">ข้อความกำกับ</label>
+                    <input type="text" id="aboutStat1Label" class="form-control" required>
+                  </div>
+                </div>
+
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <span style="font-weight: 700; color: var(--primary-green); font-size: 13px; display: block; margin-bottom: 8px;">สถิติที่ 2</span>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ตัวเลข (เช่น 500+)</label>
+                    <input type="text" id="aboutStat2Num" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">ข้อความกำกับ</label>
+                    <input type="text" id="aboutStat2Label" class="form-control" required>
+                  </div>
+                </div>
+
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <span style="font-weight: 700; color: var(--primary-green); font-size: 13px; display: block; margin-bottom: 8px;">สถิติที่ 3</span>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ตัวเลข (เช่น 10,000+)</label>
+                    <input type="text" id="aboutStat3Num" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">ข้อความกำกับ</label>
+                    <input type="text" id="aboutStat3Label" class="form-control" required>
+                  </div>
+                </div>
+
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <span style="font-weight: 700; color: var(--primary-green); font-size: 13px; display: block; margin-bottom: 8px;">สถิติที่ 4</span>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ตัวเลข (เช่น 77)</label>
+                    <input type="text" id="aboutStat4Num" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">ข้อความกำกับ</label>
+                    <input type="text" id="aboutStat4Label" class="form-control" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. OUR STORY -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-book"></i> 3. เรื่องราวและความเป็นมา (Our Story)</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                  <label class="form-label">ชื่อองค์กร / แท็กย่อย</label>
+                  <input type="text" id="aboutStoryCompany" class="form-control" required placeholder="เช่น บริษัท ฟาร์โมรา จำกัด">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                  <label class="form-label">หัวข้อเรื่องราว (Title) *</label>
+                  <input type="text" id="aboutStoryTitle" class="form-control" required placeholder="เช่น เพราะความสำเร็จของคุณ คือความสำเร็จของเรา">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">ประโยคไฮไลท์คำพูด (Quote Highlight)</label>
+                <textarea id="aboutStoryHighlight" class="form-control" rows="2" placeholder="ใส่คำพูดเน้นย้ำ..."></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                  <label class="form-label">ภาพประกอบเรื่องราว (Image Path) *</label>
+                  <input type="text" id="aboutStoryImage" class="form-control" required oninput="AdminApp.updateAboutStoryImgPreview()" placeholder="../frontend/images/picture 1.jpg">
+                  <span class="form-hint">สามารถคัดลอก Path รูปจากแท็บ "คลังรูปภาพ" มาวางได้</span>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                  <label class="form-label">ตัวอย่างรูปภาพ</label>
+                  <div style="width: 100%; height: 75px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #eee;">
+                    <img id="previewAboutStoryImg" src="../frontend/images/picture 1.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">ข้อความบนแบดจ์ลอย - หัวข้อ (Badge Year)</label>
+                  <input type="text" id="aboutStoryBadgeYear" class="form-control" placeholder="เช่น ก่อตั้งปี 2537">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">ข้อความบนแบดจ์ลอย - คำบรรยาย (Badge Text)</label>
+                  <input type="text" id="aboutStoryBadgeText" class="form-control" placeholder="เช่น กว่า 3 ทศวรรษแห่งความเชื่อมั่น">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">เนื้อหาเรื่องราว ย่อหน้าที่ 1 *</label>
+                  <textarea id="aboutStoryDesc1" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">เนื้อหาเรื่องราว ย่อหน้าที่ 2 *</label>
+                  <textarea id="aboutStoryDesc2" class="form-control" rows="4" required></textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">จุดเด่น 3 ข้อ (Checkpoints)</label>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <input type="text" id="aboutStoryCheck1" class="form-control" placeholder="จุดเด่นข้อที่ 1">
+                  <input type="text" id="aboutStoryCheck2" class="form-control" placeholder="จุดเด่นข้อที่ 2">
+                  <input type="text" id="aboutStoryCheck3" class="form-control" placeholder="จุดเด่นข้อที่ 3">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. VISION & MISSION -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-bullseye"></i> 4. วิสัยทัศน์และพันธกิจ (Vision & Mission)</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-solid fa-eye" style="color: var(--primary-green);"></i> วิสัยทัศน์ (Vision) *</label>
+                  <textarea id="aboutVision" class="form-control" rows="4" required placeholder="ระบุวิสัยทัศน์องค์กร..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-solid fa-bullseye" style="color: var(--accent-green);"></i> พันธกิจ (Mission) *</label>
+                  <textarea id="aboutMission" class="form-control" rows="4" required placeholder="ระบุพันธกิจองค์กร..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. CORE VALUES -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-award"></i> 5. เสาหลักความมุ่งมั่น 4 ประการ (Core Values)</h3>
+            </div>
+            <div class="card-body">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                <!-- Value 1 -->
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ไอคอน FontAwesome (เช่น fa-seedling)</label>
+                    <input type="text" id="aboutVal1Icon" class="form-control" value="fa-seedling">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">หัวข้อเสาหลัก 1</label>
+                    <input type="text" id="aboutVal1Title" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">คำอธิบายเสาหลัก 1</label>
+                    <textarea id="aboutVal1Desc" class="form-control" rows="2" required></textarea>
+                  </div>
+                </div>
+
+                <!-- Value 2 -->
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ไอคอน FontAwesome (เช่น fa-truck-fast)</label>
+                    <input type="text" id="aboutVal2Icon" class="form-control" value="fa-truck-fast">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">หัวข้อเสาหลัก 2</label>
+                    <input type="text" id="aboutVal2Title" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">คำอธิบายเสาหลัก 2</label>
+                    <textarea id="aboutVal2Desc" class="form-control" rows="2" required></textarea>
+                  </div>
+                </div>
+
+                <!-- Value 3 -->
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ไอคอน FontAwesome (เช่น fa-users)</label>
+                    <input type="text" id="aboutVal3Icon" class="form-control" value="fa-users">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">หัวข้อเสาหลัก 3</label>
+                    <input type="text" id="aboutVal3Title" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">คำอธิบายเสาหลัก 3</label>
+                    <textarea id="aboutVal3Desc" class="form-control" rows="2" required></textarea>
+                  </div>
+                </div>
+
+                <!-- Value 4 -->
+                <div style="background: #f8faf8; padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">ไอคอน FontAwesome (เช่น fa-book-open-reader)</label>
+                    <input type="text" id="aboutVal4Icon" class="form-control" value="fa-book-open-reader">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" style="font-size: 12.5px;">หัวข้อเสาหลัก 4</label>
+                    <input type="text" id="aboutVal4Title" class="form-control" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 12.5px;">คำอธิบายเสาหลัก 4</label>
+                    <textarea id="aboutVal4Desc" class="form-control" rows="2" required></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Save Button -->
+          <div style="margin-bottom: 30px; text-align: right;">
+            <button type="submit" id="aboutSubmitBtn" class="btn btn-primary" style="padding: 12px 28px; font-size: 16px; font-weight: 600;">
+              <i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลหน้าเกี่ยวกับเรา
+            </button>
+          </div>
+        </form>
+
+        <!-- 6. TIMELINE SECTION (Separate Card for Dynamic Items) -->
+        <div class="card" style="margin-bottom: 30px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title"><i class="fa-solid fa-timeline"></i> 6. เส้นทางและหมุดความสำเร็จ (Our Journey / Timeline)</h3>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                สามารถเพิ่มหมุดเหตุการณ์ใหม่ แก้ไขปี พ.ศ. หรือลบหมุดในประวัติองค์กรได้อย่างอิสระ
+              </p>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="AdminApp.openTimelineModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มหมุดไทม์ไลน์
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 140px;">ปี พ.ศ. / เวลา</th>
+                    <th style="width: 220px;">หัวข้อเหตุการณ์</th>
+                    <th>รายละเอียด</th>
+                    <th style="width: 120px; text-align: center;">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="timelineTableBody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -899,6 +1220,41 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกเมนู</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 6. TIMELINE MODAL (สำหรับหน้าเกี่ยวกับเรา) -->
+  <div class="modal-backdrop" id="timelineModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="timelineModalTitle">➕ เพิ่มหมุดไทม์ไลน์</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="timelineForm" onsubmit="AdminApp.saveTimeline(event)">
+        <div class="modal-body">
+          <input type="hidden" id="timelineId">
+
+          <div class="form-group">
+            <label class="form-label">ปี พ.ศ. หรือช่วงเวลา *</label>
+            <input type="text" id="timelineYear" class="form-control" required placeholder="เช่น พ.ศ. 2537 หรือ พ.ศ. 2568 - ปัจจุบัน">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">หัวข้อเหตุการณ์ (Event Title) *</label>
+            <input type="text" id="timelineTitle" class="form-control" required placeholder="เช่น จุดเริ่มต้นและก่อตั้งบริษัท">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">รายละเอียดเนื้อหา (Description) *</label>
+            <textarea id="timelineDesc" class="form-control" rows="4" required placeholder="ระบุเหตุการณ์สำคัญ ความสำเร็จ หรือก้าวสำคัญ..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกหมุดไทม์ไลน์</button>
         </div>
       </form>
     </div>

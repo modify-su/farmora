@@ -16,6 +16,7 @@
 
   const STORAGE_KEYS = {
     SLIDES: 'farmora_slides_v2',
+    ABOUT: 'farmora_about_v2',
     NEWS: 'farmora_news_v2',
     ARTICLES: 'farmora_articles_v2',
     PRODUCTS: 'farmora_products_v2',
@@ -23,6 +24,58 @@
     MEDIA: 'farmora_media_v2',
     AUTH: 'farmora_auth_v2',
     INITIALIZED: 'farmora_backend_initialized_v2'
+  };
+
+  /* --------------------------------------------------------------------------
+     0. ข้อมูลเริ่มต้นหน้าเกี่ยวกับเรา (Default About Us)
+     -------------------------------------------------------------------------- */
+  const DEFAULT_ABOUT = {
+    hero: {
+      badge: 'Farmora Official',
+      title: 'เกี่ยวกับ ฟาร์โมรา (Farmora)',
+      subtitle: 'ผู้นำด้านผลิตภัณฑ์การเกษตรครบวงจร ด้วยประสบการณ์กว่า 30 ปี มุ่งมั่นเคียงข้างและยกระดับคุณภาพชีวิตของเกษตรกรไทย'
+    },
+    stats: {
+      stat1Num: '30+',
+      stat1Label: 'ปีแห่งประสบการณ์',
+      stat2Num: '500+',
+      stat2Label: 'รายการผลิตภัณฑ์เกษตร',
+      stat3Num: '10,000+',
+      stat3Label: 'เกษตรกรและร้านค้าไว้วางใจ',
+      stat4Num: '77',
+      stat4Label: 'จังหวัดเครือข่ายจัดส่งทั่วไทย'
+    },
+    story: {
+      companyName: 'บริษัท ฟาร์โมรา จำกัด',
+      title: 'เพราะความสำเร็จของคุณ\nคือความสำเร็จของเรา',
+      highlight: '"เราเชื่อมั่นว่า การเกษตรที่ดีต้องอาศัยทั้งองค์ความรู้ เทคโนโลยีสมัยใหม่ และผลิตภัณฑ์คุณภาพสูง เพื่อสร้างอนาคตที่มั่นคงให้เกษตรกรไทย"',
+      image: '../frontend/images/picture 1.jpg',
+      badgeYear: 'ก่อตั้งปี 2537',
+      badgeText: 'กว่า 3 ทศวรรษแห่งความเชื่อมั่น',
+      desc1: 'บริษัท ฟาร์โมรา จำกัด ก่อตั้งขึ้นเมื่อปี พ.ศ. 2537 ด้วยวิสัยทัศน์ที่ต้องการพัฒนาภาคเกษตรกรรมไทยให้เติบโตอย่างยั่งยืน เราเป็นผู้ผลิต นำเข้า และจัดจำหน่ายผลิตภัณฑ์การเกษตรครบวงจร ไม่ว่าจะเป็นเมล็ดพันธุ์ผักคุณภาพสูง เมล็ดพันธุ์ข้าวคัดพิเศษ ปุ๋ยอินทรีย์ปรับปรุงดิน สารชีวภัณฑ์ และอาหารสัตว์มาตรฐานสากล',
+      desc2: 'ตลอดระยะเวลากว่า 30 ปี เราได้สั่งสมประสบการณ์และความเชี่ยวชาญ พร้อมทีมนักวิชาการเกษตรที่คอยลงพื้นที่จริง ให้คำปรึกษาและแนะนำการใช้ผลิตภัณฑ์อย่างถูกต้อง ปลอดภัย และเกิดผลผลิตสูงสุดแก่เกษตรกรทั่วประเทศ',
+      checkpoints: [
+        'คัดสรรเมล็ดพันธุ์ที่ทนทานต่อโรค ให้ผลผลิตดกสม่ำเสมอ',
+        'ทีมนักวิชาการลงพื้นที่จริง เคียงข้างดูแลแปลงปลูกอย่างใกล้ชิด',
+        'ระบบคลังสินค้ามาตรฐาน พร้อมบริการจัดส่งรวดเร็วถึงมือทั่วประเทศ'
+      ]
+    },
+    visionMission: {
+      vision: 'มุ่งสู่การเป็นแบรนด์ผลิตภัณฑ์การเกษตรอันดับหนึ่งในใจเกษตรกรไทย ที่ผสานนวัตกรรม เทคโนโลยี และภูมิปัญญาการเพาะปลูก เพื่อสร้างผลผลิตที่อุดมสมบูรณ์ และยกระดับมาตรฐานสินค้าเกษตรไทยสู่ระดับสากลอย่างยั่งยืน',
+      mission: 'วิจัย คัดสรร และจัดจำหน่ายผลิตภัณฑ์การเกษตรที่มีประสิทธิภาพสูง ส่งมอบองค์ความรู้และเทคนิคการเพาะปลูกที่ทันสมัยอย่างต่อเนื่อง พร้อมทั้งสร้างเครือข่ายความร่วมมือกับเกษตรกรและชุมชน เพื่อผลผลิตที่คุ้มค่าและเป็นมิตรต่อสิ่งแวดล้อม'
+    },
+    timeline: [
+      { id: 't1', year: 'พ.ศ. 2537', title: 'จุดเริ่มต้นและก่อตั้งบริษัท', desc: 'บริษัท ฟาร์โมรา จำกัด ก่อตั้งขึ้นโดยกลุ่มผู้เชี่ยวชาญด้านเกษตรกรรม เริ่มต้นจากการคัดสรรและจัดจำหน่ายปุ๋ยและปัจจัยการผลิตคุณภาพสูง' },
+      { id: 't2', year: 'พ.ศ. 2548', title: 'ขยายศูนย์กระจายสินค้าและเมล็ดพันธุ์', desc: 'ขยายสายการผลิตเมล็ดพันธุ์ผักและข้าว พร้อมสร้างระบบคลังสินค้ามาตรฐานเพื่อรองรับการจัดส่งครอบคลุมภาคตะวันออกเฉียงเหนือและทั่วประเทศ' },
+      { id: 't3', year: 'พ.ศ. 2558', title: 'เกษตรแม่นยำและนวัตกรรมดิน', desc: 'ริเริ่มโครงการพัฒนาสารปรับปรุงดินและปุ๋ยอินทรีย์ชีวภาพ ผสานเทคโนโลยีการเกษตรสมัยใหม่เพื่อเพิ่มประสิทธิภาพการดูดซึมธาตุอาหารของพืช' },
+      { id: 't4', year: 'พ.ศ. 2568 - ปัจจุบัน', title: 'ก้าวสู่ยุคเกษตรอัจฉริยะ (Smart Agriculture)', desc: 'ยกระดับการให้บริการด้วยระบบดิจิทัล จัดส่งสินค้าทั่วไทยถึงมือเกษตรกร พร้อมเดินหน้าสู่ความยั่งยืนทางอาหารและสิ่งแวดล้อม' }
+    ],
+    values: [
+      { id: 'v1', icon: 'fa-seedling', title: 'ยกระดับผลผลิต', desc: 'ส่งมอบผลิตภัณฑ์คุณภาพที่ช่วยเพิ่มปริมาณและคุณภาพผลผลิตให้คุ้มค่าการลงทุน' },
+      { id: 'v2', icon: 'fa-truck-fast', title: 'พร้อมส่งทั่วไทย', desc: 'เครือข่ายโลจิสติกส์ที่รวดเร็ว ปลอดภัย ทันต่อทุกฤดูกาลเพาะปลูกของเกษตรกร' },
+      { id: 'v3', icon: 'fa-users', title: 'ลงพื้นที่จริง', desc: 'เคียงข้างเกษตรกร เข้าถึงแปลงปลูกจริงเพื่อรับฟังและร่วมแก้ปัญหาอย่างตรงจุด' },
+      { id: 'v4', icon: 'fa-book-open-reader', title: 'ก้าวทันเทรนด์', desc: 'อัปเดตนวัตกรรมและแบ่งปันองค์ความรู้เกษตรสมัยใหม่อยู่เสมอ' }
+    ]
   };
 
   /* ── ตัวช่วยแปลงและตรวจสอบ Path รูปภาพ ─────────────────── */
@@ -371,6 +424,7 @@
   function init() {
     if (!localStorage.getItem(STORAGE_KEYS.INITIALIZED)) {
       setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
+      setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
       setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
       setRaw(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
@@ -378,7 +432,52 @@
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
       localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
     }
+    // ตรวจสอบและตั้งค่าเริ่มต้นหน้าเกี่ยวกับเราหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.ABOUT)) {
+      setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
+    }
   }
+
+  // ── About Us API ──
+  const About = {
+    get: () => getRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT),
+    save: (aboutData) => {
+      const current = About.get();
+      const updated = {
+        ...current,
+        ...aboutData,
+        updatedAt: new Date().toISOString()
+      };
+      setRaw(STORAGE_KEYS.ABOUT, updated);
+      return updated;
+    },
+    // Timeline CRUD
+    addTimelineItem: (item) => {
+      const data = About.get();
+      data.timeline = data.timeline || [];
+      item.id = item.id || 't_' + Date.now();
+      data.timeline.push(item);
+      About.save(data);
+      return item;
+    },
+    updateTimelineItem: (id, updatedFields) => {
+      const data = About.get();
+      data.timeline = data.timeline || [];
+      const idx = data.timeline.findIndex(t => t.id === id);
+      if (idx >= 0) {
+        data.timeline[idx] = { ...data.timeline[idx], ...updatedFields };
+        About.save(data);
+        return data.timeline[idx];
+      }
+      return null;
+    },
+    deleteTimelineItem: (id) => {
+      const data = About.get();
+      data.timeline = (data.timeline || []).filter(t => t.id !== id);
+      About.save(data);
+      return true;
+    }
+  };
 
   // ── Slides API ──
   const Slides = {
@@ -516,6 +615,7 @@
       const data = {
         version: '2.0',
         exportedAt: new Date().toISOString(),
+        about: About.get(),
         slides: Slides.getAll(),
         news: News.getAll(),
         articles: Articles.getAll(),
@@ -528,6 +628,7 @@
     importJSON: (jsonString) => {
       try {
         const parsed = JSON.parse(jsonString);
+        if (parsed.about) setRaw(STORAGE_KEYS.ABOUT, parsed.about);
         if (parsed.slides) setRaw(STORAGE_KEYS.SLIDES, parsed.slides);
         if (parsed.news) setRaw(STORAGE_KEYS.NEWS, parsed.news);
         if (parsed.articles) setRaw(STORAGE_KEYS.ARTICLES, parsed.articles);
@@ -540,6 +641,7 @@
       }
     },
     resetDefaults: () => {
+      setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
       setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
       setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
@@ -555,6 +657,7 @@
 
   // Export to Global Scope
   window.FarmoraDataStore = {
+    About,
     Slides,
     News,
     Articles,
