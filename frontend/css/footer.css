@@ -10,8 +10,9 @@
 
 /* ── Footer main ──────────────────────────────────────────── */
 .site-footer {
-  background: linear-gradient(135deg, #003d20 0%, #005a2d 100%);
-  color: #e8f5e9;
+  background: #02a64c;
+  background: linear-gradient(90deg, #8cc54f 0%, #65bc4e 15%, #3ab34d 30%, #02a64c 50%, #059446 70%, #098741 85%, #0d7a3c 100%);
+  color: #ffffff;
   padding: 56px 20px 0;
   font-family: "Kanit", sans-serif;
 }
@@ -30,14 +31,15 @@
   width: 120px;
   margin-bottom: 18px;
   filter: brightness(0) invert(1);  /* ทำโลโก้เป็นสีขาว */
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .footer-brand p {
   font-size: 14px;
-  color: #b2dfb2;
+  color: #ffffff;
   line-height: 1.75;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 /* ── Column 2: ข้อมูลติดต่อ ──────────────────────────────── */
@@ -45,10 +47,11 @@
 .footer-social h4 {
   font-size: 17px;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
   margin: 0 0 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid rgba(255,255,255,0.15);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .footer-contact ul {
@@ -62,13 +65,14 @@
   align-items: flex-start;
   gap: 10px;
   font-size: 14px;
-  color: #b2dfb2;
+  color: #ffffff;
   margin-bottom: 12px;
   line-height: 1.5;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .footer-contact ul li i {
-  color: #66bb6a;
+  color: #ffffff;
   font-size: 15px;
   margin-top: 2px;
   flex-shrink: 0;
@@ -107,11 +111,13 @@
 
 /* ── Footer Bottom bar ────────────────────────────────────── */
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.08);
   padding: 18px 20px;
   text-align: center;
   font-size: 13px;
-  color: #81c784;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 /* ── Responsive ───────────────────────────────────────────── */

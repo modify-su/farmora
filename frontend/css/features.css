@@ -9,7 +9,7 @@
 
 /* ── Features Strip (สีเขียว) ────────────────────────────── */
 .features-section {
-  background: linear-gradient(135deg, #006837 0%, #00884c 100%);
+  background: linear-gradient(135deg, #00A64C 0%, #00A64C 100%);
   padding: 48px 20px;
 }
 
@@ -69,7 +69,7 @@
 /* ── Photo Cards Section ──────────────────────────────────── */
 .photocards-section {
   padding: 64px 20px;
-  background-color: #f0faf0;
+  background-color: #00A64C;
 }
 
 .photocards-section .section-header {

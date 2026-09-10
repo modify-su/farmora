@@ -1165,7 +1165,7 @@
   font-family: "Kanit", sans-serif;
   font-size: 32px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #00a64c;
   margin: 0 0 10px;
 }
 
@@ -1200,7 +1200,7 @@
 .product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 28px rgba(0, 104, 55, 0.14);
-  border-color: #c8e6c9;
+  border-color: #00a64c;
 }
 
 /* รูปภาพการ์ด (ซ้าย) */
@@ -1230,7 +1230,7 @@
   font-family: "Kanit", sans-serif;
   font-size: 19px;
   font-weight: 700;
-  color: #006837;
+  color: #0c7b3b;
   margin: 0 0 12px;
 }
 
@@ -1262,8 +1262,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #006837;
-  color: #ffffff;
+  background-color: #8ec64f;
+  color: #0c0c0c;
   font-family: "Kanit", sans-serif;
   font-size: 14px;
   font-weight: 600;
