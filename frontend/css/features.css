@@ -1,60 +1,71 @@
 /* ================================================================
    FILE: features.css
    ────────────────────────────────────────────────────────────────
-   ใหม่ทั้งหมด (สร้างขึ้นใหม่ ไม่มีใน version เดิม):
-   ✅  Section แถบสีเขียว 4 ไอคอน Feature
-       (ยกระดับผลผลิต / จัดส่งทั่วประเทศ / ลงพื้นที่จริง / ก้าวทันเทรนด์)
-   ✅  4 card รูปภาพเกษตร พร้อม hover lift effect
+   ส่วนแถบจุดเด่นและรูปภาพ (Features & Photo Cards) - Farmora Official
+   ✅ จัดเรียงไอคอนคู่กับรูปภาพให้อยู่ในคอลัมน์เดียวกัน 100%
    ================================================================ */
 
-/* ── Features Strip (สีเขียว) ────────────────────────────── */
+/* ── Features Section (พื้นหลังสีเขียว Farmora) ─────────────────── */
 .features-section {
-  background: linear-gradient(135deg, #00A64C 0%, #00A64C 100%);
-  padding: 48px 20px;
+  background-color: #00A64C;
+  padding: 56px 20px 64px;
 }
 
-.features-grid {
+/* ── Grid จัดเรียง 4 คอลัมน์ ────────────────────────────────────── */
+.features-unified-grid {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 20px;
 }
 
+/* ── แต่ละคอลัมน์: มีกล่องไอคอนบน + กล่องรูปภาพล่าง ─────────────── */
+.feature-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+/* ── กล่องไอคอนด้านบน ─────────────────────────────────────────── */
 .feature-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 28px 20px;
+  padding: 24px 16px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: background 0.3s, transform 0.25s;
+  min-height: 175px;
+  box-sizing: border-box;
 }
 
 .feature-item:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   transform: translateY(-4px);
 }
 
 .feature-icon {
   width: 68px;
   height: 68px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-size: 1.8rem;
   color: #fff;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   transition: background 0.3s;
 }
 
 .feature-item:hover .feature-icon {
-  background: rgba(255,255,255,0.28);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .feature-title {
@@ -66,43 +77,21 @@
   margin: 0;
 }
 
-/* ── Photo Cards Section ──────────────────────────────────── */
-.photocards-section {
-  padding: 64px 20px;
-  background-color: #00A64C;
-}
-
-.photocards-section .section-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.photocards-section .section-header h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 8px;
-}
-
-.photocards-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
+/* ── กล่องการ์ดรูปภาพด้านล่าง ─────────────────────────────────── */
 .photo-card {
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* ขยายให้การ์ดล่างมีความสูงเท่ากันทุกคอลัมน์ */
 }
 
 .photo-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
 }
 
 .photo-card img {
@@ -114,6 +103,9 @@
 
 .photo-card-body {
   padding: 18px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .photo-card-body p {
@@ -124,13 +116,17 @@
   margin: 0;
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/* ── Responsive อัตโนมัติตามขนาดอุปกรณ์ ───────────────────────── */
 @media (max-width: 992px) {
-  .features-grid    { grid-template-columns: repeat(2, 1fr); }
-  .photocards-grid  { grid-template-columns: repeat(2, 1fr); }
+  .features-unified-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
 }
 
 @media (max-width: 576px) {
-  .features-grid    { grid-template-columns: 1fr; }
-  .photocards-grid  { grid-template-columns: 1fr; }
+  .features-unified-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 }

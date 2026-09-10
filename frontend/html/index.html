@@ -238,88 +238,78 @@
 
 
   <!-- ================================================================
-       SECTION 3: Features (แถบสีเขียว 4 ไอคอน)
-       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
-       ✅  4 feature highlights บน background สีเขียว
+       SECTION 3: Features & Photo Cards (จัดเป็นคอลัมน์เดียวกัน)
+       ✅ รวมกล่องไอคอนและกล่องรูปภาพให้อยู่ในคอลัมน์เดียวกันเป๊ะ 100%
        ================================================================ -->
   <section class="features-section" aria-label="จุดเด่นของ Farmora">
-    <div class="features-grid">
+    <div class="features-unified-grid">
 
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fa-solid fa-seedling"></i>
+      <!-- คอลัมน์ที่ 1: ยกระดับผลผลิต -->
+      <div class="feature-col">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <p class="feature-title">ยกระดับผลผลิต<br>ด้วยผลิตภัณฑ์</p>
         </div>
-        <p class="feature-title">ยกระดับผลผลิต<br>ด้วยผลิตภัณฑ์</p>
-      </div>
-
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fa-solid fa-truck-fast"></i>
-        </div>
-        <p class="feature-title">พร้อมจัดส่งสินค้า<br>ทั่วประเทศ</p>
-      </div>
-
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fa-solid fa-people-group"></i>
-        </div>
-        <p class="feature-title">ลงพื้นที่จริง<br>เกี่ยวข้องลูกค้า</p>
-      </div>
-
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fa-solid fa-book-open-reader"></i>
-        </div>
-        <p class="feature-title">ก้าวทันเทรนด์<br>อัปเดตความรู้เสมอ</p>
-      </div>
-
-    </div>
-  </section><!-- /features -->
-
-
-  <!-- ================================================================
-       SECTION 4: Photo Cards (4 การ์ดภาพเกษตร)
-       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
-       ✅  4 การ์ดภาพ พร้อม hover lift + รายละเอียดด้านล่าง
-       ================================================================ -->
-  <section class="photocards-section" aria-label="ทำไมต้องเลือก Farmora">
-    <div class="photocards-grid">
-
-      <div class="photo-card">
-        <!-- ภาพตัวอย่าง: เปลี่ยนเป็น path ภาพจริงเมื่อพร้อม -->
-        <img src="../images/picture 2.jpg"
-             alt="เพราะความสำเร็จของคุณ">
-        <div class="photo-card-body">
-          <p>เพราะความสำเร็จของคุณ คือความสำเร็จของเรา เราช่วยแก้ปัญหาให้เกษตรกรเพิ่มผลผลิตอย่างยั่งยืน</p>
+        <div class="photo-card">
+          <img src="../images/picture 2.jpg" alt="เพราะความสำเร็จของคุณ">
+          <div class="photo-card-body">
+            <p>เพราะความสำเร็จของคุณ คือความสำเร็จของเรา เราช่วยแก้ปัญหาให้เกษตรกรเพิ่มผลผลิตอย่างยั่งยืน</p>
+          </div>
         </div>
       </div>
 
-      <div class="photo-card">
-        <img src="../images/picture 3.jpg"
-             alt="พร้อมจัดส่งสินค้า">
-        <div class="photo-card-body">
-          <p>สต็อกสินค้าพร้อมจัดส่ง ถึงร้านค้า/เกษตรกรทั่วประเทศ เรานำส่งสินค้าให้คุณได้ทุกที่ ทันต่อฤดูกาล</p>
+      <!-- คอลัมน์ที่ 2: พร้อมจัดส่งสินค้า -->
+      <div class="feature-col">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <p class="feature-title">พร้อมจัดส่งสินค้า<br>ทั่วประเทศ</p>
+        </div>
+        <div class="photo-card">
+          <img src="../images/picture 3.jpg" alt="พร้อมจัดส่งสินค้า">
+          <div class="photo-card-body">
+            <p>สต็อกสินค้าพร้อมจัดส่ง ถึงร้านค้า/เกษตรกรทั่วประเทศ เรานำส่งสินค้าให้คุณได้ทุกที่ ทันต่อฤดูกาล</p>
+          </div>
         </div>
       </div>
 
-      <div class="photo-card">
-        <img src="../images/picture 4.jpg"
-             alt="ลงพื้นที่จริงเกี่ยวข้องลูกค้า">
-        <div class="photo-card-body">
-          <p>พนักงานของเรา ลงพื้นที่จริง เพื่อดูแลคุณภาพอย่างใกล้ชิด พร้อมให้คำปรึกษาเพื่อดูแลลูกค้าของเรา</p>
+      <!-- คอลัมน์ที่ 3: ลงพื้นที่จริง -->
+      <div class="feature-col">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fa-solid fa-people-group"></i>
+          </div>
+          <p class="feature-title">ลงพื้นที่จริง<br>เกี่ยวข้องลูกค้า</p>
+        </div>
+        <div class="photo-card">
+          <img src="../images/picture 4.jpg" alt="ลงพื้นที่จริงเกี่ยวข้องลูกค้า">
+          <div class="photo-card-body">
+            <p>พนักงานของเรา ลงพื้นที่จริง เพื่อดูแลคุณภาพอย่างใกล้ชิด พร้อมให้คำปรึกษาเพื่อดูแลลูกค้าของเรา</p>
+          </div>
         </div>
       </div>
 
-      <div class="photo-card">
-        <img src="../images/picture 5.jpg"
-             alt="ฝึกอบรมและพัฒนาทีมงาน">
-        <div class="photo-card-body">
-          <p>เพื่อให้คุณได้รับเทคนิคที่ดีที่สุด เราฝึกอบรมทีมงานอย่างต่อเนื่อง มีประสิทธิภาพด้านเทคโนโลยีการเกษตร</p>
+      <!-- คอลัมน์ที่ 4: ก้าวทันเทรนด์ -->
+      <div class="feature-col">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <p class="feature-title">ก้าวทันเทรนด์<br>อัปเดตความรู้เสมอ</p>
+        </div>
+        <div class="photo-card">
+          <img src="../images/picture 5.jpg" alt="ฝึกอบรมและพัฒนาทีมงาน">
+          <div class="photo-card-body">
+            <p>เพื่อให้คุณได้รับเทคนิคที่ดีที่สุด เราฝึกอบรมทีมงานอย่างต่อเนื่อง มีประสิทธิภาพด้านเทคโนโลยีการเกษตร</p>
+          </div>
         </div>
       </div>
 
     </div>
-  </section><!-- /photocards -->
+  </section><!-- /features-section -->
 
 
   <!-- ================================================================
