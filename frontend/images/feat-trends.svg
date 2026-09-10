@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 68" fill="#ffffff">
+  <!-- Radiating rays around bulb -->
+  <line x1="38" y1="3" x2="38" y2="8" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
+  <line x1="25" y1="7" x2="28" y2="11" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
+  <line x1="51" y1="7" x2="48" y2="11" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
+  <line x1="18" y1="18" x2="23" y2="19" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
+  <line x1="58" y1="18" x2="53" y2="19" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
+
+  <!-- Lightbulb body -->
+  <path d="M 27 25 C 27 18.5, 32 13.5, 38 13.5 C 44 13.5, 49 18.5, 49 25 C 49 29, 46 32, 45 36 L 31 36 C 30 32, 27 29, 27 25 Z" fill="#ffffff" />
+  <!-- Bulb screw threads -->
+  <rect x="32" y="37" width="12" height="2.5" rx="1" fill="#ffffff" />
+  <rect x="33" y="40.5" width="10" height="2.5" rx="1" fill="#ffffff" />
+  <rect x="34.5" y="44" width="7" height="2.5" rx="1" fill="#ffffff" />
+  <circle cx="38" cy="47" r="1.8" fill="#ffffff" />
+
+  <!-- Growth Arrow inside bulb -->
+  <path d="M 30 30 L 34.5 24 L 38 27.5 L 44 20" stroke="#00a64c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M 40.5 19.5 L 45.5 19.5 L 44.5 24.5" stroke="#00a64c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Open Book -->
+  <!-- Left Page Outline & Curves -->
+  <path d="M 37 57 C 27 56, 17 50, 13 46 L 19 39 C 23 43, 30 47, 37 49 Z" fill="#ffffff" />
+  <path d="M 37 60 C 27 59, 16 53, 11 47 L 13 45 C 17 50, 27 56, 37 57 Z" fill="#ffffff" />
+  <!-- Right Page Outline & Curves -->
+  <path d="M 39 57 C 49 56, 59 50, 63 46 L 57 39 C 53 43, 46 47, 39 49 Z" fill="#ffffff" />
+  <path d="M 39 60 C 49 59, 60 53, 65 47 L 63 45 C 59 50, 49 56, 39 57 Z" fill="#ffffff" />
+
+  <!-- Book spine line to bulb base -->
+  <line x1="38" y1="47" x2="38" y2="58" stroke="#ffffff" stroke-width="2.5" />
+</svg>

@@ -1,0 +1,378 @@
+/* ================================================================
+   FILE: navbar.css
+   ────────────────────────────────────────────────────────────────
+   แก้ไข / ปรับปรุงจาก version เดิม:
+   ✏️  เพิ่ม .right-group (cart icon + user icon + ปุ่มติดต่อเรา)
+   ✏️  เพิ่ม position: sticky ให้ navbar ติดด้านบนเมื่อ scroll
+   ✏️  เพิ่ม z-index: 1000 ให้ navbar อยู่บนสุด
+   ✏️  เพิ่ม dropdown box-shadow + border-radius
+   ✏️  เพิ่ม dropdown transition animation
+   ✏️  ปรับ navbar padding ให้กระชับขึ้น (30px → 14px)
+   ✏️  เพิ่ม nav bottom shadow
+   ================================================================ */
+
+/* ── ฟอนต์ Kanit ──────────────────────────────────────────── */
+@font-face {
+  font-family: "Kanit";
+  src: url("../fonts/KANIT-REGULAR.TTF") format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Kanit";
+  src: url("../fonts/KANIT-MEDIUM.TTF") format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Kanit";
+  src: url("../fonts/KANIT-SEMIBOLD.TTF") format("truetype");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Kanit";
+  src: url("../fonts/KANIT-BOLD.TTF") format("truetype");
+  font-weight: 700;
+}
+
+/* ── Navbar wrapper ───────────────────────────────────────── */
+/* ✏️ เพิ่ม: sticky + z-index + box-shadow */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 14px 40px;                /* ลดจาก 30px → 14px */
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* ✏️ ใหม่ */
+  position: sticky;                   /* ✏️ ใหม่: sticky nav */
+  top: 0;                             /* ✏️ ใหม่ */
+  z-index: 1000;                      /* ✏️ ใหม่ */
+  font-family: "Kanit", sans-serif;
+}
+
+/* ── กลุ่มซ้าย: โลโก้ + เมนู ───────────────────────────── */
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.logo {
+  margin-left: 0;
+}
+
+.logo img {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── เมนูหลัก ─────────────────────────────────────────────── */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 8px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+
+.menu li a:hover {
+  color: #006837;
+  font-weight: 600;
+}
+
+/* ── Dropdown ─────────────────────────────────────────────── */
+.dropdown {
+  position: relative;
+}
+
+/* กล่องเมนูย่อย Dropdown */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;                          /* แนบติดขอบล่างเมนูหลัก ไม่มีช่องว่างให้เมาส์หลุด */
+  left: 0;
+  background-color: #ffffff;
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  min-width: 210px;
+  border: 1px solid #e2e8e3;
+  z-index: 1200;                       /* อยู่เหนือทุกเลเยอร์ */
+  animation: fadeDown 0.2s ease;
+}
+
+/* 🌉 Invisible Bridge: แผ่นเชื่อมต่อโปร่งใส ป้องกันเมาส์หลุดขณะเลื่อนลง */
+.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: transparent;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-menu li {
+  margin: 0;
+  width: 100%;
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #edf7ef;
+  color: #006837;
+  font-weight: 600;
+  padding-left: 24px;
+}
+
+/* แสดง Dropdown เมื่อ Hover, Focus หรือมี class open */
+.dropdown:hover .dropdown-menu,
+.dropdown.open .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+/* ── กลุ่มขวา: icons + ปุ่มติดต่อเรา ✏️ ใหม่ทั้งหมด ─── */
+.right-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── ไอคอน (cart / user) ✏️ ปรับปรุงลูกเล่นเรืองแสงและเด้งลอย ─ */
+.icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #006837;
+  background-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #006837;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon:hover {
+  background: linear-gradient(135deg, #008f4c, #006837);
+  color: #ffffff;
+  border-color: #008f4c;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 104, 55, 0.28);
+}
+
+.icon:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* ── Badge จำนวนสินค้าในตะกร้า ───────────────────────────── */
+#cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e53935;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.4);
+  animation: pulseBadge 2s infinite ease-in-out;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+/* ── ปุ่มติดต่อเรา ✏️ ปรับปรุงเป็น Gradient Glow พร้อม Shine Animation ─ */
+.btn-contact {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #00884c 0%, #006837 100%);
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 14px rgba(0, 104, 55, 0.28);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.btn-contact i {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.btn-contact:hover {
+  background: linear-gradient(135deg, #009d57 0%, #007a3f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 104, 55, 0.38);
+  color: #ffffff;
+}
+
+.btn-contact:hover i {
+  transform: translateY(-2px) rotate(10deg);
+}
+
+.btn-contact:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* แสงวิ่งพาดผ่านปุ่มติดต่อเรา */
+.btn-contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
+}
+
+.btn-contact:hover::before {
+  left: 130%;
+}
+
+/* ── Hamburger (mobile) ✏️ ใหม่ ──────────────────────────── */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #006837;
+  cursor: pointer;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .menu { gap: 12px; }
+  .left-group { gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.14);
+    padding: 20px;
+    gap: 12px;
+    z-index: 999;
+  }
+  .menu.open { display: flex; }
+
+  .menu li {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .menu li a {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #f0f4f1;
+  }
+
+  /* Dropdown เมนูบนมือถือ */
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 6px 0 6px 14px;
+    background-color: #f7faf8;
+    border: none;
+    border-left: 3px solid #006837;
+    margin: 6px 0 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: none;
+    animation: none;
+  }
+
+  .dropdown.open .dropdown-menu {
+    display: block !important;
+  }
+
+  .dropdown-menu li a {
+    border-bottom: none;
+    padding: 8px 12px;
+    font-size: 14.5px;
+    color: #444;
+  }
+
+  .right-group { gap: 10px; }
+  .btn-contact { padding: 8px 16px; font-size: 13px; }
+}

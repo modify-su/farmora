@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 68" fill="#ffffff">
+  <!-- Ground soil & sprout in center -->
+  <path d="M 6 60 Q 42 56 78 60 L 78 63 Q 42 59 6 63 Z" fill="#ffffff" />
+  <!-- Small sprout in middle -->
+  <path d="M 41 57 C 41 52 36 49 34 49 C 34 52 38 56 41 57 Z" fill="#ffffff" />
+  <path d="M 43 57 C 43 52 48 49 50 49 C 50 52 46 56 43 57 Z" fill="#ffffff" />
+  <circle cx="42" cy="57" r="1.2" fill="#ffffff" />
+
+  <!-- Left Figure: Farmer with hat & spade -->
+  <!-- Hat -->
+  <ellipse cx="25" cy="18" rx="10" ry="3" fill="#ffffff" />
+  <path d="M 20 17 C 20 12 30 12 30 17 Z" fill="#ffffff" />
+  <!-- Farmer Head -->
+  <circle cx="25" cy="21" r="4.5" fill="#ffffff" />
+  <!-- Farmer Body & Legs -->
+  <path d="M 18 27 C 18 25 32 25 32 27 L 32 52 L 28 52 L 27 40 L 23 40 L 22 52 L 18 52 Z" fill="#ffffff" />
+  <!-- Spade / Shovel in right hand -->
+  <line x1="12" y1="30" x2="12" y2="58" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Shovel Handle D-grip -->
+  <path d="M 10 30 L 14 30 M 12 27 L 12 30" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  <!-- Shovel Blade -->
+  <path d="M 8 50 L 16 50 L 16 55 C 16 58 8 58 8 55 Z" fill="#ffffff" />
+
+  <!-- Right Figure: Agronomist with clipboard -->
+  <!-- Head -->
+  <circle cx="61" cy="16" r="5.5" fill="#ffffff" />
+  <!-- Body with tie -->
+  <path d="M 53 25 C 54 23 68 23 69 25 L 70 52 L 66 52 L 65 40 L 61 40 L 60 52 L 56 52 Z" fill="#ffffff" />
+  <!-- Tie -->
+  <path d="M 60 25 L 62 25 L 61.5 33 L 61 34 L 60.5 33 Z" fill="#00a64c" />
+  <!-- Clipboard in hand -->
+  <g transform="translate(54, 27) rotate(-10)">
+    <rect x="0" y="0" width="11" height="17" rx="2" fill="#ffffff" />
+    <rect x="1.5" y="2.5" width="8" height="12" fill="#00a64c" />
+    <rect x="3.5" y="-1.2" width="4" height="2.5" rx="0.8" fill="#ffffff" />
+  </g>
+  <!-- Arm with pen writing -->
+  <path d="M 51 29 L 45 35 L 47 37 L 53 31 Z" fill="#ffffff" />
+</svg>

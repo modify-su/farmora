@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบหลังบ้าน Farmora Official | จัดการสไลด์ ข่าวสาร บทความ สินค้า และเมนู</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts: Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6.5.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Admin CSS -->
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       ADMIN AUTH OVERLAY (เข้าสู่ระบบหลังบ้าน)
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="../frontend/images/logo fmr.png" alt="Farmora">
+      </div>
+      <h2 class="auth-title">เข้าสู่ระบบหลังบ้าน Farmora</h2>
+      <p class="auth-subtitle">ระบบจัดการสไลด์ ข่าวสาร บทความ สินค้า และเมนูเว็บไซต์</p>
+
+      <form onsubmit="AdminApp.handleLogin(event)">
+        <div class="form-group" style="text-align: left; margin-bottom: 14px;">
+          <label class="form-label">ชื่อผู้ดูแลระบบ (Username)</label>
+          <input type="text" class="form-control" value="admin" required>
+        </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 24px;">
+          <label class="form-label">รหัสผ่าน (Password)</label>
+          <input type="password" class="form-control" value="farmora2026" required>
+        </div>
+        <button type="submit" class="btn btn-primary auth-quick-btn">
+          <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบจัดการหลังบ้าน
+        </button>
+      </form>
+
+      <div>
+        <a href="../frontend/html/index.html" class="auth-back-link">
+          <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าเว็บไซต์หลัก
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SIDEBAR NAVIGATION (เมนูด้านซ้าย)
+       ══════════════════════════════════════════════════════════════════ -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <img src="../frontend/images/logo fmr.png" alt="Farmora" class="sidebar-logo-img">
+      <span class="sidebar-brand-name">FARMORA</span>
+      <span class="sidebar-brand-badge">ADMIN</span>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-heading">แดชบอร์ด</li>
+      <li>
+        <a class="sidebar-link active" data-tab="overview">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>ภาพรวมระบบ</span>
+        </a>
+      </li>
+
+      <li class="sidebar-heading">จัดการเนื้อหาเว็บไซต์</li>
+      <li>
+        <a class="sidebar-link" data-tab="slides">
+          <i class="fa-solid fa-images"></i>
+          <span>สไลด์หน้าแรก</span>
+          <span class="sidebar-badge" id="badgeSlidesCount">0</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link" data-tab="news">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>ข่าวสารและกิจกรรม</span>
+          <span class="sidebar-badge" id="badgeNewsCount">0</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link" data-tab="articles">
+          <i class="fa-solid fa-book-open"></i>
+          <span>บทความเกษตร</span>
+          <span class="sidebar-badge" id="badgeArticlesCount">0</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link" data-tab="products">
+          <i class="fa-solid fa-wheat-awn"></i>
+          <span>จัดการสินค้า</span>
+          <span class="sidebar-badge" id="badgeProductsCount">0</span>
+        </a>
+      </li>
+
+      <li class="sidebar-heading">ระบบและโครงสร้าง</li>
+      <li>
+        <a class="sidebar-link" data-tab="menus">
+          <i class="fa-solid fa-bars-staggered"></i>
+          <span>เมนูเว็บไซต์</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link" data-tab="media">
+          <i class="fa-solid fa-photo-film"></i>
+          <span>คลังรูปภาพ</span>
+          <span class="sidebar-badge" id="badgeMediaCount">0</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link" data-tab="backup">
+          <i class="fa-solid fa-database"></i>
+          <span>สำรองและกู้คืน</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">FM</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">ผู้ดูแลระบบ Farmora</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+      <a href="../frontend/html/index.html" class="btn-view-site" target="_blank">
+        <i class="fa-solid fa-globe"></i> ดูเว็บไซต์จริง
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       MAIN CONTENT (พื้นที่แสดงเนื้อหาหลัก)
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="admin-main">
+
+    <!-- Top Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="btn-mobile-sidebar" id="btnToggleSidebar" aria-label="เมนู">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 class="header-title" id="pageHeaderTitle">ภาพรวมระบบ (Overview)</h1>
+      </div>
+      <div class="header-right">
+        <a href="../frontend/html/index.html" target="_blank" class="btn btn-outline btn-sm">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> ไปที่หน้าเว็บ
+        </a>
+        <button type="button" class="btn btn-danger btn-sm" onclick="AdminApp.handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="admin-body">
+
+      <!-- ──────────────────────────────────────────
+           TAB 1: ภาพรวมระบบ (OVERVIEW)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane active" id="pane-overview">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrap lime"><i class="fa-solid fa-images"></i></div>
+            <div class="stat-info">
+              <span class="label">สไลด์หน้าแรก</span>
+              <span class="value" id="statSlides">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap blue"><i class="fa-solid fa-newspaper"></i></div>
+            <div class="stat-info">
+              <span class="label">ข่าวสารและกิจกรรม</span>
+              <span class="value" id="statNews">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap purple"><i class="fa-solid fa-book-open"></i></div>
+            <div class="stat-info">
+              <span class="label">บทความเกษตร</span>
+              <span class="value" id="statArticles">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap green"><i class="fa-solid fa-wheat-awn"></i></div>
+            <div class="stat-info">
+              <span class="label">สินค้าในระบบ</span>
+              <span class="value" id="statProducts">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap orange"><i class="fa-solid fa-photo-film"></i></div>
+            <div class="stat-info">
+              <span class="label">รูปภาพในคลัง</span>
+              <span class="value" id="statMedia">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-bolt"></i> ทางลัดด่วน (Quick Actions)</h2>
+          </div>
+          <div class="card-body" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="AdminApp.openSlideModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มสไลด์ใหม่
+            </button>
+            <button class="btn btn-primary" onclick="AdminApp.openNewsModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มข่าวสารใหม่
+            </button>
+            <button class="btn btn-primary" onclick="AdminApp.openArticleModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มบทความใหม่
+            </button>
+            <button class="btn btn-primary" onclick="AdminApp.openProductModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มสินค้าใหม่
+            </button>
+            <button class="btn btn-outline" onclick="AdminApp.switchTab('media')">
+              <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดรูปภาพ
+            </button>
+            <button class="btn btn-outline" onclick="AdminApp.switchTab('backup')">
+              <i class="fa-solid fa-file-export"></i> ส่งออกข้อมูล JSON
+            </button>
+          </div>
+        </div>
+
+        <!-- Welcome Banner -->
+        <div class="card" style="background: linear-gradient(135deg, #e8f5e9, #f1f8e9); border-color: #c8e6c9;">
+          <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <h3 style="color: var(--primary-green); margin-bottom: 6px; font-size: 20px;">
+                👋 ยินดีต้อนรับสู่ระบบจัดการเว็บไซต์ Farmora Official
+              </h3>
+              <p style="color: #2e5a36; font-size: 14.5px; margin: 0;">
+                คุณสามารถเลือกเมนูด้านซ้ายเพื่อเพิ่มภาพและแก้ไขสไลด์, ข่าวสาร, บทความ, สินค้า หรือจัดการลำดับเมนูเว็บไซต์ได้ทันที ข้อมูลจะถูกจัดเก็บและซิงค์แบบเรียลไทม์
+              </p>
+            </div>
+            <button class="btn btn-primary" onclick="AdminApp.switchTab('slides')">
+              <i class="fa-solid fa-sliders"></i> จัดการสไลด์หน้าแรกทันที
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 2: จัดการสไลด์หน้าแรก (HERO SLIDES)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-slides">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title"><i class="fa-solid fa-images"></i> รายการสไลด์หน้าแรก (Hero Slides)</h2>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                จัดการภาพคมชัดด้านหน้า (Foreground) และภาพเบลอด้านหลัง (Backdrop Blur), แคปซูลแท็ก, หัวข้อ และปุ่มอ่านต่อ
+              </p>
+            </div>
+            <button class="btn btn-primary" onclick="AdminApp.openSlideModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มสไลด์ใหม่
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="slides-card-list" id="slidesList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 3: ข่าวสารและกิจกรรม (NEWS & EVENTS)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-news">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-newspaper"></i> จัดการข่าวสารและกิจกรรม</h2>
+            <button class="btn btn-primary" onclick="AdminApp.openNewsModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มข่าวสารใหม่
+            </button>
+          </div>
+          <div class="card-body">
+            <!-- Toolbar -->
+            <div class="toolbar-wrap">
+              <div class="toolbar-filters">
+                <div class="search-input-wrap">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="searchNews" class="search-input" placeholder="ค้นหาข่าวสาร...">
+                </div>
+                <select id="filterNewsCat" class="filter-select">
+                  <option value="all">ทุกหมวดหมู่ข่าว</option>
+                  <option value="news">ข่าวล่าสุด</option>
+                  <option value="activity">กิจกรรมที่ผ่านมา</option>
+                  <option value="announcement">ข่าวประชาสัมพันธ์</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">รูปภาพ</th>
+                    <th>หัวข้อข่าวสาร</th>
+                    <th style="width: 130px;">หมวดหมู่</th>
+                    <th style="width: 140px;">วันที่ลงข่าว</th>
+                    <th style="width: 90px;">ยอดชม</th>
+                    <th style="width: 100px;">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="newsTableBody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 4: บทความเกษตร (ARTICLES)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-articles">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-book-open"></i> จัดการบทความเกษตร</h2>
+            <button class="btn btn-primary" onclick="AdminApp.openArticleModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มบทความใหม่
+            </button>
+          </div>
+          <div class="card-body">
+            <!-- Toolbar -->
+            <div class="toolbar-wrap">
+              <div class="toolbar-filters">
+                <div class="search-input-wrap">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="searchArticles" class="search-input" placeholder="ค้นหาบทความ...">
+                </div>
+                <select id="filterArticleCat" class="filter-select">
+                  <option value="all">ทุกหมวดหมู่บทความ</option>
+                  <option value="ความรู้เรื่องปุ๋ย">ความรู้เรื่องปุ๋ย</option>
+                  <option value="อารักขาพืช">อารักขาพืช</option>
+                  <option value="การจัดการดิน">การจัดการดิน</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">รูปภาพ</th>
+                    <th>ชื่อบทความ</th>
+                    <th style="width: 140px;">หมวดหมู่</th>
+                    <th style="width: 140px;">วันที่</th>
+                    <th style="width: 110px;">เวลาที่ใช้อ่าน</th>
+                    <th style="width: 100px;">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="articlesTableBody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 5: จัดการสินค้า (PRODUCTS)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-products">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-wheat-awn"></i> จัดการสินค้าการเกษตร (8 หมวดหมู่)</h2>
+            <button class="btn btn-primary" onclick="AdminApp.openProductModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มสินค้าใหม่
+            </button>
+          </div>
+          <div class="card-body">
+            <!-- Toolbar -->
+            <div class="toolbar-wrap">
+              <div class="toolbar-filters">
+                <div class="search-input-wrap">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="searchProducts" class="search-input" placeholder="ค้นหาชื่อสินค้า สูตร หรือพืช...">
+                </div>
+                <select id="filterProductCat" class="filter-select">
+                  <option value="all">ทุกหมวดหมู่สินค้า (8 หมวด)</option>
+                  <option value="fertilizer">ปุ๋ยเคมี</option>
+                  <option value="organic">ปุ๋ยอินทรีย์</option>
+                  <option value="pesticide">สารกำจัดศัตรูพืช</option>
+                  <option value="herbicide">สารกำจัดวัชพืช</option>
+                  <option value="hormone">ฮอร์โมนพืช</option>
+                  <option value="soil">สารปรับปรุงดิน</option>
+                  <option value="seeds">เมล็ดพันธุ์ผักและข้าว</option>
+                  <option value="feed">อาหารสัตว์</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">รูปสินค้า</th>
+                    <th>ชื่อสินค้า / สูตร</th>
+                    <th style="width: 150px;">หมวดหมู่</th>
+                    <th style="width: 120px;">ราคา</th>
+                    <th style="width: 140px;">พืชที่เหมาะสม</th>
+                    <th style="width: 100px;">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 6: เมนูเว็บไซต์ (NAVIGATION MENUS)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-menus">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title"><i class="fa-solid fa-bars-staggered"></i> จัดการเมนูเว็บไซต์ (Navigation Menus)</h2>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                กำหนดหัวข้อเมนูบน Navbar ลิงก์ปลายทาง และลำดับการแสดงผล
+              </p>
+            </div>
+            <button class="btn btn-primary" onclick="AdminApp.openMenuModal()">
+              <i class="fa-solid fa-plus"></i> เพิ่มเมนูใหม่
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ลำดับ</th>
+                    <th>ชื่อเมนู</th>
+                    <th>URL ลิงก์ปลายทาง</th>
+                    <th>สถานะ</th>
+                    <th>จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="menusTableBody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 7: คลังรูปภาพ (MEDIA LIBRARY)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-media">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title"><i class="fa-solid fa-photo-film"></i> คลังรูปภาพระบบ (Media Library)</h2>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                อัปโหลดรูปภาพใหม่ หรือกดปุ่ม "คัดลอก Path" เพื่อนำไปวางในช่องรูปสไลด์ ข่าวสาร หรือสินค้า
+              </p>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Upload Dropzone -->
+            <div class="dropzone" id="mediaDropzone">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <h3 style="font-size: 16px; color: var(--dark-green); margin-bottom: 4px;">คลิกที่นี่ หรือ ลากไฟล์รูปภาพมาวาง</h3>
+              <p style="font-size: 13px; color: var(--text-muted);">รองรับไฟล์ JPG, PNG, WebP (จะถูกจัดเก็บลงระบบอัตโนมัติ)</p>
+              <input type="file" id="mediaFileInput" accept="image/*" multiple style="display: none;">
+            </div>
+
+            <!-- Media Grid -->
+            <div class="media-grid" id="mediaGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB 8: สำรองและกู้คืน (BACKUP & RESTORE)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-backup">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-database"></i> สำรองและกู้คืนข้อมูล (Backup & Restore)</h2>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+
+              <!-- Export Box -->
+              <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; background: #fafdfa;">
+                <i class="fa-solid fa-file-export" style="font-size: 2.2rem; color: var(--primary-green); margin-bottom: 12px;"></i>
+                <h3 style="font-size: 17px; margin-bottom: 6px;">ส่งออกข้อมูล (Export JSON)</h3>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
+                  ดาวน์โหลดข้อมูล สไลด์, ข่าวสาร, บทความ, สินค้า, เมนู และมีเดีย ทั้งหมดเป็นไฟล์ JSON เพื่อสำรองเก็บไว้
+                </p>
+                <button class="btn btn-primary" onclick="AdminApp.exportBackup()">
+                  <i class="fa-solid fa-download"></i> ดาวน์โหลด Backup JSON
+                </button>
+              </div>
+
+              <!-- Import Box -->
+              <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; background: #fafdfa;">
+                <i class="fa-solid fa-file-import" style="font-size: 2.2rem; color: var(--info); margin-bottom: 12px;"></i>
+                <h3 style="font-size: 17px; margin-bottom: 6px;">นำเข้าข้อมูล (Import JSON)</h3>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
+                  กู้คืนข้อมูลเดิมจากไฟล์ JSON สำรองที่เคยดาวน์โหลดไว้กลับเข้าสู่ระบบ
+                </p>
+                <label class="btn btn-outline" style="cursor: pointer;">
+                  <i class="fa-solid fa-upload"></i> เลือกไฟล์ JSON เพื่อกู้คืน
+                  <input type="file" accept=".json" onchange="AdminApp.importBackup(event)" style="display: none;">
+                </label>
+              </div>
+
+              <!-- Reset Box -->
+              <div style="border: 1px solid #ffcdd2; border-radius: var(--radius-md); padding: 24px; background: #fffbfa;">
+                <i class="fa-solid fa-rotate-left" style="font-size: 2.2rem; color: var(--danger); margin-bottom: 12px;"></i>
+                <h3 style="font-size: 17px; margin-bottom: 6px; color: var(--danger);">รีเซ็ตข้อมูลเริ่มต้น (Reset Defaults)</h3>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
+                  คืนค่าข้อมูลสไลด์, ข่าวสาร และสินค้า 28 รายการ กลับเป็นชุดข้อมูลมาตรฐานของ Farmora
+                </p>
+                <button class="btn btn-danger" onclick="AdminApp.resetToDefaults()">
+                  <i class="fa-solid fa-triangle-exclamation"></i> รีเซ็ตกลับค่าเริ่มต้น
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       MODALS (หน้าต่างป๊อปอัปสำหรับเพิ่ม/แก้ไขข้อมูล)
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- 1. SLIDE MODAL -->
+  <div class="modal-backdrop" id="slideModal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="slideModalTitle">✏️ แก้ไขสไลด์</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="slideForm" onsubmit="AdminApp.saveSlide(event)">
+        <div class="modal-body">
+          <input type="hidden" id="slideId">
+
+          <!-- Live Preview -->
+          <div class="form-group">
+            <label class="form-label">ตัวอย่างพรีวิวสไลด์ (Live Preview)</label>
+            <div class="slide-dual-preview" style="width: 100%; height: 160px; margin-top: 4px;">
+              <img id="previewSlideBg" src="../frontend/images/picture 1.jpg" alt="" class="slide-dual-bg">
+              <img id="previewSlideFg" src="../frontend/images/picture 1.jpg" alt="" class="slide-dual-fg" style="width: 170px; height: 120px;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">หัวข้อสไลด์ (Title) *</label>
+            <input type="text" id="slideTitle" class="form-control" required placeholder="เช่น เข้าร่วมการงานจัดแสดงพันธุ์ข้าว 2025">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">แท็กที่ 1 (Tag 1)</label>
+              <input type="text" id="slideTag1" class="form-control" placeholder="เช่น ข่าวสาร, กิจกรรม">
+            </div>
+            <div class="form-group">
+              <label class="form-label">แท็กที่ 2 (Tag 2 - ถ้ามี)</label>
+              <input type="text" id="slideTag2" class="form-control" placeholder="เช่น บทความ, ความรู้">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">รายละเอียดคำบรรยาย (Description)</label>
+            <textarea id="slideDesc" class="form-control" rows="3" placeholder="ระบุเนื้อหาย่อสไลด์..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ภาพคมชัดด้านหน้า (Foreground Image Path) *</label>
+              <input type="text" id="slideFgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="../frontend/images/picture 1.jpg">
+              <span class="form-hint">สามารถคัดลอกจากแท็บ "คลังรูปภาพ" มาวางได้</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ภาพเบลอด้านหลัง (Backdrop Blur Image Path) *</label>
+              <input type="text" id="slideBgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="../frontend/images/picture 1.jpg">
+              <span class="form-hint">มักใช้ภาพเดียวกับด้านหน้าเพื่อให้กลมกลืน</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ข้อความบนปุ่ม (Button Text)</label>
+              <input type="text" id="slideBtnText" class="form-control" value="อ่านต่อ">
+            </div>
+            <div class="form-group">
+              <label class="form-label">URL ลิงก์ปลายทาง (Button Link)</label>
+              <input type="text" id="slideBtnLink" class="form-control" placeholder="news.html?cat=news">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ลำดับการแสดงผล (Order)</label>
+              <input type="number" id="slideOrder" class="form-control" value="1" min="1">
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; margin-top: 24px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="slideIsActive" checked style="width: 18px; height: 18px;">
+                <span style="font-weight: 600; font-size: 14px;">เปิดการแสดงผลสไลด์นี้</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกสไลด์</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 2. NEWS MODAL -->
+  <div class="modal-backdrop" id="newsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="newsModalTitle">✏️ แก้ไขข่าวสาร</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="newsForm" onsubmit="AdminApp.saveNews(event)">
+        <div class="modal-body">
+          <input type="hidden" id="newsId">
+
+          <div class="form-group">
+            <label class="form-label">หัวข้อข่าวสาร (Title) *</label>
+            <input type="text" id="newsTitle" class="form-control" required placeholder="ระบุหัวข้อข่าว...">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">หมวดหมู่ข่าว *</label>
+              <select id="newsCat" class="form-control">
+                <option value="news">ข่าวล่าสุด</option>
+                <option value="activity">กิจกรรมที่ผ่านมา</option>
+                <option value="announcement">ข่าวประชาสัมพันธ์</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">วันที่ลงข่าว *</label>
+              <input type="text" id="newsDate" class="form-control" required placeholder="เช่น 10 สิงหาคม 2568">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Path รูปภาพหน้าปกข่าว *</label>
+            <input type="text" id="newsImage" class="form-control" required oninput="document.getElementById('previewNewsImg').src = this.value">
+            <div class="img-preview-box">
+              <img id="previewNewsImg" src="../frontend/images/news-hero.jpg" alt="">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">เนื้อหาย่อ (Excerpt)</label>
+            <textarea id="newsExcerpt" class="form-control" rows="2" placeholder="สรุปสั้นๆ สำหรับแสดงในการ์ด..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">เนื้อหาข่าวแบบเต็ม (Content)</label>
+            <textarea id="newsContent" class="form-control" rows="5" placeholder="ระบุเนื้อหาข่าวทั้งหมด..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกข่าวสาร</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 3. ARTICLE MODAL -->
+  <div class="modal-backdrop" id="articleModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="articleModalTitle">✏️ แก้ไขบทความ</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="articleForm" onsubmit="AdminApp.saveArticle(event)">
+        <div class="modal-body">
+          <input type="hidden" id="articleId">
+
+          <div class="form-group">
+            <label class="form-label">ชื่อบทความ (Title) *</label>
+            <input type="text" id="articleTitle" class="form-control" required placeholder="ระบุชื่อบทความ...">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">หมวดหมู่บทความ *</label>
+              <select id="articleCat" class="form-control">
+                <option value="ความรู้เรื่องปุ๋ย">ความรู้เรื่องปุ๋ย</option>
+                <option value="อารักขาพืช">อารักขาพืช</option>
+                <option value="การจัดการดิน">การจัดการดิน</option>
+                <option value="นวัตกรรมเกษตร">นวัตกรรมเกษตร</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">เวลาที่ใช้อ่าน</label>
+              <input type="text" id="articleReadTime" class="form-control" value="5 นาที">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">วันที่เผยแพร่</label>
+            <input type="text" id="articleDate" class="form-control" placeholder="เช่น 25 สิงหาคม 2568">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Path รูปภาพบทความ *</label>
+            <input type="text" id="articleImage" class="form-control" required oninput="document.getElementById('previewArticleImg').src = this.value">
+            <div class="img-preview-box">
+              <img id="previewArticleImg" src="../frontend/images/hero2.jpg" alt="">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">สรุปเนื้อหาย่อ</label>
+            <textarea id="articleExcerpt" class="form-control" rows="2"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">เนื้อหาบทความแบบเต็ม</label>
+            <textarea id="articleContent" class="form-control" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกบทความ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 4. PRODUCT MODAL -->
+  <div class="modal-backdrop" id="productModal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="productModalTitle">✏️ แก้ไขสินค้า</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="productForm" onsubmit="AdminApp.saveProduct(event)">
+        <div class="modal-body">
+          <input type="hidden" id="productId">
+
+          <div class="form-group">
+            <label class="form-label">ชื่อสินค้า / สูตร (Name) *</label>
+            <input type="text" id="productName" class="form-control" required placeholder="เช่น FarmoGrow Plus 16-16-16">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">หมวดหมู่สินค้า (8 หมวด) *</label>
+              <select id="productCat" class="form-control" required>
+                <option value="fertilizer">ปุ๋ยเคมี</option>
+                <option value="organic">ปุ๋ยอินทรีย์</option>
+                <option value="pesticide">สารกำจัดศัตรูพืช</option>
+                <option value="herbicide">สารกำจัดวัชพืช</option>
+                <option value="hormone">ฮอร์โมนพืช</option>
+                <option value="soil">สารปรับปรุงดิน</option>
+                <option value="seeds">เมล็ดพันธุ์ผักและข้าว</option>
+                <option value="feed">อาหารสัตว์</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ป้ายสถานะ (Badge)</label>
+              <select id="productBadge" class="form-control">
+                <option value="">ไม่มีป้าย</option>
+                <option value="new">✨ ใหม่</option>
+                <option value="hot">🔥 ขายดี</option>
+                <option value="eco">🌿 Organic</option>
+                <option value="star">⭐ แนะนำ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ราคา (บาท) *</label>
+              <input type="number" id="productPrice" class="form-control" required value="500" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">หน่วยบรรจุ *</label>
+              <input type="text" id="productUnit" class="form-control" required value="/ถุง 25 กก.">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Path รูปภาพสินค้า *</label>
+            <input type="text" id="productImage" class="form-control" required oninput="document.getElementById('previewProductImg').src = this.value">
+            <div class="img-preview-box">
+              <img id="previewProductImg" src="../frontend/images/product-fertilizer.jpg" alt="">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">พืชที่เหมาะสม</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 4px;">
+              <label><input type="checkbox" class="crop-chk" value="rice" data-name="ข้าว"> ข้าว</label>
+              <label><input type="checkbox" class="crop-chk" value="cassava" data-name="มันสำปะหลัง"> มันสำปะหลัง</label>
+              <label><input type="checkbox" class="crop-chk" value="sugarcane" data-name="อ้อย"> อ้อย</label>
+              <label><input type="checkbox" class="crop-chk" value="corn" data-name="ข้าวโพด"> ข้าวโพด</label>
+              <label><input type="checkbox" class="crop-chk" value="fruit" data-name="ไม้ผล"> ไม้ผล</label>
+              <label><input type="checkbox" class="crop-chk" value="vegetable" data-name="ผักทั่วไป"> ผักทั่วไป</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">คำอธิบายสรรพคุณสินค้า</label>
+            <textarea id="productDesc" class="form-control" rows="3" placeholder="ระบุคุณสมบัติ จุดเด่น..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกสินค้า</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 5. MENU MODAL -->
+  <div class="modal-backdrop" id="menuModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="menuModalTitle">✏️ แก้ไขเมนู</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <form id="menuForm" onsubmit="AdminApp.saveMenu(event)">
+        <div class="modal-body">
+          <input type="hidden" id="menuId">
+
+          <div class="form-group">
+            <label class="form-label">ชื่อเมนู (Menu Label) *</label>
+            <input type="text" id="menuName" class="form-control" required placeholder="เช่น หน้าแรก, เกี่ยวกับเรา">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">URL ลิงก์ปลายทาง (Target URL) *</label>
+            <input type="text" id="menuUrl" class="form-control" required placeholder="เช่น ../frontend/html/index.html">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ลำดับการแสดงผล (Order)</label>
+              <input type="number" id="menuOrder" class="form-control" value="1" min="1">
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; margin-top: 24px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="menuIsActive" checked style="width: 18px; height: 18px;">
+                <span style="font-weight: 600; font-size: 14px;">เปิดใช้งานเมนูนี้</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกเมนู</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/data-store.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

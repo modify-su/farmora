@@ -1,0 +1,136 @@
+/* ================================================================
+   FILE: features.css
+   ────────────────────────────────────────────────────────────────
+   ใหม่ทั้งหมด (สร้างขึ้นใหม่ ไม่มีใน version เดิม):
+   ✅  Section แถบสีเขียว 4 ไอคอน Feature
+       (ยกระดับผลผลิต / จัดส่งทั่วประเทศ / ลงพื้นที่จริง / ก้าวทันเทรนด์)
+   ✅  4 card รูปภาพเกษตร พร้อม hover lift effect
+   ================================================================ */
+
+/* ── Features Strip (สีเขียว) ────────────────────────────── */
+.features-section {
+  background: linear-gradient(135deg, #006837 0%, #00884c 100%);
+  padding: 48px 20px;
+}
+
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.3s, transform 0.25s;
+}
+
+.feature-item:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  width: 68px;
+  height: 68px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 1.8rem;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: background 0.3s;
+}
+
+.feature-item:hover .feature-icon {
+  background: rgba(255,255,255,0.28);
+}
+
+.feature-title {
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Photo Cards Section ──────────────────────────────────── */
+.photocards-section {
+  padding: 64px 20px;
+  background-color: #f0faf0;
+}
+
+.photocards-section .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.photocards-section .section-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+}
+
+.photocards-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.photo-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.photo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+.photo-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-card-body {
+  padding: 18px 18px 22px;
+}
+
+.photo-card-body p {
+  font-family: "Kanit", sans-serif;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .features-grid    { grid-template-columns: repeat(2, 1fr); }
+  .photocards-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 576px) {
+  .features-grid    { grid-template-columns: 1fr; }
+  .photocards-grid  { grid-template-columns: 1fr; }
+}

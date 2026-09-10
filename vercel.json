@@ -1,0 +1,21 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/frontend/html/index.html" },
+    { "source": "/about", "destination": "/frontend/html/about.html" },
+    { "source": "/news", "destination": "/frontend/html/news.html" },
+    { "source": "/products", "destination": "/frontend/html/products.html" },
+    { "source": "/backend", "destination": "/backend/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

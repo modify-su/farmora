@@ -1,0 +1,467 @@
+/* ==========================================================================
+   🌿 Farmora Official — Navslide CSS (สไลเดอร์ข่าวสารพร้อมภาพซ้อนเบลอ)
+   ==========================================================================
+   📋 สรุปการปรับแต่งในไฟล์นี้:
+   1. 🎯 [EDIT HERE] แผงตัวแปรด้านบนสุด สำหรับปรับ "ความกว้าง ซ้าย-ขวา บน-ล่าง" 
+   2. 🖼️ เอฟเฟกต์ภาพซ้อนเบลอ (Double Image / Blurred Backdrop) แสดงผล 100%
+   3. 🏷️ แท็กแคปซูล "ข่าวสาร / บทความ" สีเขียวสดใสทรงมนตรงตามแบบ
+   4. 🟢 ปุ่ม "อ่านต่อ" สีเขียวเข้มพร้อมลูกเล่นแสงวิ่งและลูกศร
+   5. 🎯 ปุ่มลูกศรเลื่อนซ้าย-ขวา ลอยอยู่บนภาพเบลอ ซ้ายสุด-ขวาสุด
+   6. 📱 Responsive รองรับทุกขนาดหน้าจอ
+   ========================================================================== */
+
+/* ==========================================================================
+   🎯 จุดปรับแต่งขนาดความกว้าง ซ้าย-ขวา บน-ล่าง (EDIT HERE / ปรับแต่งที่นี่)
+   ──────────────────────────────────────────────────────────────────────────
+   👉 คุณสามารถแก้ตัวเลขด้านล่างนี้เพื่อปรับขนาดและระยะห่างได้ตามใจชอบ:
+   ========================================================================== */
+:root {
+  /* ── 1. ความกว้างและระยะห่างรอบนอกสไลเดอร์ ── */
+  --slider-max-width: 100%;          /* ความกว้างสไลเดอร์: 100% = เต็มหน้าจอ (ตามภาพตัวอย่าง) หรือใส่ เช่น 1280px */
+  --slider-margin-top: 0px;          /* ระยะห่าง [ด้านบน] (0px = ชิดติด Navbar พอดี) */
+  --slider-margin-bottom: 0px;       /* ระยะห่าง [ด้านล่าง] (0px = ชิดติดแถบสีเขียวพอดี) */
+  --slider-border-radius: 0px;       /* ความโค้งมนกรอบนอก: 0px = ชิดเต็มจอ, 20px = ขอบมน */
+  --slider-min-height: 480px;        /* ความสูงขั้นต่ำของแถบสไลเดอร์ */
+
+  /* ── 2. ระยะห่างภายในสไลด์ (Padding บน-ล่าง ซ้าย-ขวา) ── */
+  --slide-padding-top: 55px;         /* ปรับระยะห่าง [บน] ภายในสไลด์ */
+  --slide-padding-bottom: 55px;      /* ปรับระยะห่าง [ล่าง] ภายในสไลด์ */
+  --slide-padding-left: 90px;        /* ปรับระยะห่าง [ซ้าย] (เว้นช่องให้ลูกศรซ้าย) */
+  --slide-padding-right: 90px;       /* ปรับระยะห่าง [ขวา] (เว้นช่องให้ลูกศรขวา) */
+  --slide-content-gap: 50px;         /* ระยะห่างระหว่าง "รูปด้านหน้า" กับ "ข้อความด้านขวา" */
+
+  /* ── 3. ขนาดของรูปภาพคมชัดด้านหน้า (Foreground Image) ── */
+  --fg-image-width: 440px;           /* ปรับ [ความกว้าง] ของรูปภาพด้านหน้า */
+  --fg-image-height: 350px;          /* ปรับ [ความสูง] ของรูปภาพด้านหน้า */
+  --fg-image-radius: 18px;           /* ปรับ [ความโค้งมน] ของขอบรูปภาพด้านหน้า */
+  --fg-image-shadow: 0 14px 35px rgba(0, 0, 0, 0.32); /* เงาของรูปภาพด้านหน้า */
+
+  /* ── 4. การปรับแต่งภาพซ้อนเบลอด้านหลัง (Backdrop Blur Effect) ── */
+  --bg-blur-amount: 18px;            /* ระดับความเบลอ (15px-22px กำลังสวย เห็นบรรยากาศภาพชัดเจน) */
+  --bg-blur-opacity: 0.72;           /* ความชัดของภาพเบลอ (0.72 = เห็นภาพคนและจอข้างหลังชัดเจนตามแบบ) */
+  --bg-blur-scale: 1.15;             /* สเกลขยายภาพเบลอ (ขยายเพื่อลบขอบขาว) */
+  --bg-overlay-color: rgba(255, 255, 255, 0.28); /* แผ่นกรองแสงสีขาวโปร่งแสง (ไม่หนาเกินไป เพื่อให้ภาพเบลอเด่นชัด) */
+
+  /* ── 5. ตำแหน่งและขนาดของปุ่มลูกศร ซ้าย-ขวา ── */
+  --arrow-distance-side: 32px;       /* ระยะห่างของลูกศร จากขอบจอ ซ้าย-ขวา */
+  --arrow-size: 46px;                /* ขนาดปุ่มลูกศร */
+}
+
+/* ── Body Base ─────────────────────────────────────────────── */
+body {
+  font-family: "Kanit", sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   📦 SECTION: Slider Container (กรอบนอกของสไลเดอร์)
+   ========================================================================== */
+.news-slider {
+  position: relative;
+  width: 100%;
+  max-width: var(--slider-max-width);
+  margin-top: var(--slider-margin-top);
+  margin-bottom: var(--slider-margin-bottom);
+  margin-left: auto;
+  margin-right: auto;
+  min-height: var(--slider-min-height);
+  overflow: hidden;
+  border-radius: var(--slider-border-radius);
+  background-color: #eef2ee;
+}
+
+/* ── Slides Wrapper ───────────────────────────────────────── */
+.slides {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   🖼️ SECTION: Slide Item & ภาพซ้อนเบลอ (Double Image / Blurred Backdrop)
+   ========================================================================== */
+.slide {
+  position: relative;
+  min-width: 100%;
+  min-height: var(--slider-min-height);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  /* ✏️ จุดปรับแต่ง: ระยะขอบ บน-ล่าง ซ้าย-ขวา ภายในสไลด์ */
+  padding-top: var(--slide-padding-top);
+  padding-bottom: var(--slide-padding-bottom);
+  padding-left: var(--slide-padding-left);
+  padding-right: var(--slide-padding-right);
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+/* สไลด์ที่กำลังแสดง */
+.slide.active {
+  display: flex;
+  animation: slideFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── 1. เลเยอร์ภาพพื้นหลังเบลอฟุ้งด้านหลัง (Blurred Backdrop Layer) ── */
+.slide-backdrop {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  width: calc(100% + 60px);
+  height: calc(100% + 60px);
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ภาพด้านหลังขยายใหญ่ + ใส่ฟิลเตอร์ Gaussian Blur */
+.slide-backdrop .backdrop-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(var(--bg-blur-amount));
+  -webkit-filter: blur(var(--bg-blur-amount));
+  transform: scale(var(--bg-blur-scale));
+  opacity: var(--bg-blur-opacity);
+  display: block;
+  transition: opacity 0.5s ease;
+}
+
+/* ── 2. แผ่นกรองแสงสีขาวโปร่งแสง (Overlay) ให้อ่านตัวหนังสือได้ชัดเจน ─ */
+.slide-backdrop .backdrop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-overlay-color);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── 3. กล่องเนื้อหาหลักด้านหน้า (ลอยอยู่เหนือภาพเบลอ) ───────── */
+.slide-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  /* ✏️ จุดปรับแต่ง: ระยะห่างระหว่างรูปกับข้อความ */
+  gap: var(--slide-content-gap);
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   📸 SECTION: รูปภาพคมชัดด้านหน้า (Foreground Image)
+   ========================================================================== */
+.slide-image {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--fg-image-radius);
+  box-shadow: var(--fg-image-shadow);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.slide-image:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+}
+
+.slide-image img {
+  /* ✏️ จุดปรับแต่ง: ความกว้างและความสูงรูปภาพด้านหน้า */
+  width: var(--fg-image-width);
+  height: var(--fg-image-height);
+  border-radius: var(--fg-image-radius);
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide:hover .slide-image img {
+  transform: scale(1.03);
+}
+
+/* ==========================================================================
+   📝 SECTION: กล่องข้อความและแท็กด้านขวา (Slide Content)
+   ========================================================================== */
+.slide-content {
+  flex: 1;
+  position: relative;
+  z-index: 4;
+}
+
+/* ── แท็กแคปซูล "ข่าวสาร / บทความ" สีเขียวสดใสทรงมนตรงตามภาพ ── */
+.tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  background-color: #7bc53b;        /* สีเขียวสดใสตามแบบ */
+  color: #12300b;                   /* ตัวหนังสือสีเข้มอ่านง่าย */
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 22px;
+  border-radius: 30px;              /* ทรงแคปซูลมน */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 8px rgba(123, 197, 59, 0.35);
+  transition: transform 0.25s ease, filter 0.25s ease;
+  cursor: default;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* ── หัวข้อข่าว (Title) ──────────────────────────────────── */
+.slide-content h2 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+  font-size: 29px;
+  margin: 0 0 16px 0;
+  color: #111111;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* ── ย่อหน้ารายละเอียด (Description) ─────────────────────── */
+.slide-content p {
+  font-family: "Kanit", sans-serif;
+  color: #333333;
+  line-height: 1.75;
+  margin-bottom: 26px;
+  font-size: 15.5px;
+  font-weight: 400;
+  max-width: 620px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+/* ==========================================================================
+   🟢 SECTION: ปุ่ม "อ่านต่อ" (Call To Action Button)
+   ========================================================================== */
+.btn-read {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00884c 0%, #006837 100%);
+  color: #ffffff;
+  padding: 12px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(0, 104, 55, 0.35);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-read i {
+  font-size: 13px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-read:hover {
+  background: linear-gradient(135deg, #009d57 0%, #007a3f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 104, 55, 0.45);
+  color: #ffffff;
+}
+
+.btn-read:hover i {
+  transform: translateX(5px);
+}
+
+.btn-read:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* แสงสีขาววิ่งพาดผ่านปุ่มอ่านต่อ */
+.btn-read::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.btn-read:hover::before {
+  left: 130%;
+}
+
+/* ==========================================================================
+   🎯 SECTION: ปุ่มลูกศรเลื่อนซ้าย-ขวา ◀ ▶ (Navigation Arrows)
+   ========================================================================== */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 1.1rem;
+  color: #333333;
+  cursor: pointer;
+  /* ✏️ จุดปรับแต่ง: ขนาดปุ่มลูกศร */
+  width: var(--arrow-size);
+  height: var(--arrow-size);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  outline: none;
+}
+
+.arrow:hover {
+  background: #006837;
+  color: #ffffff;
+  border-color: #006837;
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 6px 20px rgba(0, 104, 55, 0.35);
+}
+
+.arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* ✏️ จุดปรับแต่ง: ตำแหน่งลูกศร ชิดซ้าย / ชิดขวา บนภาพเบลอ */
+.arrow.left  { left: var(--arrow-distance-side); }
+.arrow.right { right: var(--arrow-distance-side); }
+
+/* ==========================================================================
+   ➖ SECTION: จุดบอกตำแหน่งสไลด์ (Dot Indicators)
+   ========================================================================== */
+.slide-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #a8d5af;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.dot:hover:not(.active) {
+  background-color: #008f4c;
+  transform: scale(1.2);
+}
+
+/* จุดที่เลือกยืดเป็นเส้นแคปซูลยาว */
+.dot.active {
+  width: 26px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #008f4c, #006837);
+  box-shadow: 0 2px 6px rgba(0, 104, 55, 0.35);
+}
+
+/* ==========================================================================
+   📱 SECTION: Responsive (รองรับมือถือและแท็บเล็ต)
+   ========================================================================== */
+@media (max-width: 992px) {
+  :root {
+    --fg-image-width: 360px;
+    --fg-image-height: 290px;
+    --slide-content-gap: 32px;
+    --slide-padding-left: 60px;
+    --slide-padding-right: 60px;
+  }
+
+  .slide-content h2 { font-size: 24px; }
+}
+
+@media (max-width: 820px) {
+  :root {
+    --slide-padding-top: 40px;
+    --slide-padding-bottom: 50px;
+    --slide-padding-left: 24px;
+    --slide-padding-right: 24px;
+    --arrow-distance-side: 10px;
+    --arrow-size: 40px;
+  }
+
+  .slide {
+    padding-top: var(--slide-padding-top);
+    padding-bottom: var(--slide-padding-bottom);
+    padding-left: var(--slide-padding-left);
+    padding-right: var(--slide-padding-right);
+  }
+
+  .slide-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .tags {
+    justify-content: center;
+  }
+
+  .slide-image img {
+    width: 100%;
+    max-width: 420px;
+    height: 250px;
+  }
+
+  .slide-content h2 { font-size: 22px; }
+  .slide-content p { margin-left: auto; margin-right: auto; font-size: 14px; }
+}

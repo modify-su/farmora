@@ -1,0 +1,568 @@
+/* ==========================================================================
+   🌿 Farmora Official — About Us CSS (หน้าเกี่ยวกับเรา)
+   ==========================================================================
+   📋 สรุปเนื้อหาในไฟล์นี้:
+   1. 🌾 Hero Banner ประจำหน้าเกี่ยวกับเรา พร้อมภาพและหัวข้อ
+   2. 📊 Stats Bar สถิติความสำเร็จ (30+ ปี, 500+ ผลิตภัณฑ์, 77 จังหวัด)
+   3. 📖 Story Section เรื่องราวความเป็นมาของ Farmora (ก่อตั้งปี 2537)
+   4. 🎯 Vision & Mission (วิสัยทัศน์และพันธกิจ)
+   5. ⏳ Timeline ประวัติความเป็นมา 30 ปี
+   6. 💎 Core Values ค่านิยมหลัก 4 ประการ
+   7. 📱 Responsive รองรับมือถือและแท็บเล็ต
+   ========================================================================== */
+
+/* ── Hero Banner ของหน้าเกี่ยวกับเรา ──────────────────────── */
+.about-hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 61, 32, 0.90) 0%, rgba(0, 104, 55, 0.85) 100%),
+              url('../images/picture 1.jpg') center/cover no-repeat;
+  padding: 80px 20px 70px;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.about-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.about-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #c8f0c8;
+  padding: 6px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 18px;
+  backdrop-filter: blur(4px);
+}
+
+.about-hero h1 {
+  font-family: "Kanit", sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+.about-hero p {
+  font-family: "Kanit", sans-serif;
+  font-size: 18px;
+  color: #d1ead4;
+  line-height: 1.7;
+  margin: 0 auto 24px;
+}
+
+/* ── Breadcrumb นำทาง ─────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #a8d5af;
+}
+
+.breadcrumb a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #c8f0c8;
+}
+
+.breadcrumb span {
+  color: #c8f0c8;
+}
+
+/* ==========================================================================
+   📊 SECTION: แถบสถิติความสำเร็จ (Stats Bar)
+   ========================================================================== */
+.stats-bar-section {
+  background: #004d29;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 36px 20px;
+  color: #ffffff;
+}
+
+.stats-grid {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+}
+
+.stat-item {
+  padding: 10px;
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.stat-number {
+  font-family: "Kanit", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: #7bc53b;
+  display: block;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: "Kanit", sans-serif;
+  font-size: 15px;
+  color: #d1ead4;
+}
+
+/* ==========================================================================
+   📖 SECTION: เรื่องราวและความเป็นมา (Our Story)
+   ========================================================================== */
+.about-story-section {
+  padding: 85px 20px;
+  background-color: #ffffff;
+}
+
+.about-story-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-story-image {
+  position: relative;
+}
+
+.about-story-image img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 104, 55, 0.18);
+  display: block;
+}
+
+.about-story-badge-float {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background: #006837;
+  color: #ffffff;
+  padding: 20px 26px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.about-story-badge-float i {
+  font-size: 32px;
+  color: #7bc53b;
+}
+
+.about-story-badge-float .badge-text h4 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.about-story-badge-float .badge-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #c8f0c8;
+}
+
+.section-badge-small {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #006837;
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+
+.about-story-text h2 {
+  font-family: "Kanit", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 18px;
+  line-height: 1.35;
+}
+
+.about-story-text .highlight-text {
+  font-size: 17px;
+  font-weight: 500;
+  color: #006837;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+
+.about-story-text p {
+  font-family: "Kanit", sans-serif;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+
+.about-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+}
+
+.about-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #333333;
+  margin-bottom: 12px;
+}
+
+.about-checklist li i {
+  color: #00884c;
+  font-size: 17px;
+}
+
+/* ==========================================================================
+   🎯 SECTION: วิสัยทัศน์และพันธกิจ (Vision & Mission)
+   ========================================================================== */
+.vision-mission-section {
+  padding: 85px 20px;
+  background-color: #f6faf6;
+}
+
+.vision-mission-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.section-title-center {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title-center .sub-tag {
+  color: #006837;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.section-title-center h2 {
+  font-family: "Kanit", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+}
+
+.vm-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.vm-card {
+  background: #ffffff;
+  padding: 42px 38px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2efe3;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vm-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0, 104, 55, 0.14);
+}
+
+.vm-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #008f4c 0%, #006837 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 16px rgba(0, 104, 55, 0.3);
+}
+
+.vm-card h3 {
+  font-family: "Kanit", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #006837;
+  margin: 0 0 16px;
+}
+
+.vm-card p {
+  font-family: "Kanit", sans-serif;
+  font-size: 15.5px;
+  color: #555555;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ==========================================================================
+   ⏳ SECTION: ไทม์ไลน์ความสำเร็จ (Timeline)
+   ========================================================================== */
+.timeline-section {
+  padding: 85px 20px;
+  background-color: #ffffff;
+}
+
+.timeline-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline-list {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #d4ebd7;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 70px;
+  margin-bottom: 38px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 17px;
+  top: 4px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 4px solid #006837;
+  box-shadow: 0 0 0 4px rgba(0, 104, 55, 0.15);
+  z-index: 2;
+}
+
+.timeline-card {
+  background: #fbfdfb;
+  border: 1px solid #e1efe2;
+  padding: 24px 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.timeline-card:hover {
+  transform: translateX(6px);
+  border-color: #00884c;
+}
+
+.timeline-year {
+  display: inline-block;
+  background: #006837;
+  color: #ffffff;
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.timeline-card h4 {
+  font-family: "Kanit", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+}
+
+.timeline-card p {
+  font-family: "Kanit", sans-serif;
+  font-size: 14.5px;
+  color: #555555;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ==========================================================================
+   💎 SECTION: ค่านิยมองค์กร 4 ประการ (Core Values)
+   ========================================================================== */
+.core-values-section {
+  padding: 85px 20px 100px;
+  background-color: #f6faf6;
+}
+
+.core-values-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.value-box {
+  background: #ffffff;
+  border: 1px solid #e0efe2;
+  padding: 34px 24px;
+  border-radius: 18px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.value-box:hover {
+  border-color: #00884c;
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 104, 55, 0.15);
+}
+
+.value-box-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: #006837;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
+}
+
+.value-box:hover .value-box-icon {
+  background: #006837;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.value-box h4 {
+  font-family: "Kanit", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 10px;
+}
+
+.value-box p {
+  font-family: "Kanit", sans-serif;
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ==========================================================================
+   📱 SECTION: Responsive (รองรับมือถือและแท็บเล็ต)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .about-story-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-story-badge-float {
+    bottom: -15px;
+    right: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .stat-item:nth-child(2)::after {
+    display: none;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 60px 20px 50px;
+  }
+
+  .about-hero h1 {
+    font-size: 30px;
+  }
+
+  .about-hero p {
+    font-size: 16px;
+  }
+
+  .vm-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-item::after {
+    display: none !important;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-story-image img {
+    height: 320px;
+  }
+}

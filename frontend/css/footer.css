@@ -1,0 +1,125 @@
+/* ================================================================
+   FILE: footer.css
+   ────────────────────────────────────────────────────────────────
+   ใหม่ทั้งหมด (สร้างขึ้นใหม่ ไม่มีใน version เดิม):
+   ✅  Footer สีเขียวเข้ม
+   ✅  Layout: ข้อมูลบริษัทซ้าย | ช่องทางติดต่อขวา
+   ✅  Social media icons (Facebook, TikTok, YouTube)
+   ✅  Bottom bar ลิขสิทธิ์
+   ================================================================ */
+
+/* ── Footer main ──────────────────────────────────────────── */
+.site-footer {
+  background: linear-gradient(135deg, #003d20 0%, #005a2d 100%);
+  color: #e8f5e9;
+  padding: 56px 20px 0;
+  font-family: "Kanit", sans-serif;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+/* ── Column 1: Logo + Address ────────────────────────────── */
+.footer-brand .footer-logo {
+  width: 120px;
+  margin-bottom: 18px;
+  filter: brightness(0) invert(1);  /* ทำโลโก้เป็นสีขาว */
+  opacity: 0.9;
+}
+
+.footer-brand p {
+  font-size: 14px;
+  color: #b2dfb2;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Column 2: ข้อมูลติดต่อ ──────────────────────────────── */
+.footer-contact h4,
+.footer-social h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255,255,255,0.15);
+}
+
+.footer-contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #b2dfb2;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.footer-contact ul li i {
+  color: #66bb6a;
+  font-size: 15px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Column 3: Social Media ───────────────────────────────── */
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.25s, filter 0.25s;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px) scale(1.08);
+  filter: brightness(1.2);
+}
+
+.social-icon.facebook  { background-color: #1877f2; }
+.social-icon.line      { background-color: #06c755; }
+.social-icon.tiktok    { background-color: #010101; border: 1px solid #333; }
+.social-icon.youtube   { background-color: #ff0000; }
+
+/* ── Footer Bottom bar ────────────────────────────────────── */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 18px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #81c784;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-brand .footer-logo { width: 100px; }
+}
