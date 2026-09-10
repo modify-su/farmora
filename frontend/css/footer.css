@@ -1,51 +1,78 @@
 /* ================================================================
    FILE: footer.css
    ────────────────────────────────────────────────────────────────
-   ใหม่ทั้งหมด (สร้างขึ้นใหม่ ไม่มีใน version เดิม):
-   ✅  Footer สีเขียวเข้ม
-   ✅  Layout: ข้อมูลบริษัทซ้าย | ช่องทางติดต่อขวา
-   ✅  Social media icons (Facebook, TikTok, YouTube)
-   ✅  Bottom bar ลิขสิทธิ์
+   ส่วนท้ายเว็บไซต์ (Footer) - Farmora Official
+   🎨 ธีมไล่สีเขียว: สว่าง (ซ้าย) ➔ เข้ม (ขวา) [Linear Gradient 90deg]
+   📱 ระบบปรับขนาดอัตโนมัติตามอุปกรณ์ (Auto-Responsive Fluid Layout)
    ================================================================ */
 
-/* ── Footer main ──────────────────────────────────────────── */
+/* ── 1. Footer Main (กรอบใหญ่ส่วนท้ายเว็บ) ────────────────────────── */
 .site-footer {
+  /* 🎨 การไล่เฉดสีพื้นหลัง (ซ้ายไปขวา) */
   background: #02a64c;
   background: linear-gradient(90deg, #8cc54f 0%, #65bc4e 15%, #3ab34d 30%, #02a64c 50%, #059446 70%, #098741 85%, #0d7a3c 100%);
   color: #ffffff;
-  padding: 56px 20px 0;
   font-family: "Kanit", sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* ✏️ [ปรับความสูง / ระยะเว้นขอบ บน-ล่าง Footer]
+     - ใช้ clamp() ปรับขนาดอัตโนมัติตามขนาดหน้าจอ:
+       * จอเล็กมือถือ = เว้น 36px
+       * จอใหญ่คอมพิวเตอร์ = เว้น 56px (ปรับขยายตามสัดส่วนจออัตโนมัติ) */
+  padding: clamp(36px, 5vw, 56px) clamp(16px, 3.5vw, 32px) 0;
 }
 
+/* ── 2. Footer Inner Container (กล่องครอบเนื้อหา 3 คอลัมน์) ───────── */
 .footer-inner {
-  max-width: 1100px;
+  /* ✏️ [ปรับความกว้างรวมของเนื้อหา Footer ซ้าย-ขวา]
+     - ใช้ min(92%, 1240px) เพื่อให้กางออกเต็มตาสวยงามบนจอใหญ่ และเว้นขอบ 4% อัตโนมัติบนจอเล็กลงมา */
+  width: 100%;
+  max-width: min(92%, 1240px);
   margin: 0 auto;
+
+  /* ระบบจัดเรียงคอลัมน์อัตโนมัติ */
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 40px;
-  padding-bottom: 40px;
+
+  /* ✏️ [สัดส่วน 3 คอลัมน์บนจอคอมพิวเตอร์: คอลัมน์ซ้าย(1.35fr) | กลาง(1fr) | ขวา(auto พอดีไอคอน 4 ปุ่ม)] */
+  grid-template-columns: 1.35fr 1fr auto;
+
+  /* ✏️ [ระยะห่างระหว่างคอลัมน์ ปรับยืดหยุ่นอัตโนมัติ 24px - 44px] */
+  gap: clamp(24px, 3.5vw, 44px);
+
+  /* ✏️ [ระยะเว้นว่างด้านล่าง ก่อนถึงแถบลิขสิทธิ์ ปรับอัตโนมัติ 28px - 40px] */
+  padding-bottom: clamp(28px, 4vw, 40px);
 }
 
-/* ── Column 1: Logo + Address ────────────────────────────── */
+/* ── 3. คอลัมน์ที่ 1: โลโก้ + ที่อยู่ ────────────────────────────── */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+}
+
 .footer-brand .footer-logo {
-  width: 120px;
-  margin-bottom: 18px;
+  /* ✏️ [ปรับขนาดความกว้างของโลโก้ Farmora อัตโนมัติ 105px - 130px] */
+  width: clamp(105px, 10vw, 125px);
+  height: auto;
+  margin-bottom: 16px;
   filter: brightness(0) invert(1);  /* ทำโลโก้เป็นสีขาว */
   opacity: 0.95;
 }
 
 .footer-brand p {
-  font-size: 14px;
+  /* ✏️ [ปรับขนาดตัวหนังสือที่อยู่ ปรับอัตโนมัติ 13.5px - 14.5px] */
+  font-size: clamp(13.5px, 1.1vw, 14.5px);
   color: #ffffff;
   line-height: 1.75;
   margin: 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-/* ── Column 2: ข้อมูลติดต่อ ──────────────────────────────── */
+/* ── 4. คอลัมน์ที่ 2 & 3: หัวข้อ "ข้อมูลติดต่อ" และ "ติดตามเรา" ──────── */
 .footer-contact h4,
 .footer-social h4 {
-  font-size: 17px;
+  /* ✏️ [ปรับขนาดตัวหนังสือหัวข้อ ปรับอัตโนมัติ 16px - 18px] */
+  font-size: clamp(16px, 1.3vw, 18px);
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 16px;
@@ -54,6 +81,7 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
+/* ── 5. รายการข้อมูลติดต่อ (อีเมล / เบอร์โทร / เวลาทำการ) ──────────── */
 .footer-contact ul {
   list-style: none;
   padding: 0;
@@ -64,7 +92,8 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 14px;
+  /* ✏️ [ปรับขนาดตัวหนังสือข้อมูลติดต่อ ปรับอัตโนมัติ] */
+  font-size: clamp(13.5px, 1.1vw, 14.5px);
   color: #ffffff;
   margin-bottom: 12px;
   line-height: 1.5;
@@ -72,31 +101,41 @@
 }
 
 .footer-contact ul li i {
-  color: #ffffff;
+  /* ✏️ [ปรับขนาดไอคอนข้อมูลติดต่อ] */
   font-size: 15px;
+  color: #ffffff;
   margin-top: 2px;
   flex-shrink: 0;
 }
 
-/* ── Column 3: Social Media ───────────────────────────────── */
+/* ── 6. ไอคอนโซเชียลมีเดีย (Facebook, Line, TikTok, YouTube) ───────── */
+.footer-social {
+  min-width: 210px; /* การันตีพื้นที่ให้ปุ่มโซเชียล 4 ปุ่มอยู่แถวเดียวกันเสมอ */
+}
+
 .social-icons {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  /* ✏️ [ระยะห่างระหว่างปุ่มไอคอน ปรับอัตโนมัติ 10px - 14px] */
+  gap: clamp(10px, 1.5vw, 14px);
   margin-top: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* ไม่ให้ไอคอนตัดขึ้นบรรทัดใหม่อัตโนมัติ */
 }
 
 .social-icon {
-  width: 42px;
-  height: 42px;
+  /* ✏️ [ปรับขนาดความกว้าง-สูงของวงกลมไอคอน ปรับอัตโนมัติ 38px - 44px] */
+  width: clamp(38px, 3.5vw, 44px);
+  height: clamp(38px, 3.5vw, 44px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  flex-shrink: 0;
+  /* ✏️ [ปรับขนาดสัญลักษณ์รูปไอคอนด้านใน] */
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
   color: white;
   text-decoration: none;
-  transition: transform 0.25s, filter 0.25s;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .social-icon:hover {
@@ -109,23 +148,56 @@
 .social-icon.tiktok    { background-color: #010101; border: 1px solid #333; }
 .social-icon.youtube   { background-color: #ff0000; }
 
-/* ── Footer Bottom bar ────────────────────────────────────── */
+/* ── 7. แถบลิขสิทธิ์ด้านล่างสุด (Footer Bottom Copyright) ─────────── */
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(0, 0, 0, 0.08);
-  padding: 18px 20px;
+  /* ✏️ [ปรับความหนาแถบล่าง ปรับอัตโนมัติ 14px - 18px] */
+  padding: clamp(14px, 2vw, 18px) 20px;
   text-align: center;
-  font-size: 13px;
+  /* ✏️ [ปรับขนาดตัวหนังสือข้อความลิขสิทธิ์] */
+  font-size: clamp(12px, 1vw, 13.5px);
   color: #ffffff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* ================================================================
+   📱 8. ระบบปรับอัตโนมัติสำหรับหน้าจอแท็บเล็ต (Tablet 601px - 992px)
+   ================================================================ */
+@media (max-width: 992px) {
   .footer-inner {
-    grid-template-columns: 1fr;
-    gap: 28px;
+    /* ปรับเป็น 2 คอลัมน์ที่สมดุลสวยงาม */
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
   }
 
-  .footer-brand .footer-logo { width: 100px; }
+  /* ให้โลโก้และที่อยู่กางเต็มแถวบน */
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ================================================================
+   📱 9. ระบบปรับอัตโนมัติสำหรับหน้าจอมือถือ (Mobile <= 600px)
+   ================================================================ */
+@media (max-width: 600px) {
+  .site-footer {
+    /* บนหน้าจอมือถือทรงสูง ปรับการไล่เฉดสีเฉียง 135deg เพื่อให้มิติสีกระจายทั่วทั้งหน้าจอ */
+    background: linear-gradient(135deg, #8cc54f 0%, #3ab34d 25%, #02a64c 55%, #0d7a3c 100%);
+  }
+
+  .footer-inner {
+    /* บนมือถือเรียงเป็น 1 คอลัมน์แนวตั้งอ่านง่าย สบายตา */
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-social {
+    min-width: unset;
+  }
+
+  .social-icons {
+    flex-wrap: wrap; /* บนมือถือขนาดเล็กมาก ถ้าจอแคบให้ปุ่มไหลได้อย่างเป็นธรรมชาติ */
+    gap: 12px;
+  }
 }
