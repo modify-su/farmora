@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  padding: 14px 40px;                /* ลดจาก 30px → 14px */
+  padding: 30px 40px;                /* ลดจาก 30px → 14px */
   border-bottom: 1px solid #e0e0e0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* ✏️ ใหม่ */
   position: sticky;                   /* ✏️ ใหม่: sticky nav */
@@ -321,58 +321,12 @@
     left: 0;
     right: 0;
     background: white;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.14);
-    padding: 20px;
-    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    padding: 16px;
+    gap: 10px;
     z-index: 999;
   }
   .menu.open { display: flex; }
-
-  .menu li {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .menu li a {
-    width: 100%;
-    justify-content: space-between;
-    padding: 10px 0;
-    font-size: 16px;
-    border-bottom: 1px solid #f0f4f1;
-  }
-
-  /* Dropdown เมนูบนมือถือ */
-  .dropdown {
-    width: 100%;
-  }
-
-  .dropdown-menu {
-    position: static;
-    box-shadow: none;
-    border-radius: 8px;
-    padding: 6px 0 6px 14px;
-    background-color: #f7faf8;
-    border: none;
-    border-left: 3px solid #006837;
-    margin: 6px 0 10px 0;
-    width: 100%;
-    box-sizing: border-box;
-    display: none;
-    animation: none;
-  }
-
-  .dropdown.open .dropdown-menu {
-    display: block !important;
-  }
-
-  .dropdown-menu li a {
-    border-bottom: none;
-    padding: 8px 12px;
-    font-size: 14.5px;
-    color: #444;
-  }
-
   .right-group { gap: 10px; }
   .btn-contact { padding: 8px 16px; font-size: 13px; }
 }
