@@ -15,6 +15,7 @@
   'use strict';
 
   const STORAGE_KEYS = {
+    THEME: 'farmora_theme_v2',
     SLIDES: 'farmora_slides_v2',
     ABOUT: 'farmora_about_v2',
     NEWS: 'farmora_news_v2',
@@ -27,7 +28,33 @@
   };
 
   /* --------------------------------------------------------------------------
-     0. ข้อมูลเริ่มต้นหน้าเกี่ยวกับเรา (Default About Us)
+     0. ข้อมูลธีมและชุดสี CI บริษัทเริ่มต้น (Default Farmora Brand CI Theme)
+     -------------------------------------------------------------------------- */
+  const DEFAULT_THEME = {
+    // 7 แม่สีอัตลักษณ์องค์กรของบริษัท Farmora (Official Brand CI Colors)
+    ciColors: {
+      forest:  { hex: '#0C7B3B', name: 'เขียวเข้มหลัก (Forest Green)', desc: 'สีอัตลักษณ์หลัก แสดงถึงความมั่นคงและธรรมชาติ' },
+      primary: { hex: '#00A64C', name: 'เขียวสดใส (Emerald Green)',  desc: 'สีหลักแบรนด์ สื่อถึงผลผลิตที่งอกงามและความสดชื่น' },
+      lime:    { hex: '#8EC64F', name: 'เขียวตองอ่อน (Fresh Lime)',   desc: 'สีไฮไลท์ความทันสมัย การเติบโต ยอดอ่อนพืชผล' },
+      orange:  { hex: '#FF6F22', name: 'ส้มผลผลิต (Harvest Orange)',  desc: 'สีพลังงาน ความกระตือรือร้น และผลผลิตสุกงอม' },
+      yellow:  { hex: '#FFE327', name: 'เหลืองรวงข้าว (Golden Grain)', desc: 'สีแห่งความรุ่งเรือง ความอุดมสมบูรณ์ และแสงแดด' },
+      blue:    { hex: '#009CFF', name: 'ฟ้าสายน้ำ (Water Sky Blue)',   desc: 'สีชลประทาน เทคโนโลยีเกษตรแม่นยำ และความเย็น' },
+      soil:    { hex: '#371000', name: 'น้ำตาลดินเข้ม (Earth Soil)',   desc: 'สีผืนดินอันอุดมสมบูรณ์ แร่ธาตุ และรากฐานที่มั่นคง' }
+    },
+    // ค่าสีที่ถูกนำไปประยุกต์ใช้งานในระบบ (Applied Theme Variables)
+    primaryColor: '#00A64C',
+    darkColor: '#0C7B3B',
+    accentColor: '#8EC64F',
+    sidebarBg: '#092615',
+    sidebarText: '#ffffff',
+    buttonOrange: '#FF6F22',
+    shadowLevel: 'medium', // 'soft' | 'medium' | 'strong' | 'glow'
+    borderRadius: '12px',  // '6px' | '12px' | '18px' | '24px'
+    activePreset: 'official'
+  };
+
+  /* --------------------------------------------------------------------------
+     0.1 ข้อมูลเริ่มต้นหน้าเกี่ยวกับเรา (Default About Us)
      -------------------------------------------------------------------------- */
   const DEFAULT_ABOUT = {
     hero: {
@@ -423,6 +450,7 @@
   /* ── Initialize Data Store ── */
   function init() {
     if (!localStorage.getItem(STORAGE_KEYS.INITIALIZED)) {
+      setRaw(STORAGE_KEYS.THEME, DEFAULT_THEME);
       setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
       setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
@@ -432,11 +460,36 @@
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
       localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
     }
+    // ตรวจสอบและตั้งค่าเริ่มต้นธีม CI หากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.THEME)) {
+      setRaw(STORAGE_KEYS.THEME, DEFAULT_THEME);
+    }
     // ตรวจสอบและตั้งค่าเริ่มต้นหน้าเกี่ยวกับเราหากยังไม่มี
     if (!localStorage.getItem(STORAGE_KEYS.ABOUT)) {
       setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
     }
   }
+
+  // ── Theme & CI Colors API ──
+  const Theme = {
+    get: () => getRaw(STORAGE_KEYS.THEME, DEFAULT_THEME),
+    save: (themeData) => {
+      const current = Theme.get();
+      const updated = {
+        ...current,
+        ...themeData,
+        updatedAt: new Date().toISOString()
+      };
+      setRaw(STORAGE_KEYS.THEME, updated);
+      window.dispatchEvent(new CustomEvent('farmora:themeChanged', { detail: updated }));
+      return updated;
+    },
+    reset: () => {
+      setRaw(STORAGE_KEYS.THEME, DEFAULT_THEME);
+      window.dispatchEvent(new CustomEvent('farmora:themeChanged', { detail: DEFAULT_THEME }));
+      return DEFAULT_THEME;
+    }
+  };
 
   // ── About Us API ──
   const About = {
@@ -615,6 +668,7 @@
       const data = {
         version: '2.0',
         exportedAt: new Date().toISOString(),
+        theme: Theme.get(),
         about: About.get(),
         slides: Slides.getAll(),
         news: News.getAll(),
@@ -628,6 +682,7 @@
     importJSON: (jsonString) => {
       try {
         const parsed = JSON.parse(jsonString);
+        if (parsed.theme) setRaw(STORAGE_KEYS.THEME, parsed.theme);
         if (parsed.about) setRaw(STORAGE_KEYS.ABOUT, parsed.about);
         if (parsed.slides) setRaw(STORAGE_KEYS.SLIDES, parsed.slides);
         if (parsed.news) setRaw(STORAGE_KEYS.NEWS, parsed.news);
@@ -641,6 +696,7 @@
       }
     },
     resetDefaults: () => {
+      setRaw(STORAGE_KEYS.THEME, DEFAULT_THEME);
       setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
       setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
@@ -657,6 +713,7 @@
 
   // Export to Global Scope
   window.FarmoraDataStore = {
+    Theme,
     About,
     Slides,
     News,

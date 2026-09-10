@@ -122,6 +122,12 @@
         </a>
       </li>
       <li>
+        <a class="sidebar-link" data-tab="theme">
+          <i class="fa-solid fa-palette"></i>
+          <span>ปรับแต่งธีมและสี (CI)</span>
+        </a>
+      </li>
+      <li>
         <a class="sidebar-link" data-tab="backup">
           <i class="fa-solid fa-database"></i>
           <span>สำรองและกู้คืน</span>
@@ -235,6 +241,9 @@
             </button>
             <button class="btn btn-outline" onclick="AdminApp.switchTab('media')">
               <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดรูปภาพ
+            </button>
+            <button class="btn btn-outline" onclick="AdminApp.switchTab('theme')">
+              <i class="fa-solid fa-palette"></i> ปรับแต่งธีมและสี CI
             </button>
             <button class="btn btn-outline" onclick="AdminApp.switchTab('backup')">
               <i class="fa-solid fa-file-export"></i> ส่งออกข้อมูล JSON
@@ -821,6 +830,343 @@
               <!-- Rendered via JS -->
             </div>
           </div>
+        </div>
+      </section>
+
+
+      <!-- ──────────────────────────────────────────
+           TAB: ปรับแต่งธีมและสี (THEME & CI COLORS)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-theme">
+        <!-- Action Header -->
+        <div class="card" style="background: linear-gradient(135deg, #e8f5e9, #f9fbf9); border-left: 4px solid var(--primary-green); margin-bottom: 24px;">
+          <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 700; color: var(--dark-green); margin-bottom: 4px;">
+                <i class="fa-solid fa-palette"></i> ปรับแต่งธีมและสี UX/UI (Corporate Identity - CI)
+              </h2>
+              <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
+                กำหนดชุดสีอัตลักษณ์องค์กร 7 แม่สีของบริษัท Farmora, ปรับแต่งเงาการ์ด, ความโค้งมน และสลับธีมสำเร็จรูปได้ทันที
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn btn-outline" onclick="AdminApp.resetThemeSettings()">
+                <i class="fa-solid fa-rotate-left"></i> คืนค่าเริ่มต้น CI
+              </button>
+              <button type="button" class="btn btn-primary" onclick="AdminApp.saveThemeSettings()">
+                <i class="fa-solid fa-floppy-disk"></i> บันทึกการตั้งค่าธีม
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. OFFICIAL CI BRAND PALETTE -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title"><i class="fa-solid fa-swatchbook"></i> 1. แผงชุดสีอัตลักษณ์องค์กร (Official Farmora CI Palette)</h3>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                7 สีหลักประจำแบรนด์ Farmora ตามเอกสารคู่มืออัตลักษณ์องค์กร (คลิกเพื่อคัดลอกรหัสสี หรือคลิกเพื่อนำไปใช้)
+              </p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="ci-palette-grid">
+              <!-- Color 1: #0C7B3B -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('dark', '#0C7B3B')" title="คลิกเพื่อใช้เป็นสีเข้มหลัก">
+                <div class="ci-swatch-color" style="background-color: #0C7B3B;">#0C7B3B</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">เขียวเข้มหลัก</span>
+                  <span class="ci-swatch-hex">Forest Green</span>
+                </div>
+              </div>
+
+              <!-- Color 2: #00A64C -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('primary', '#00A64C')" title="คลิกเพื่อใช้เป็นสีหลัก">
+                <div class="ci-swatch-color" style="background-color: #00A64C;">#00A64C</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">เขียวสดใส</span>
+                  <span class="ci-swatch-hex">Emerald Primary</span>
+                </div>
+              </div>
+
+              <!-- Color 3: #8EC64F -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('accent', '#8EC64F')" title="คลิกเพื่อใช้เป็นสีไฮไลท์">
+                <div class="ci-swatch-color" style="background-color: #8EC64F; color: #1a3311;">#8EC64F</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">เขียวตองอ่อน</span>
+                  <span class="ci-swatch-hex">Fresh Lime</span>
+                </div>
+              </div>
+
+              <!-- Color 4: #FF6F22 -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('orange', '#FF6F22')" title="คลิกเพื่อใช้เป็นสีปุ่มส้ม">
+                <div class="ci-swatch-color" style="background-color: #FF6F22;">#FF6F22</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">ส้มผลผลิต</span>
+                  <span class="ci-swatch-hex">Harvest Orange</span>
+                </div>
+              </div>
+
+              <!-- Color 5: #FFE327 -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('yellow', '#FFE327')" title="คลิกเพื่อคัดลอกรหัส">
+                <div class="ci-swatch-color" style="background-color: #FFE327; color: #3b3100;">#FFE327</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">เหลืองรวงข้าว</span>
+                  <span class="ci-swatch-hex">Golden Yellow</span>
+                </div>
+              </div>
+
+              <!-- Color 6: #009CFF -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('blue', '#009CFF')" title="คลิกเพื่อคัดลอกรหัส">
+                <div class="ci-swatch-color" style="background-color: #009CFF;">#009CFF</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">ฟ้าสายน้ำ</span>
+                  <span class="ci-swatch-hex">Water Sky Blue</span>
+                </div>
+              </div>
+
+              <!-- Color 7: #371000 -->
+              <div class="ci-swatch-card" onclick="AdminApp.applyQuickCIColor('soil', '#371000')" title="คลิกเพื่อคัดลอกรหัส">
+                <div class="ci-swatch-color" style="background-color: #371000;">#371000</div>
+                <div class="ci-swatch-info">
+                  <span class="ci-swatch-name">น้ำตาลดินเข้ม</span>
+                  <span class="ci-swatch-hex">Deep Soil</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. THEME PRESETS -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> 2. ชุดธีมสำเร็จรูป (Preset Themes)</h3>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                คลิกเลือกธีมที่ออกแบบตามอัตลักษณ์องค์กร เพื่อเปลี่ยนโทนสีและอารมณ์ของระบบในคลิกเดียว
+              </p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="theme-presets-grid" id="themePresetsList">
+              <!-- Preset 1 -->
+              <div class="theme-preset-card active" data-preset="official" onclick="AdminApp.selectThemePreset('official')">
+                <div class="preset-stripes">
+                  <div class="preset-stripe" style="background: #00A64C;"></div>
+                  <div class="preset-stripe" style="background: #0C7B3B;"></div>
+                  <div class="preset-stripe" style="background: #8EC64F;"></div>
+                </div>
+                <div>
+                  <div class="preset-title">🌿 Farmora Official CI (มาตรฐาน)</div>
+                  <div class="preset-desc">เขียวมรกตสดใส ผสานเขียวป่าเข้ม และเขียวตองอ่อน สื่อถึงธรรมชาติและความสมบูรณ์</div>
+                </div>
+              </div>
+
+              <!-- Preset 2 -->
+              <div class="theme-preset-card" data-preset="harvest" onclick="AdminApp.selectThemePreset('harvest')">
+                <div class="preset-stripes">
+                  <div class="preset-stripe" style="background: #0C7B3B;"></div>
+                  <div class="preset-stripe" style="background: #FFE327;"></div>
+                  <div class="preset-stripe" style="background: #371000;"></div>
+                </div>
+                <div>
+                  <div class="preset-title">🌾 Golden Harvest (รวงข้าวสีทอง)</div>
+                  <div class="preset-desc">รวงข้าวสีทองสุกอร่าม ผสานเขียวเข้มและผืนดินอันอุดมสมบูรณ์</div>
+                </div>
+              </div>
+
+              <!-- Preset 3 -->
+              <div class="theme-preset-card" data-preset="citrus" onclick="AdminApp.selectThemePreset('citrus')">
+                <div class="preset-stripes">
+                  <div class="preset-stripe" style="background: #FF6F22;"></div>
+                  <div class="preset-stripe" style="background: #00A64C;"></div>
+                  <div class="preset-stripe" style="background: #8EC64F;"></div>
+                </div>
+                <div>
+                  <div class="preset-title">🍊 Fresh Citrus (ส้มผลผลิตสดใส)</div>
+                  <div class="preset-desc">ส้มผลผลิตกระฉับกระเฉง เพิ่มความโดดเด่นสะดุดตาและการเติบโต</div>
+                </div>
+              </div>
+
+              <!-- Preset 4 -->
+              <div class="theme-preset-card" data-preset="smart" onclick="AdminApp.selectThemePreset('smart')">
+                <div class="preset-stripes">
+                  <div class="preset-stripe" style="background: #009CFF;"></div>
+                  <div class="preset-stripe" style="background: #00A64C;"></div>
+                  <div class="preset-stripe" style="background: #0C7B3B;"></div>
+                </div>
+                <div>
+                  <div class="preset-title">💧 Smart Agri (ชลประทาน & นวัตกรรม)</div>
+                  <div class="preset-desc">ฟ้าสายน้ำและเทคโนโลยีการเกษตรสมัยใหม่ สะอาด ทันสมัย ชุ่มชื้น</div>
+                </div>
+              </div>
+
+              <!-- Preset 5 -->
+              <div class="theme-preset-card" data-preset="earth" onclick="AdminApp.selectThemePreset('earth')">
+                <div class="preset-stripes">
+                  <div class="preset-stripe" style="background: #371000;"></div>
+                  <div class="preset-stripe" style="background: #00A64C;"></div>
+                  <div class="preset-stripe" style="background: #8EC64F;"></div>
+                </div>
+                <div>
+                  <div class="preset-title">🌰 Rich Earth (ผืนดินทรงคุณค่า)</div>
+                  <div class="preset-desc">สีน้ำตาลผืนดินเข้ม รากฐานมั่นคง คู่กับพืชผลสีเขียวขจี</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. CUSTOM COLOR & STYLE CONTROLS -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title"><i class="fa-solid fa-sliders"></i> 3. ปรับแต่งค่าสีและสไตล์ UX/UI ละเอียด (Custom Controls)</h3>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                คุณสามารถเลือกสีเฉพาะจุด และปรับระดับความนุ่มลึกของเงา (Shadow) หรือความโค้งมนได้ตามต้องการ
+              </p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="color-picker-grid">
+              <!-- Primary Color -->
+              <div class="color-input-item">
+                <input type="color" id="themePrimaryPicker" class="color-native-input" value="#00A64C" oninput="AdminApp.onColorInput('primary', this.value)">
+                <div class="color-input-details">
+                  <label for="themePrimaryHex">สีหลักของระบบ (Primary Green)</label>
+                  <input type="text" id="themePrimaryHex" class="color-hex-text" value="#00A64C" onchange="AdminApp.onHexChange('primary', this.value)">
+                  <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 2px;">ปุ่มหลัก, เมนูที่เปิดอยู่, ลิงก์</span>
+                </div>
+              </div>
+
+              <!-- Dark Color -->
+              <div class="color-input-item">
+                <input type="color" id="themeDarkPicker" class="color-native-input" value="#0C7B3B" oninput="AdminApp.onColorInput('dark', this.value)">
+                <div class="color-input-details">
+                  <label for="themeDarkHex">สีเข้มหลัก (Forest Dark Green)</label>
+                  <input type="text" id="themeDarkHex" class="color-hex-text" value="#0C7B3B" onchange="AdminApp.onHexChange('dark', this.value)">
+                  <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 2px;">หัวข้อใหญ่, แถบข้าง, ส่วนหัว</span>
+                </div>
+              </div>
+
+              <!-- Accent Color -->
+              <div class="color-input-item">
+                <input type="color" id="themeAccentPicker" class="color-native-input" value="#8EC64F" oninput="AdminApp.onColorInput('accent', this.value)">
+                <div class="color-input-details">
+                  <label for="themeAccentHex">สีไฮไลท์อ่อน (Fresh Lime Green)</label>
+                  <input type="text" id="themeAccentHex" class="color-hex-text" value="#8EC64F" onchange="AdminApp.onHexChange('accent', this.value)">
+                  <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 2px;">แบดจ์ตัวเลข, ปุ่มดูสินค้า, เส้นเน้น</span>
+                </div>
+              </div>
+
+              <!-- Orange Action Color -->
+              <div class="color-input-item">
+                <input type="color" id="themeOrangePicker" class="color-native-input" value="#FF6F22" oninput="AdminApp.onColorInput('orange', this.value)">
+                <div class="color-input-details">
+                  <label for="themeOrangeHex">สีปุ่มแอ็กชันรอง (Action Orange)</label>
+                  <input type="text" id="themeOrangeHex" class="color-hex-text" value="#FF6F22" onchange="AdminApp.onHexChange('orange', this.value)">
+                  <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 2px;">ปุ่มคำเตือน, ป้าย Hot, โปรโมชัน</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shadow Intensity Selector -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+              <label style="font-weight: 600; font-size: 14.5px; color: var(--dark-green); display: block; margin-bottom: 6px;">
+                <i class="fa-solid fa-cloud-moon"></i> ระดับความเด่นของเงา (Card Shadow Intensity)
+              </label>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+                ควบคุมมิติความลอยและความคมชัดของเงาการ์ดสินค้า และกล่องข้อความทั้งหมด
+              </p>
+              <div class="option-pills" id="shadowPills">
+                <button type="button" class="option-pill" data-shadow="soft" onclick="AdminApp.setShadowLevel('soft')">
+                  นุ่มละมุน (Soft Shadow)
+                </button>
+                <button type="button" class="option-pill active" data-shadow="medium" onclick="AdminApp.setShadowLevel('medium')">
+                  เด่นคมชัด (Medium - แนะนำ ✨)
+                </button>
+                <button type="button" class="option-pill" data-shadow="strong" onclick="AdminApp.setShadowLevel('strong')">
+                  Pop-up ลอยเด่น (Strong Contrast)
+                </button>
+                <button type="button" class="option-pill" data-shadow="glow" onclick="AdminApp.setShadowLevel('glow')">
+                  เรืองแสงเขียวแบรนด์ (Green CI Glow)
+                </button>
+              </div>
+            </div>
+
+            <!-- Border Radius Selector -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+              <label style="font-weight: 600; font-size: 14.5px; color: var(--dark-green); display: block; margin-bottom: 6px;">
+                <i class="fa-solid fa-shapes"></i> ความโค้งมนของการ์ดและปุ่ม (Border Radius)
+              </label>
+              <div class="option-pills" id="radiusPills">
+                <button type="button" class="option-pill" data-radius="6px" onclick="AdminApp.setBorderRadius('6px')">คมเหลี่ยมทันสมัย (6px)</button>
+                <button type="button" class="option-pill active" data-radius="12px" onclick="AdminApp.setBorderRadius('12px')">โค้งมนพอดี (12px - แนะนำ ✨)</button>
+                <button type="button" class="option-pill" data-radius="18px" onclick="AdminApp.setBorderRadius('18px')">โค้งมนนุ่มนวล (18px)</button>
+                <button type="button" class="option-pill" data-radius="24px" onclick="AdminApp.setBorderRadius('24px')">มนกลมแบบ Pill (24px)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. LIVE INTERACTIVE PREVIEW -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fa-solid fa-desktop"></i> 4. หน้าต่างตัวอย่างแสดงผลสด (Interactive Live Preview)</h3>
+          </div>
+          <div class="card-body">
+            <div class="theme-preview-box" id="themePreviewWidget">
+              <div class="theme-preview-header" id="prevHeader">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span id="prevBrandDot" style="width: 12px; height: 12px; border-radius: 50%; background: var(--primary-green);"></span>
+                  <strong style="color: var(--dark-green); font-size: 15px;">FARMORA PREVIEW</strong>
+                </div>
+                <span id="prevBadge" style="background: var(--accent-green); color: #092615; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;">CI VERIFIED</span>
+              </div>
+              <div class="theme-preview-body">
+                <!-- Sample Product Card Preview -->
+                <div id="prevCard" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-md); max-width: 320px; transition: all var(--transition);">
+                  <div style="height: 120px; background: #eef7f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--primary-green); font-size: 2rem; margin-bottom: 12px;">
+                    <i class="fa-solid fa-wheat-awn"></i>
+                  </div>
+                  <h4 id="prevCardTitle" style="color: var(--dark-green); font-size: 16px; margin-bottom: 6px;">เมล็ดพันธุ์ผักคัดพิเศษ</h4>
+                  <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4; margin-bottom: 14px;">ตัวอย่างการแสดงผลของการ์ดสินค้า พร้อมระดับเงาและสไตล์ที่ถูกเลือก</p>
+                  <div style="display: flex; gap: 8px;">
+                    <button type="button" id="prevBtnPrimary" class="btn btn-primary btn-sm">ปุ่มหลัก</button>
+                    <button type="button" id="prevBtnOrange" class="btn btn-sm" style="background: var(--brand-orange); color: #ffffff;">ปุ่มส้ม</button>
+                  </div>
+                </div>
+
+                <!-- Sample Alert / Stats Preview -->
+                <div style="flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 12px;">
+                  <div id="prevStat" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 16px;">
+                    <div id="prevStatIcon" style="width: 44px; height: 44px; border-radius: 10px; background: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <div style="font-size: 22px; font-weight: 700; color: var(--dark-green);" id="prevStatVal">10,000+</div>
+                      <div style="font-size: 13px; color: var(--text-muted);">เกษตรกรและร้านค้าไว้วางใจ</div>
+                    </div>
+                  </div>
+
+                  <div style="background: #e8f5e9; border: 1px solid var(--primary-green); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--dark-green);">
+                    <i class="fa-solid fa-circle-check"></i> ชุดสีทั้งหมดซิงค์ตรงกันทั้งระบบหลังบ้าน และหน้าเว็บไซต์อัตโนมัติ
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div style="text-align: right; margin-bottom: 30px;">
+          <button type="button" class="btn btn-outline" onclick="AdminApp.resetThemeSettings()" style="margin-right: 8px;">
+            <i class="fa-solid fa-rotate-left"></i> คืนค่าเริ่มต้น CI
+          </button>
+          <button type="button" class="btn btn-primary" onclick="AdminApp.saveThemeSettings()" style="padding: 12px 28px; font-size: 15.5px; font-weight: 600;">
+            <i class="fa-solid fa-floppy-disk"></i> บันทึกการตั้งค่าธีม CI
+          </button>
         </div>
       </section>
 

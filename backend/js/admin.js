@@ -27,6 +27,7 @@
     checkAuth();
     initNavigation();
     initMediaUploader();
+    applyTheme();
     renderAll();
 
     // ฟัง Event เมื่อข้อมูลมีการเปลี่ยนแปลง
@@ -34,7 +35,14 @@
       renderAll();
     });
 
+    // ฟัง Event เมื่อมีการเปลี่ยนธีม CI
+    window.addEventListener('farmora:themeChanged', (e) => {
+      applyTheme(e.detail);
+      renderThemeSettings();
+    });
+
     window.addEventListener('storage', () => {
+      applyTheme();
       renderAll();
     });
   });
@@ -48,6 +56,7 @@
     renderProductsTable();
     renderMenusTable();
     renderMediaGrid();
+    renderThemeSettings();
   }
 
   /* --------------------------------------------------------------------------
@@ -66,7 +75,17 @@
   }
 
   function handleLogin(e) {
-    if (e) e.preventDefault();
+    e.preventDefault();
+    const user = document.getElementById('authUsername').value.trim();
+    const pass = document.getElementById('authPassword').value.trim();
+
+    // Simple Admin Auth
+    if (user !== 'admin' || pass !== 'farmora2025') {
+      const err = document.getElementById('authError');
+      if (err) err.style.display = 'block';
+      return;
+    }
+
     localStorage.setItem('farmora_admin_authed', 'true');
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) authOverlay.style.display = 'none';
@@ -94,6 +113,7 @@
     products: 'จัดการสินค้า (Products)',
     menus: 'ตั้งค่าเมนูเว็บไซต์ (Navigation Menus)',
     media: 'คลังรูปภาพ (Media Library)',
+    theme: 'ปรับแต่งธีมและสี UX/UI (Theme & Colors)',
     backup: 'สำรองและกู้คืนข้อมูล (Backup & Restore)'
   };
 
@@ -1183,6 +1203,365 @@
   }
 
   /* --------------------------------------------------------------------------
+     11.5. Theme & CI Colors Management (ปรับแต่งธีมและสี CI บริษัท)
+     -------------------------------------------------------------------------- */
+  const THEME_PRESETS = {
+    official: {
+      primaryColor: '#00A64C',
+      darkColor: '#0C7B3B',
+      accentColor: '#8EC64F',
+      buttonOrange: '#FF6F22'
+    },
+    harvest: {
+      primaryColor: '#FFE327',
+      darkColor: '#0C7B3B',
+      accentColor: '#8EC64F',
+      buttonOrange: '#FF6F22'
+    },
+    citrus: {
+      primaryColor: '#FF6F22',
+      darkColor: '#0C7B3B',
+      accentColor: '#8EC64F',
+      buttonOrange: '#FF6F22'
+    },
+    smart: {
+      primaryColor: '#009CFF',
+      darkColor: '#0C7B3B',
+      accentColor: '#8EC64F',
+      buttonOrange: '#FF6F22'
+    },
+    earth: {
+      primaryColor: '#0C7B3B',
+      darkColor: '#371000',
+      accentColor: '#8EC64F',
+      buttonOrange: '#FF6F22'
+    }
+  };
+
+  const SHADOW_MAP = {
+    soft: {
+      card: '0 4px 14px rgba(0, 0, 0, 0.06)',
+      hover: '0 8px 20px rgba(0, 0, 0, 0.1)'
+    },
+    medium: {
+      card: '0 8px 24px rgba(0, 0, 0, 0.12)',
+      hover: '0 16px 36px rgba(0, 104, 55, 0.18)'
+    },
+    strong: {
+      card: '0 10px 30px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08)',
+      hover: '0 20px 42px rgba(0, 0, 0, 0.22)'
+    },
+    glow: {
+      card: '0 8px 25px rgba(0, 166, 76, 0.25)',
+      hover: '0 16px 38px rgba(0, 166, 76, 0.35)'
+    }
+  };
+
+  let currentThemeSettings = null;
+
+  function applyTheme(theme) {
+    if (!theme) theme = DS.Theme.get();
+    currentThemeSettings = { ...theme };
+
+    const root = document.documentElement;
+    if (theme.primaryColor) root.style.setProperty('--primary-green', theme.primaryColor);
+    if (theme.darkColor) root.style.setProperty('--dark-green', theme.darkColor);
+    if (theme.accentColor) root.style.setProperty('--accent-green', theme.accentColor);
+    if (theme.buttonOrange) root.style.setProperty('--brand-orange', theme.buttonOrange);
+
+    // Apply shadow
+    const shadowCfg = SHADOW_MAP[theme.shadowLevel] || SHADOW_MAP.medium;
+    root.style.setProperty('--shadow-md', shadowCfg.card);
+    root.style.setProperty('--card-shadow', shadowCfg.card);
+    root.style.setProperty('--hover-shadow', shadowCfg.hover);
+
+    // Apply radius
+    if (theme.borderRadius) {
+      root.style.setProperty('--radius-md', theme.borderRadius);
+      root.style.setProperty('--radius-card', theme.borderRadius);
+    }
+  }
+
+  function renderThemeSettings() {
+    const theme = DS.Theme.get();
+    currentThemeSettings = { ...theme };
+
+    // Inputs
+    const pPicker = document.getElementById('themePrimaryPicker');
+    const pHex = document.getElementById('themePrimaryHex');
+    if (pPicker && pHex) {
+      pPicker.value = theme.primaryColor || '#00A64C';
+      pHex.value = theme.primaryColor || '#00A64C';
+    }
+
+    const dPicker = document.getElementById('themeDarkPicker');
+    const dHex = document.getElementById('themeDarkHex');
+    if (dPicker && dHex) {
+      dPicker.value = theme.darkColor || '#0C7B3B';
+      dHex.value = theme.darkColor || '#0C7B3B';
+    }
+
+    const aPicker = document.getElementById('themeAccentPicker');
+    const aHex = document.getElementById('themeAccentHex');
+    if (aPicker && aHex) {
+      aPicker.value = theme.accentColor || '#8EC64F';
+      aHex.value = theme.accentColor || '#8EC64F';
+    }
+
+    const oPicker = document.getElementById('themeOrangePicker');
+    const oHex = document.getElementById('themeOrangeHex');
+    if (oPicker && oHex) {
+      oPicker.value = theme.buttonOrange || '#FF6F22';
+      oHex.value = theme.buttonOrange || '#FF6F22';
+    }
+
+    // Presets
+    document.querySelectorAll('.theme-preset-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.preset === theme.activePreset);
+    });
+
+    // Shadow pills
+    document.querySelectorAll('#shadowPills .option-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.shadow === theme.shadowLevel);
+    });
+
+    // Radius pills
+    document.querySelectorAll('#radiusPills .option-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.radius === theme.borderRadius);
+    });
+
+    updateThemePreview();
+  }
+
+  function selectThemePreset(presetKey) {
+    const preset = THEME_PRESETS[presetKey];
+    if (!preset) return;
+
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.activePreset = presetKey;
+    currentThemeSettings.primaryColor = preset.primaryColor;
+    currentThemeSettings.darkColor = preset.darkColor;
+    currentThemeSettings.accentColor = preset.accentColor;
+    currentThemeSettings.buttonOrange = preset.buttonOrange;
+
+    // Update form elements
+    const pPicker = document.getElementById('themePrimaryPicker');
+    const pHex = document.getElementById('themePrimaryHex');
+    if (pPicker && pHex) {
+      pPicker.value = preset.primaryColor;
+      pHex.value = preset.primaryColor;
+    }
+
+    const dPicker = document.getElementById('themeDarkPicker');
+    const dHex = document.getElementById('themeDarkHex');
+    if (dPicker && dHex) {
+      dPicker.value = preset.darkColor;
+      dHex.value = preset.darkColor;
+    }
+
+    const aPicker = document.getElementById('themeAccentPicker');
+    const aHex = document.getElementById('themeAccentHex');
+    if (aPicker && aHex) {
+      aPicker.value = preset.accentColor;
+      aHex.value = preset.accentColor;
+    }
+
+    const oPicker = document.getElementById('themeOrangePicker');
+    const oHex = document.getElementById('themeOrangeHex');
+    if (oPicker && oHex) {
+      oPicker.value = preset.buttonOrange;
+      oHex.value = preset.buttonOrange;
+    }
+
+    document.querySelectorAll('.theme-preset-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.preset === presetKey);
+    });
+
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+    showToast(`เลือกธีมสำเร็จรูป: ${presetKey.toUpperCase()} เรียบร้อย (กดบันทึกเพื่อใช้งานถาวร)`);
+  }
+
+  function applyQuickCIColor(type, hex) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(hex).catch(() => {});
+    }
+
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.activePreset = 'custom';
+
+    if (type === 'forest' || type === 'dark') {
+      currentThemeSettings.darkColor = hex;
+      const elP = document.getElementById('themeDarkPicker');
+      const elH = document.getElementById('themeDarkHex');
+      if (elP) elP.value = hex;
+      if (elH) elH.value = hex;
+      showToast(`เลือก ${hex} เป็นสีเข้มหลัก (Forest Green) & คัดลอกรหัสแล้ว`);
+    } else if (type === 'primary') {
+      currentThemeSettings.primaryColor = hex;
+      const elP = document.getElementById('themePrimaryPicker');
+      const elH = document.getElementById('themePrimaryHex');
+      if (elP) elP.value = hex;
+      if (elH) elH.value = hex;
+      showToast(`เลือก ${hex} เป็นสีหลักของระบบ (Primary Green) & คัดลอกรหัสแล้ว`);
+    } else if (type === 'lime' || type === 'accent') {
+      currentThemeSettings.accentColor = hex;
+      const elP = document.getElementById('themeAccentPicker');
+      const elH = document.getElementById('themeAccentHex');
+      if (elP) elP.value = hex;
+      if (elH) elH.value = hex;
+      showToast(`เลือก ${hex} เป็นสีไฮไลท์อ่อน (Fresh Lime) & คัดลอกรหัสแล้ว`);
+    } else if (type === 'orange') {
+      currentThemeSettings.buttonOrange = hex;
+      const elP = document.getElementById('themeOrangePicker');
+      const elH = document.getElementById('themeOrangeHex');
+      if (elP) elP.value = hex;
+      if (elH) elH.value = hex;
+      showToast(`เลือก ${hex} เป็นสีปุ่มส้มแอ็กชัน (Harvest Orange) & คัดลอกรหัสแล้ว`);
+    } else {
+      // For yellow, blue, soil: copy to clipboard
+      showToast(`คัดลอกรหัสสี CI: ${hex} ไปยังคลิปบอร์ดเรียบร้อยแล้ว`);
+    }
+
+    document.querySelectorAll('.theme-preset-card').forEach(card => card.classList.remove('active'));
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+  }
+
+  function onColorInput(type, hex) {
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.activePreset = 'custom';
+    document.querySelectorAll('.theme-preset-card').forEach(card => card.classList.remove('active'));
+
+    if (type === 'primary') {
+      currentThemeSettings.primaryColor = hex;
+      const el = document.getElementById('themePrimaryHex');
+      if (el) el.value = hex;
+    } else if (type === 'dark') {
+      currentThemeSettings.darkColor = hex;
+      const el = document.getElementById('themeDarkHex');
+      if (el) el.value = hex;
+    } else if (type === 'accent') {
+      currentThemeSettings.accentColor = hex;
+      const el = document.getElementById('themeAccentHex');
+      if (el) el.value = hex;
+    } else if (type === 'orange') {
+      currentThemeSettings.buttonOrange = hex;
+      const el = document.getElementById('themeOrangeHex');
+      if (el) el.value = hex;
+    }
+
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+  }
+
+  function onHexChange(type, hex) {
+    if (!hex.startsWith('#')) hex = '#' + hex;
+    if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+      showToast('รูปแบบรหัสสีไม่ถูกต้อง (ตัวอย่าง: #00A64C)', true);
+      return;
+    }
+
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.activePreset = 'custom';
+    document.querySelectorAll('.theme-preset-card').forEach(card => card.classList.remove('active'));
+
+    if (type === 'primary') {
+      currentThemeSettings.primaryColor = hex;
+      const el = document.getElementById('themePrimaryPicker');
+      if (el) el.value = hex;
+    } else if (type === 'dark') {
+      currentThemeSettings.darkColor = hex;
+      const el = document.getElementById('themeDarkPicker');
+      if (el) el.value = hex;
+    } else if (type === 'accent') {
+      currentThemeSettings.accentColor = hex;
+      const el = document.getElementById('themeAccentPicker');
+      if (el) el.value = hex;
+    } else if (type === 'orange') {
+      currentThemeSettings.buttonOrange = hex;
+      const el = document.getElementById('themeOrangePicker');
+      if (el) el.value = hex;
+    }
+
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+  }
+
+  function setShadowLevel(level) {
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.shadowLevel = level;
+
+    document.querySelectorAll('#shadowPills .option-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.shadow === level);
+    });
+
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+  }
+
+  function setBorderRadius(radius) {
+    currentThemeSettings = currentThemeSettings || DS.Theme.get();
+    currentThemeSettings.borderRadius = radius;
+
+    document.querySelectorAll('#radiusPills .option-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.radius === radius);
+    });
+
+    applyTheme(currentThemeSettings);
+    updateThemePreview();
+  }
+
+  function updateThemePreview() {
+    const theme = currentThemeSettings || DS.Theme.get();
+    const prevDot = document.getElementById('prevBrandDot');
+    const prevBadge = document.getElementById('prevBadge');
+    const prevCard = document.getElementById('prevCard');
+    const prevCardTitle = document.getElementById('prevCardTitle');
+    const prevBtnPrimary = document.getElementById('prevBtnPrimary');
+    const prevBtnOrange = document.getElementById('prevBtnOrange');
+    const prevStat = document.getElementById('prevStat');
+    const prevStatIcon = document.getElementById('prevStatIcon');
+    const prevStatVal = document.getElementById('prevStatVal');
+
+    if (prevDot) prevDot.style.background = theme.primaryColor;
+    if (prevBadge) {
+      prevBadge.style.background = theme.accentColor;
+    }
+    if (prevCardTitle) prevCardTitle.style.color = theme.darkColor;
+    if (prevBtnPrimary) prevBtnPrimary.style.background = theme.primaryColor;
+    if (prevBtnOrange) prevBtnOrange.style.background = theme.buttonOrange || '#FF6F22';
+    if (prevStatIcon) prevStatIcon.style.background = theme.primaryColor;
+    if (prevStatVal) prevStatVal.style.color = theme.darkColor;
+
+    const shadowCfg = SHADOW_MAP[theme.shadowLevel] || SHADOW_MAP.medium;
+    if (prevCard) {
+      prevCard.style.boxShadow = shadowCfg.card;
+      prevCard.style.borderRadius = theme.borderRadius || '12px';
+    }
+    if (prevStat) {
+      prevStat.style.boxShadow = shadowCfg.card;
+      prevStat.style.borderRadius = theme.borderRadius || '12px';
+    }
+  }
+
+  function saveThemeSettings() {
+    const theme = currentThemeSettings || DS.Theme.get();
+    DS.Theme.save(theme);
+    showToast('✨ บันทึกการตั้งค่าธีมและสี CI เรียบร้อยแล้ว (อัปเดตทุกหน้าอัตโนมัติ)');
+  }
+
+  function resetThemeSettings() {
+    if (confirm('คุณต้องการคืนค่าเริ่มต้นของธีมและสี CI เป็นค่าทางการของบริษัทใช่หรือไม่?')) {
+      const def = DS.Theme.reset();
+      currentThemeSettings = { ...def };
+      applyTheme(def);
+      renderThemeSettings();
+      showToast('คืนค่าเริ่มต้นธีม Farmora CI เรียบร้อยแล้ว');
+    }
+  }
+
+  /* --------------------------------------------------------------------------
      12. Modal Helpers & Toast
      -------------------------------------------------------------------------- */
   function openModal(id) {
@@ -1240,6 +1619,18 @@
     handleLogout,
     closeModal,
     showToast,
+    // Theme & CI
+    applyTheme,
+    renderThemeSettings,
+    selectThemePreset,
+    applyQuickCIColor,
+    onColorInput,
+    onHexChange,
+    setShadowLevel,
+    setBorderRadius,
+    updateThemePreview,
+    saveThemeSettings,
+    resetThemeSettings,
     // Slides
     openSlideModal,
     saveSlide,
