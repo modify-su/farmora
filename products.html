@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายการสินค้า — Farmora ฟาร์โมรา</title>
+
+  <!-- ================================================================
+       HEAD: หน้ารายการสินค้า (Products Listing Page)
+       ================================================================ -->
+  <meta name="description" content="รายการสินค้าเคมีเกษตร ปุ๋ยเคมี ปุ๋ยอินทรีย์ สารกำจัดศัตรูพืช ฮอร์โมนพืช และสารปรับปรุงดิน คุณภาพมาตรฐานสากลจาก Farmora">
+
+  <!-- Font Awesome 6.5.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ✅ CSS Files -->
+  <link rel="stylesheet" href="css/navbar.css">       <!-- สไตล์ Navbar -->
+  <link rel="stylesheet" href="css/products.css">     <!-- สไตล์เฉพาะหน้าสินค้า -->
+  <link rel="stylesheet" href="css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง 100%) -->
+</head>
+<body>
+
+  <!-- ================================================================
+       SECTION 1: Navbar (เมนูบาร์หลัก)
+       ================================================================ -->
+  <nav class="navbar">
+
+    <!-- กลุ่มซ้าย: โลโก้ + เมนู -->
+    <div class="left-group">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo fmr.png" alt="Farmora logo">
+        </a>
+      </div>
+
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+
+        <!-- Dropdown: ข่าวสารและกิจกรรม -->
+        <li class="dropdown">
+          <a href="news.html" class="dropdown-toggle">ข่าวสารและกิจกรรม ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="news.html">ข่าวสารทั้งหมด</a></li>
+            <li><a href="news.html?cat=news">ข่าวล่าสุด</a></li>
+            <li><a href="news.html?cat=activity">กิจกรรมที่ผ่านมา</a></li>
+            <li><a href="news.html?cat=article">บทความ</a></li>
+          </ul>
+        </li>
+
+        <!-- Dropdown: สินค้า (Active) -->
+        <li class="dropdown">
+          <a href="products.html" class="dropdown-toggle" style="color: #006837; font-weight: 700;">สินค้า ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="products.html">สินค้าทั้งหมด</a></li>
+            <li><a href="products.html?cat=fertilizer">ปุ๋ยเคมี</a></li>
+            <li><a href="products.html?cat=organic">ปุ๋ยอินทรีย์</a></li>
+            <li><a href="products.html?cat=pesticide">สารกำจัดศัตรูพืช</a></li>
+            <li><a href="products.html?cat=herbicide">สารกำจัดวัชพืช</a></li>
+            <li><a href="products.html?cat=hormone">ฮอร์โมนพืช</a></li>
+            <li><a href="products.html?cat=soil">สารปรับปรุงดิน</a></li>
+            <li><a href="products.html?cat=seeds">เมล็ดพันธุ์ผักและข้าว</a></li>
+            <li><a href="products.html?cat=feed">อาหารสัตว์</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- กลุ่มขวา: icons + ปุ่มติดต่อเรา -->
+    <div class="right-group">
+      <a href="#" class="icon" id="cart-icon" title="ตะกร้าสินค้า">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" style="display:none">0</span>
+      </a>
+      <a href="backend/index.html" class="icon" title="ระบบหลังบ้าน (Backend Admin)">
+        <i class="fa-solid fa-user"></i>
+      </a>
+      <a href="#contact" class="btn-contact">
+        <i class="fa-regular fa-paper-plane"></i>
+        <span>ติดต่อเรา</span>
+      </a>
+      <!-- hamburger (mobile) -->
+      <button class="hamburger" id="hamburger-btn" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+  </nav><!-- /navbar -->
+
+
+  <!-- ================================================================
+       SECTION 2: Products Hero Banner (ส่วนหัวหน้าสินค้า)
+       ================================================================ -->
+  <header class="products-hero">
+    <div class="products-hero-inner">
+      <div class="products-hero-badge">
+        <i class="fa-solid fa-seedling"></i>
+        <span>ผลิตภัณฑ์คุณภาพมาตรฐาน Farmora</span>
+      </div>
+      <h1>รายการสินค้าทั้งหมด</h1>
+      <p>เคมีเกษตร ปุ๋ย สารอารักขาพืช ฮอร์โมน และปัจจัยการผลิตครบวงจร คุณภาพมาตรฐานสากล เคียงข้างเกษตรกรไทยกว่า 30 ปี</p>
+
+      <div class="breadcrumb">
+        <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+        <span>/</span>
+        <span class="current">รายการสินค้า</span>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ================================================================
+       SECTION 3: Main Products Section (Layout 2 คอลัมน์)
+       ================================================================ -->
+  <main class="products-main">
+    <div class="products-container">
+      <div class="products-layout">
+
+        <!-- ══════════════════════════════════════
+             คอลัมน์ซ้าย: Sidebar ตัวกรองสินค้า
+        ══════════════════════════════════════ -->
+        <aside class="prod-sidebar">
+
+          <!-- 1. ค้นหาสินค้า -->
+          <div class="psb-card">
+            <h4 class="psb-title">
+              <span><i class="fa-solid fa-magnifying-glass"></i> ค้นหาสินค้า</span>
+            </h4>
+            <div class="psb-search">
+              <input type="search" id="prodSearch" placeholder="พิมพ์ชื่อสินค้า, สูตรปุ๋ย..." aria-label="ค้นหาสินค้า">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+          </div>
+
+          <!-- 2. หมวดหมู่สินค้า -->
+          <div class="psb-card">
+            <h4 class="psb-title">
+              <span><i class="fa-solid fa-folder-tree"></i> หมวดหมู่สินค้า</span>
+            </h4>
+            <ul class="psb-cats">
+              <li>
+                <button class="pcat-btn active" data-cat="all">
+                  <span><i class="fa-solid fa-layer-group"></i> สินค้าทั้งหมด</span>
+                  <span class="pcat-count">28</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="fertilizer">
+                  <span>🌾 ปุ๋ยเคมี</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="organic">
+                  <span>🌿 ปุ๋ยอินทรีย์</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="pesticide">
+                  <span>🛡️ สารกำจัดศัตรูพืช</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="herbicide">
+                  <span>🌱 สารกำจัดวัชพืช</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="hormone">
+                  <span>💧 ฮอร์โมนพืช</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="soil">
+                  <span>🪨 สารปรับปรุงดิน</span>
+                  <span class="pcat-count">4</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="seeds">
+                  <span>🌽 เมล็ดพันธุ์ผักและข้าว</span>
+                  <span class="pcat-count">2</span>
+                </button>
+              </li>
+              <li>
+                <button class="pcat-btn" data-cat="feed">
+                  <span>🐓 อาหารสัตว์</span>
+                  <span class="pcat-count">2</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 3. กรองช่วงราคา -->
+          <div class="psb-card">
+            <h4 class="psb-title">
+              <span><i class="fa-solid fa-coins"></i> ช่วงราคา</span>
+            </h4>
+            <div class="price-filter-list">
+              <label class="pf-label">
+                <input type="radio" name="price" value="all" checked>
+                <span>ทุกระดับราคา</span>
+              </label>
+              <label class="pf-label">
+                <input type="radio" name="price" value="under500">
+                <span>ต่ำกว่า ฿500</span>
+              </label>
+              <label class="pf-label">
+                <input type="radio" name="price" value="500-1000">
+                <span>฿500 – ฿1,000</span>
+              </label>
+              <label class="pf-label">
+                <input type="radio" name="price" value="over1000">
+                <span>มากกว่า ฿1,000</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 4. กรองชนิดพืชที่เหมาะสม -->
+          <div class="psb-card">
+            <h4 class="psb-title">
+              <span><i class="fa-solid fa-wheat-awn"></i> พืชที่เหมาะสม</span>
+            </h4>
+            <div class="crop-filter-grid">
+              <label class="crop-label">
+                <input type="checkbox" value="rice">
+                <span>ข้าว</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="cassava">
+                <span>มันสำปะหลัง</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="sugarcane">
+                <span>อ้อย</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="corn">
+                <span>ข้าวโพด</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="vegetable">
+                <span>ผักทั่วไป</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="fruit">
+                <span>ไม้ผล</span>
+              </label>
+              <label class="crop-label">
+                <input type="checkbox" value="rubber">
+                <span>ยางพารา</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 5. การ์ดติดต่อขอคำปรึกษา -->
+          <div class="psb-contact-box">
+            <div class="icon-circle">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <h4>ต้องการคำแนะนำการใช้ปุ๋ยยา?</h4>
+            <p>ทีมนักวิชาการเกษตรของ Farmora พร้อมให้คำปรึกษาเลือกผลิตภัณฑ์ที่เหมาะกับแปลงของคุณฟรี</p>
+            <a href="tel:0906886469" class="btn-psb-call">
+              <i class="fa-solid fa-phone"></i> โทร 090-688-6469
+            </a>
+          </div>
+
+        </aside>
+
+        <!-- ══════════════════════════════════════
+             คอลัมน์ขวา: พื้นที่แสดงรายการสินค้า
+        ══════════════════════════════════════ -->
+        <div class="prod-content-wrap">
+
+          <!-- แถบ Toolbar ด้านบน -->
+          <div class="prod-toolbar">
+            <div class="toolbar-left">
+              <span class="prod-counter-text">
+                แสดง <strong id="prodCount">28</strong> รายการ
+              </span>
+            </div>
+
+            <div class="toolbar-right">
+              <!-- ตัวเลือกจัดเรียง -->
+              <select id="sortSelect" class="sort-select" aria-label="จัดเรียงสินค้า">
+                <option value="default">เรียงตาม: แนะนำ</option>
+                <option value="price-asc">ราคา: ต่ำ ➔ สูง</option>
+                <option value="price-desc">ราคา: สูง ➔ ต่ำ</option>
+                <option value="name-asc">ชื่อสินค้า: ก – ฮ (A–Z)</option>
+              </select>
+
+              <!-- ปุ่มสลับมุมมอง Grid / List -->
+              <div class="view-toggle-wrap">
+                <button class="vt-btn active" id="gridView" title="มุมมองแบบกริด" aria-label="มุมมองแบบกริด">
+                  <i class="fa-solid fa-grip"></i>
+                </button>
+                <button class="vt-btn" id="listView" title="มุมมองแบบรายการ" aria-label="มุมมองแบบรายการ">
+                  <i class="fa-solid fa-list"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- แถบแสดง Active Filter Tags (เมื่อมีการกรอง) -->
+          <div class="active-filters-bar" id="activeFilters" style="display: none;">
+            <span class="af-label">ตัวกรองที่เลือก:</span>
+            <div class="af-tags-wrap" id="afTags"></div>
+            <button class="btn-clear-all-filters" onclick="window.FarmoraProducts.clearAllFilters()">
+              ✕ ล้างทั้งหมด
+            </button>
+          </div>
+
+          <!-- Grid บรรจุการ์ดสินค้า (สร้างผ่าน JavaScript อัตโนมัติ) -->
+          <div class="prod-grid" id="prodGrid">
+            <!-- Product cards will be generated by products.js -->
+          </div>
+
+          <!-- กล่องเมื่อค้นหาหรือกรองไม่พบ (Empty State) -->
+          <div class="prod-empty-state" id="noResultsProd" style="display: none;">
+            <i class="fa-solid fa-box-open"></i>
+            <h3>ไม่พบสินค้าที่ตรงกับเงื่อนไขการค้นหา</h3>
+            <p>ลองเปลี่ยนคำค้นหา หรือเลือกตัวกรองใหม่อีกครั้ง</p>
+            <button class="btn-reset-prod-filter" onclick="window.FarmoraProducts.clearAllFilters()">
+              <i class="fa-solid fa-rotate-left"></i> ดูสินค้าทั้งหมด
+            </button>
+          </div>
+
+        </div><!-- /prod-content-wrap -->
+
+      </div><!-- /products-layout -->
+    </div>
+  </main>
+
+
+  <!-- ================================================================
+       SECTION 4: Product Detail Modal (ป๊อปอัปดูรายละเอียดสินค้าเชิงลึก)
+       ================================================================ -->
+  <div class="pdm-backdrop" id="productDetailModal" role="dialog" aria-modal="true" aria-labelledby="pdmTitle">
+    <div class="pdm-dialog">
+      <button class="pdm-close-btn" onclick="window.FarmoraProducts.closeDetail()" aria-label="ปิด">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="pdm-grid">
+        <!-- ฝั่งซ้าย: รูปภาพสินค้า -->
+        <div class="pdm-gallery">
+          <div class="pdm-main-view">
+            <img id="pdmMainImg" src="" alt="รูปภาพสินค้า">
+          </div>
+        </div>
+
+        <!-- ฝั่งขวา: รายละเอียดสินค้า & สั่งซื้อ -->
+        <div class="pdm-info">
+          <div>
+            <span class="pdm-cat-badge" id="pdmCatName">หมวดหมู่</span>
+            <h2 class="pdm-title" id="pdmTitle">ชื่อสินค้า</h2>
+            
+            <div class="pdm-price-row">
+              <span class="pdm-price-val" id="pdmPrice">฿0</span>
+              <span class="pdm-price-unit" id="pdmUnit">/หน่วย</span>
+            </div>
+
+            <div class="pdm-crops-row">
+              <div class="pdm-crops-title"><i class="fa-solid fa-seedling"></i> เหมาะสำหรับพืช:</div>
+              <div class="pdm-crops-list" id="pdmCropsList"></div>
+            </div>
+
+            <div class="pdm-desc-full" id="pdmDesc">คำอธิบายสรรพคุณสินค้า</div>
+          </div>
+
+          <!-- ตัวเลือกจำนวน + ปุ่มลงตะกร้า -->
+          <div>
+            <div class="pdm-cart-row">
+              <div class="pdm-qty-picker">
+                <button type="button" class="pdm-qty-btn" onclick="window.changeModalQty(-1)">-</button>
+                <input type="number" id="pdmQtyInput" class="pdm-qty-input" value="1" min="1" max="999" aria-label="จำนวน">
+                <button type="button" class="pdm-qty-btn" onclick="window.changeModalQty(1)">+</button>
+              </div>
+              <button type="button" class="btn-pdm-add-cart" id="btnPdmAddToCart">
+                <i class="fa-solid fa-cart-plus"></i> เพิ่มลงในตะกร้า
+              </button>
+            </div>
+
+            <div class="pdm-contacts-row">
+              <a href="tel:0906886469" class="pdm-btn-call">
+                <i class="fa-solid fa-phone"></i> โทรปรึกษา / สั่งซื้อ
+              </a>
+              <a href="#" class="pdm-btn-line">
+                <i class="fa-brands fa-line"></i> สั่งผ่าน LINE @farmora
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================
+       SECTION 5: Toast Notification (แจ้งเตือนเพิ่มลงตะกร้า)
+       ================================================================ -->
+  <div class="toast-notice" id="toastNotice">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMsg">เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว!</span>
+  </div>
+
+
+  <!-- ================================================================
+       SECTION 6: Footer (ส่วนท้าย - คงเดิมตามคำสั่ง 100% ไม่เปลี่ยนแปลง)
+       ================================================================ -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-inner">
+
+      <!-- คอลัมน์ 1: Brand -->
+      <div class="footer-brand">
+        <img src="images/logo fmr.png" alt="Farmora" class="footer-logo">
+        <p>
+          166/1-2 ถนนพรหมเทพ ตำบลในเมือง<br>
+          อำเภอเมืองสุรินทร์ จังหวัดสุรินทร์ 32000
+        </p>
+      </div>
+
+      <!-- คอลัมน์ 2: ติดต่อ -->
+      <div class="footer-contact">
+        <h4>ข้อมูลติดต่อ</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@farmora.co.th</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>090-688-6469<br>090-688-7989</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-clock"></i>
+            <span>จันทร์ - อาทิตย์ 09:00–18:00 น.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- คอลัมน์ 3: Social -->
+      <div class="footer-social">
+        <h4>ติดตามเรา</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook" title="Facebook" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon line" title="LINE" aria-label="LINE">
+            <i class="fa-brands fa-line"></i>
+          </a>
+          <a href="#" class="social-icon tiktok" title="TikTok" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a href="#" class="social-icon youtube" title="YouTube" aria-label="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      &copy; 2025 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ
+    </div>
+  </footer><!-- /footer -->
+
+
+  <!-- ================================================================
+       SCRIPTS
+       ================================================================ -->
+  <script src="js/navbar.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+
+</body>
+</html>

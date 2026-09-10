@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmora — ผลิตภัณฑ์การเกษตรครบวงจร</title>
+
+  <!-- ================================================================
+       HEAD: เพิ่มจาก version เดิม
+       ✏️  เพิ่ม meta description + OG tags
+       ✏️  เพิ่ม favicon placeholder
+       ✏️  เพิ่ม CSS ไฟล์ใหม่ (features, products, footer)
+       ✏️  เพิ่ม Google Fonts fallback
+       ================================================================ -->
+  <meta name="description" content="Farmora ผลิตภัณฑ์การเกษตรครบวงจร มีมาตรฐาน คุณภาพ หลากหลายครบวงจร">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ✅ CSS Files (เรียงลำดับตาม dependency) -->
+  <link rel="stylesheet" href="css/navbar.css">       <!-- แก้ไข: +right-group, sticky -->
+  <link rel="stylesheet" href="css/navslide.css">     <!-- แก้ไข: +tabs, +dots -->
+  <link rel="stylesheet" href="css/features.css">     <!-- ใหม่: feature strip + photo cards -->
+  <link rel="stylesheet" href="css/products.css">     <!-- ใหม่: หมวดหมู่สินค้า -->
+  <link rel="stylesheet" href="css/footer.css">       <!-- ใหม่: footer -->
+</head>
+<body>
+
+  <!-- ================================================================
+       SECTION 1: Navbar
+       แก้ไข: เพิ่ม .right-group (cart + user icon + ปุ่มติดต่อเรา)
+              เพิ่ม hamburger menu สำหรับ mobile
+              เปลี่ยนเป็น sticky nav
+       ================================================================ -->
+  <nav class="navbar">
+
+    <!-- กลุ่มซ้าย: โลโก้ + เมนู -->
+    <div class="left-group">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo fmr.png" alt="Farmora logo">
+        </a>
+      </div>
+
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+
+        <li class="dropdown">
+          <a href="news.html" class="dropdown-toggle">ข่าวสารและกิจกรรม ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="news.html">ข่าวสารทั้งหมด</a></li>
+            <li><a href="news.html?cat=news">ข่าวล่าสุด</a></li>
+            <li><a href="news.html?cat=activity">กิจกรรมที่ผ่านมา</a></li>
+            <li><a href="news.html?cat=article">บทความ</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="products.html" class="dropdown-toggle">สินค้า ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="products.html">สินค้าทั้งหมด</a></li>
+            <li><a href="products.html?cat=fertilizer">ปุ๋ยเคมี</a></li>
+            <li><a href="products.html?cat=organic">ปุ๋ยอินทรีย์</a></li>
+            <li><a href="products.html?cat=pesticide">สารกำจัดศัตรูพืช</a></li>
+            <li><a href="products.html?cat=herbicide">สารกำจัดวัชพืช</a></li>
+            <li><a href="products.html?cat=hormone">ฮอร์โมนพืช</a></li>
+            <li><a href="products.html?cat=soil">สารปรับปรุงดิน</a></li>
+            <li><a href="products.html?cat=seeds">เมล็ดพันธุ์ผักและข้าว</a></li>
+            <li><a href="products.html?cat=feed">อาหารสัตว์</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ✏️ ใหม่: กลุ่มขวา — icons + ปุ่มติดต่อเรา -->
+    <div class="right-group">
+      <a href="#" class="icon" id="cart-icon" title="ตะกร้าสินค้า">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" style="display:none">0</span>
+      </a>
+      <a href="backend/index.html" class="icon" title="ระบบหลังบ้าน (Backend Admin)">
+        <i class="fa-solid fa-user"></i>
+      </a>
+      <a href="#contact" class="btn-contact">
+        <i class="fa-regular fa-paper-plane"></i>
+        <span>ติดต่อเรา</span>
+      </a>
+      <!-- hamburger (mobile) -->
+      <button class="hamburger" id="hamburger-btn" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+  </nav><!-- /navbar -->
+
+
+  <!-- ================================================================
+       SECTION 2: News Slider (ภาพซ้อนเบลอเต็มพื้นที่ เต็มตาตามดีไซน์)
+       ✏️ แก้ไข: ปรับให้ภาพเบลอคลุมเต็มพื้นที่ บน-ล่าง ซ้าย-ขวา
+              วางแท็กแคปซูล "ข่าวสาร / บทความ" เหนือหัวข้อข่าวตามภาพ
+              มีลูกศรเลื่อนซ้าย-ขวาลอยอยู่บนภาพเบลอ
+       ================================================================ -->
+  <section class="news-slider" aria-label="ข่าวสารและกิจกรรม">
+
+    <!-- ลูกศรซ้าย -->
+    <button class="arrow left" aria-label="สไลด์ก่อนหน้า">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="slides">
+
+      <!-- ================================================================
+           📌 SLIDE 1: ข่าวสารพันธุ์ข้าวและนาข้าว 2025
+           ────────────────────────────────────────────────────────────────
+           📸 จุดเปลี่ยนรูปภาพ:
+           - ภาพเบลอด้านหลัง: <img class="backdrop-img" src="images/picture 1.jpg">
+           - ภาพคมชัดด้านหน้า: .slide-image <img src="images/picture 1.jpg">
+           ================================================================ -->
+      <div class="slide active">
+        <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
+        <div class="slide-backdrop">
+          <img src="images/picture 1.jpg" alt="" class="backdrop-img">
+          <div class="backdrop-overlay"></div>
+        </div>
+
+        <!-- เนื้อหาด้านหน้า (Foreground) -->
+        <div class="slide-inner">
+          <div class="slide-image">
+            <img
+              src="images/picture 1.jpg"
+              alt="งานแสดงพันธุ์ข้าวและนาข้าว 2025">
+          </div>
+          <div class="slide-content">
+            <div class="tags">
+              <span class="tag">ข่าวสาร</span>
+              <span class="tag">บทความ</span>
+            </div>
+            <h2>เข้าร่วมการงานจัดแสดงพันธุ์ข้าวและนาข้าว 2025</h2>
+            <p>ลานไอซีซูแลคอร์ กรอบรูปเลคเชอร์รีโมต วิกัชภาคระโจก มหภาคเทเลกราฟฮี เด่นสงบสุข คันธระ: อุปสงค์ ควีนลอร์ด ตําฮ่วยคาร์โก้ศึกษาศาสตร์อัลบั้ม โทร ไข่งละตินนิวเอ้อรอยัลดี่ ...</p>
+            <a href="news.html?cat=news" class="btn-read">
+              <span>อ่านต่อ</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================
+           📌 SLIDE 2: ข่าวงานเกษตรแฟร์ 2026
+           ────────────────────────────────────────────────────────────────
+           📸 จุดเปลี่ยนรูปภาพ: สามารถเปลี่ยน path เป็นรูปจริงของคุณได้ที่ src
+           ================================================================ -->
+      <div class="slide">
+        <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
+        <div class="slide-backdrop">
+          <img 
+            src="images/hero1.jpg" 
+            alt="" 
+            class="backdrop-img">
+          <div class="backdrop-overlay"></div>
+        </div>
+
+        <!-- เนื้อหาด้านหน้า (Foreground) -->
+        <div class="slide-inner">
+          <div class="slide-image">
+            <img
+              src="images/hero1.jpg"
+              alt="งานเกษตรแฟร์ 2026">
+          </div>
+          <div class="slide-content">
+            <div class="tags">
+              <span class="tag">ข่าวสาร</span>
+              <span class="tag">กิจกรรม</span>
+            </div>
+            <h2>ร่วมงานเกษตรแฟร์ 2026 ณ มหาวิทยาลัยเกษตรศาสตร์</h2>
+            <p>พบกับนวัตกรรมการปลูกข้าวยุคใหม่ การแสดงสินค้าทางการเกษตร พันธุ์ข้าวคุณภาพสูง และเวิร์กช็อปให้คำปรึกษาฟรีจากผู้เชี่ยวชาญจาก Farmora ณ บูธนิทรรศการเกษตรกรรมยั่งยืน...</p>
+            <a href="news.html?cat=activity" class="btn-read">
+              <span>อ่านต่อ</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================
+           📌 SLIDE 3: โครงการฝึกอบรมเกษตรกร 2025
+           ────────────────────────────────────────────────────────────────
+           📸 จุดเปลี่ยนรูปภาพ: สามารถเปลี่ยน path เป็นรูปจริงของคุณได้ที่ src
+           ================================================================ -->
+      <div class="slide">
+        <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
+        <div class="slide-backdrop">
+          <img 
+            src="images/hero2.jpg" 
+            alt="" 
+            class="backdrop-img">
+          <div class="backdrop-overlay"></div>
+        </div>
+
+        <!-- เนื้อหาด้านหน้า (Foreground) -->
+        <div class="slide-inner">
+          <div class="slide-image">
+            <img
+              src="images/hero2.jpg"
+              alt="โครงการฝึกอบรมเกษตรกร 2025">
+          </div>
+          <div class="slide-content">
+            <div class="tags">
+              <span class="tag">บทความ</span>
+              <span class="tag">ความรู้</span>
+            </div>
+            <h2>โครงการฝึกอบรมเกษตรกรรุ่นใหม่ ประจำปี 2025</h2>
+            <p>Farmora ร่วมส่งเสริมองค์ความรู้เกษตรกรยุค 4.0 อัปเดตเทคนิคการจัดการดิน ปุ๋ยอินทรีย์ชีวภาพ และการใช้ฮอร์โมนพืชเพื่อเพิ่มผลผลิตต่อไร่อย่างยั่งยืนและปลอดภัย...</p>
+            <a href="news.html?cat=article" class="btn-read">
+              <span>อ่านต่อ</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /slides -->
+
+    <!-- ลูกศรขวา -->
+    <button class="arrow right" aria-label="สไลด์ถัดไป">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- ✏️ จุดบอกตำแหน่งสไลด์ (Dot indicators) -->
+    <div class="slide-dots" role="tablist" aria-label="เลือก slide">
+      <button class="dot active" aria-label="slide 1"></button>
+      <button class="dot" aria-label="slide 2"></button>
+      <button class="dot" aria-label="slide 3"></button>
+    </div>
+
+  </section><!-- /news-slider -->
+
+
+  <!-- ================================================================
+       SECTION 3: Features (แถบสีเขียว 4 ไอคอน)
+       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
+       ✅  4 feature highlights บน background สีเขียว
+       ================================================================ -->
+  <section class="features-section" aria-label="จุดเด่นของ Farmora">
+    <div class="features-grid">
+
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <p class="feature-title">ยกระดับผลผลิต<br>ด้วยผลิตภัณฑ์</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <p class="feature-title">พร้อมจัดส่งสินค้า<br>ทั่วประเทศ</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fa-solid fa-people-group"></i>
+        </div>
+        <p class="feature-title">ลงพื้นที่จริง<br>เกี่ยวข้องลูกค้า</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fa-solid fa-book-open-reader"></i>
+        </div>
+        <p class="feature-title">ก้าวทันเทรนด์<br>อัปเดตความรู้เสมอ</p>
+      </div>
+
+    </div>
+  </section><!-- /features -->
+
+
+  <!-- ================================================================
+       SECTION 4: Photo Cards (4 การ์ดภาพเกษตร)
+       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
+       ✅  4 การ์ดภาพ พร้อม hover lift + รายละเอียดด้านล่าง
+       ================================================================ -->
+  <section class="photocards-section" aria-label="ทำไมต้องเลือก Farmora">
+    <div class="photocards-grid">
+
+      <div class="photo-card">
+        <!-- ภาพตัวอย่าง: เปลี่ยนเป็น path ภาพจริงเมื่อพร้อม -->
+        <img src="images/picture 2.jpg"
+             alt="เพราะความสำเร็จของคุณ">
+        <div class="photo-card-body">
+          <p>เพราะความสำเร็จของคุณ คือความสำเร็จของเรา เราช่วยแก้ปัญหาให้เกษตรกรเพิ่มผลผลิตอย่างยั่งยืน</p>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="images/picture 3.jpg"
+             alt="พร้อมจัดส่งสินค้า">
+        <div class="photo-card-body">
+          <p>สต็อกสินค้าพร้อมจัดส่ง ถึงร้านค้า/เกษตรกรทั่วประเทศ เรานำส่งสินค้าให้คุณได้ทุกที่ ทันต่อฤดูกาล</p>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="images/picture 4.jpg"
+             alt="ลงพื้นที่จริงเกี่ยวข้องลูกค้า">
+        <div class="photo-card-body">
+          <p>พนักงานของเรา ลงพื้นที่จริง เพื่อดูแลคุณภาพอย่างใกล้ชิด พร้อมให้คำปรึกษาเพื่อดูแลลูกค้าของเรา</p>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="images/picture 5.jpg"
+             alt="ฝึกอบรมและพัฒนาทีมงาน">
+        <div class="photo-card-body">
+          <p>เพื่อให้คุณได้รับเทคนิคที่ดีที่สุด เราฝึกอบรมทีมงานอย่างต่อเนื่อง มีประสิทธิภาพด้านเทคโนโลยีการเกษตร</p>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- /photocards -->
+
+
+  <!-- ================================================================
+       SECTION 5: หมวดหมู่สินค้า
+       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
+       ✅  2×2 grid product categories
+       ✅  card: ภาพซ้าย + รายการ+ปุ่มขวา
+       ================================================================ -->
+  <section class="products-section" id="products" aria-label="หมวดหมู่สินค้า">
+    <div class="products-header">
+      <h2>หมวดหมู่สินค้า</h2>
+      <p>สินค้าเกษตรครบวงจร มีมาตรฐาน คุณภาพ หลากหลายครบวงจร</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Card 1: เมล็ดพันธุ์ผัก -->
+      <div class="product-card">
+        <div class="product-card-image">
+          <!-- ภาพตัวอย่าง: เปลี่ยนเป็น path ภาพจริงเมื่อพร้อม -->
+          <img src="images/vg 1.jpg"
+               alt="เมล็ดพันธุ์ผัก">
+        </div>
+        <div class="product-card-body">
+          <h3>เมล็ดพันธุ์ผัก</h3>
+          <ul>
+            <li>เมล็ดพันธุ์ผักตระกูลแตง</li>
+            <li>เมล็ดพันธุ์ต้นไม้</li>
+            <li>เมล็ดพันธุ์รูปโครงการ</li>
+          </ul>
+          <a href="products.html?cat=seeds" class="btn-products">
+            <span>ดูสินค้าทั้งหมด</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: เมล็ดพันธุ์ข้าว -->
+      <div class="product-card">
+        <div class="product-card-image">
+          <img src="images/vg 2.jpg"
+               alt="เมล็ดพันธุ์ข้าว">
+        </div>
+        <div class="product-card-body">
+          <h3>เมล็ดพันธุ์ข้าว</h3>
+          <ul>
+            <li>ข้าวเหนียว</li>
+            <li>ข้าวเจ้า</li>
+            <li>ข้าวหอมมะลิ</li>
+          </ul>
+          <a href="products.html?cat=seeds" class="btn-products">
+            <span>ดูสินค้าทั้งหมด</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: สินค้าการเกษตร -->
+      <div class="product-card">
+        <div class="product-card-image">
+          <img src="images/vg 3.jpg"
+               alt="สินค้าการเกษตร">
+        </div>
+        <div class="product-card-body">
+          <h3>สินค้าการเกษตร</h3>
+          <ul>
+            <li>ปุ๋ยปรับปรุงดิน</li>
+            <li>ปุ๋ยอินทรีย์</li>
+            <li>อุปกรณ์บำรุงน้ำ</li>
+          </ul>
+          <a href="products.html?cat=fertilizer" class="btn-products">
+            <span>ดูสินค้าทั้งหมด</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: อาหารสัตว์ -->
+      <div class="product-card">
+        <div class="product-card-image">
+          <img src="images/vg 4.jpg"
+               alt="อาหารสัตว์">
+        </div>
+        <div class="product-card-body">
+          <h3>อาหารสัตว์</h3>
+          <ul>
+            <li>อาหารอุตสาหกรรม</li>
+            <li>โปรตีนเสริม</li>
+            <li>วิตามินและแร่ธาตุ</li>
+          </ul>
+          <a href="products.html?cat=feed" class="btn-products">
+            <span>ดูสินค้าทั้งหมด</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- /products -->
+
+
+  <!-- ================================================================
+       SECTION 6: Footer
+       ใหม่ทั้งหมด: section นี้ไม่มีใน version เดิม
+       ✅  3 คอลัมน์: บริษัท | ติดต่อ | Social Media
+       ✅  Social icons (Facebook, LINE, TikTok, YouTube)
+       ✅  Bottom bar ลิขสิทธิ์
+       ================================================================ -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-inner">
+
+      <!-- คอลัมน์ 1: Brand -->
+      <div class="footer-brand">
+        <img src="images/logo fmr.png" alt="Farmora" class="footer-logo">
+        <p>
+          166/1-2 ถนนพรหมเทพ ตำบลในเมือง<br>
+          อำเภอเมืองสุรินทร์ จังหวัดสุรินทร์ 32000
+        </p>
+      </div>
+
+      <!-- คอลัมน์ 2: ติดต่อ -->
+      <div class="footer-contact">
+        <h4>ข้อมูลติดต่อ</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@farmora.co.th</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>090-688-6469<br>090-688-7989</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-clock"></i>
+            <span>จันทร์ - อาทิตย์ 09:00–18:00 น.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- คอลัมน์ 3: Social -->
+      <div class="footer-social">
+        <h4>ติดตามเรา</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook" title="Facebook" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon line" title="LINE" aria-label="LINE">
+            <i class="fa-brands fa-line"></i>
+          </a>
+          <a href="#" class="social-icon tiktok" title="TikTok" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a href="#" class="social-icon youtube" title="YouTube" aria-label="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      &copy; 2025 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ
+    </div>
+  </footer><!-- /footer -->
+
+
+  <!-- ================================================================
+       SCRIPTS
+       แก้ไข: เพิ่ม hamburger menu toggle script (inline)
+              slide.js และ cart.js ยังใช้ path เดิม
+       ================================================================ -->
+  <script src="js/navbar.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/slide.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกี่ยวกับเรา — Farmora ฟาร์โมรา</title>
+
+  <!-- ================================================================
+       HEAD: หน้าเกี่ยวกับเรา (About Us Page)
+       ================================================================ -->
+  <meta name="description" content="เกี่ยวกับ Farmora ผู้นำเข้าและจัดจำหน่ายผลิตภัณฑ์การเกษตรครบวงจร เคียงข้างเกษตรกรไทยกว่า 30 ปี">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ✅ CSS Files -->
+  <link rel="stylesheet" href="css/navbar.css">       <!-- สไตล์ Navbar -->
+  <link rel="stylesheet" href="css/about.css">        <!-- สไตล์เฉพาะหน้าเกี่ยวกับเรา -->
+  <link rel="stylesheet" href="css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง) -->
+</head>
+<body>
+
+  <!-- ================================================================
+       SECTION 1: Navbar (เมนูบาร์หลัก)
+       - ลิงก์หน้าแรกเชื่อมไปที่ index.html
+       - ลิงก์เกี่ยวกับเราเชื่อมที่ about.html (Active)
+       ================================================================ -->
+  <nav class="navbar">
+
+    <!-- กลุ่มซ้าย: โลโก้ + เมนู -->
+    <div class="left-group">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo fmr.png" alt="Farmora logo">
+        </a>
+      </div>
+
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="about.html" style="color: #006837; font-weight: 700;">เกี่ยวกับเรา</a></li>
+
+        <li class="dropdown">
+          <a href="news.html" class="dropdown-toggle">ข่าวสารและกิจกรรม ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="news.html">ข่าวสารทั้งหมด</a></li>
+            <li><a href="news.html?cat=news">ข่าวล่าสุด</a></li>
+            <li><a href="news.html?cat=activity">กิจกรรมที่ผ่านมา</a></li>
+            <li><a href="news.html?cat=article">บทความ</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="products.html" class="dropdown-toggle">สินค้า ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="products.html">สินค้าทั้งหมด</a></li>
+            <li><a href="products.html?cat=fertilizer">ปุ๋ยเคมี</a></li>
+            <li><a href="products.html?cat=organic">ปุ๋ยอินทรีย์</a></li>
+            <li><a href="products.html?cat=pesticide">สารกำจัดศัตรูพืช</a></li>
+            <li><a href="products.html?cat=herbicide">สารกำจัดวัชพืช</a></li>
+            <li><a href="products.html?cat=hormone">ฮอร์โมนพืช</a></li>
+            <li><a href="products.html?cat=soil">สารปรับปรุงดิน</a></li>
+            <li><a href="products.html?cat=seeds">เมล็ดพันธุ์ผักและข้าว</a></li>
+            <li><a href="products.html?cat=feed">อาหารสัตว์</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- กลุ่มขวา: icons + ปุ่มติดต่อเรา -->
+    <div class="right-group">
+      <a href="#" class="icon" id="cart-icon" title="ตะกร้าสินค้า">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" style="display:none">0</span>
+      </a>
+      <a href="backend/index.html" class="icon" title="ระบบหลังบ้าน (Backend Admin)">
+        <i class="fa-solid fa-user"></i>
+      </a>
+      <a href="#contact" class="btn-contact">
+        <i class="fa-regular fa-paper-plane"></i>
+        <span>ติดต่อเรา</span>
+      </a>
+      <!-- hamburger (mobile) -->
+      <button class="hamburger" id="hamburger-btn" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+  </nav><!-- /navbar -->
+
+
+  <!-- ================================================================
+       SECTION 2: About Hero Banner (ส่วนหัวหน้าเกี่ยวกับเรา)
+       ================================================================ -->
+  <header class="about-hero">
+    <div class="about-hero-content">
+      <div class="about-hero-badge">
+        <i class="fa-solid fa-seedling"></i>
+        <span>Farmora Official</span>
+      </div>
+      <h1>เกี่ยวกับ ฟาร์โมรา (Farmora)</h1>
+      <p>ผู้นำด้านผลิตภัณฑ์การเกษตรครบวงจร ด้วยประสบการณ์กว่า 30 ปี มุ่งมั่นเคียงข้างและยกระดับคุณภาพชีวิตของเกษตรกรไทย</p>
+      
+      <div class="breadcrumb">
+        <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+        <span>/</span>
+        <span>เกี่ยวกับเรา</span>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ================================================================
+       SECTION 3: สถิติความสำเร็จ (Stats Bar)
+       ================================================================ -->
+  <section class="stats-bar-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-number">30+</span>
+        <span class="stat-label">ปีแห่งประสบการณ์</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">500+</span>
+        <span class="stat-label">รายการผลิตภัณฑ์เกษตร</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">10,000+</span>
+        <span class="stat-label">เกษตรกรและร้านค้าไว้วางใจ</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">77</span>
+        <span class="stat-label">จังหวัดเครือข่ายจัดส่งทั่วไทย</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SECTION 4: เรื่องราวและความเป็นมา (Our Story)
+       ================================================================ -->
+  <section class="about-story-section">
+    <div class="about-story-container">
+
+      <!-- ภาพประกอบฝั่งซ้าย -->
+      <div class="about-story-image">
+        <img src="images/picture 1.jpg" alt="บรรยากาศงาน Farmora">
+        <div class="about-story-badge-float">
+          <i class="fa-solid fa-award"></i>
+          <div class="badge-text">
+            <h4>ก่อตั้งปี 2537</h4>
+            <p>กว่า 3 ทศวรรษแห่งความเชื่อมั่น</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- เนื้อหาเรื่องราวฝั่งขวา -->
+      <div class="about-story-text">
+        <span class="section-badge-small">บริษัท ฟาร์โมรา จำกัด</span>
+        <h2>เพราะความสำเร็จของคุณ<br>คือความสำเร็จของเรา</h2>
+        <div class="highlight-text">
+          "เราเชื่อมั่นว่า การเกษตรที่ดีต้องอาศัยทั้งองค์ความรู้ เทคโนโลยีสมัยใหม่ และผลิตภัณฑ์คุณภาพสูง เพื่อสร้างอนาคตที่มั่นคงให้เกษตรกรไทย"
+        </div>
+        <p>
+          บริษัท ฟาร์โมรา จำกัด ก่อตั้งขึ้นเมื่อปี พ.ศ. 2537 ด้วยวิสัยทัศน์ที่ต้องการพัฒนาภาคเกษตรกรรมไทยให้เติบโตอย่างยั่งยืน เราเป็นผู้ผลิต นำเข้า และจัดจำหน่ายผลิตภัณฑ์การเกษตรครบวงจร ไม่ว่าจะเป็นเมล็ดพันธุ์ผักคุณภาพสูง เมล็ดพันธุ์ข้าวคัดพิเศษ ปุ๋ยอินทรีย์ปรับปรุงดิน สารชีวภัณฑ์ และอาหารสัตว์มาตรฐานสากล
+        </p>
+        <p>
+          ตลอดระยะเวลากว่า 30 ปี เราได้สั่งสมประสบการณ์และความเชี่ยวชาญ พร้อมทีมนักวิชาการเกษตรที่คอยลงพื้นที่จริง ให้คำปรึกษาและแนะนำการใช้ผลิตภัณฑ์อย่างถูกต้อง ปลอดภัย และเกิดผลผลิตสูงสุดแก่เกษตรกรทั่วประเทศ
+        </p>
+
+        <ul class="about-checklist">
+          <li>
+            <i class="fa-solid fa-circle-check"></i>
+            <span>คัดสรรเมล็ดพันธุ์ที่ทนทานต่อโรค ให้ผลผลิตดกสม่ำเสมอ</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-check"></i>
+            <span>ทีมนักวิชาการลงพื้นที่จริง เคียงข้างดูแลแปลงปลูกอย่างใกล้ชิด</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-check"></i>
+            <span>ระบบคลังสินค้ามาตรฐาน พร้อมบริการจัดส่งรวดเร็วถึงมือทั่วประเทศ</span>
+          </li>
+        </ul>
+
+        <a href="#contact" class="btn-contact" style="display: inline-flex;">
+          <i class="fa-solid fa-phone"></i>
+          <span>ติดต่อสอบถามข้อมูลเพิ่มเติม</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SECTION 5: วิสัยทัศน์และพันธกิจ (Vision & Mission)
+       ================================================================ -->
+  <section class="vision-mission-section">
+    <div class="vision-mission-container">
+
+      <div class="section-title-center">
+        <span class="sub-tag">OUR DIRECTION</span>
+        <h2>วิสัยทัศน์และพันธกิจ</h2>
+      </div>
+
+      <div class="vm-cards-grid">
+
+        <!-- วิสัยทัศน์ -->
+        <div class="vm-card">
+          <div class="vm-card-icon">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <h3>วิสัยทัศน์ (Vision)</h3>
+          <p>
+            มุ่งสู่การเป็นแบรนด์ผลิตภัณฑ์การเกษตรอันดับหนึ่งในใจเกษตรกรไทย ที่ผสานนวัตกรรม เทคโนโลยี และภูมิปัญญาการเพาะปลูก เพื่อสร้างผลผลิตที่อุดมสมบูรณ์ และยกระดับมาตรฐานสินค้าเกษตรไทยสู่ระดับสากลอย่างยั่งยืน
+          </p>
+        </div>
+
+        <!-- พันธกิจ -->
+        <div class="vm-card">
+          <div class="vm-card-icon">
+            <i class="fa-solid fa-bullseye"></i>
+          </div>
+          <h3>พันธกิจ (Mission)</h3>
+          <p>
+            วิจัย คัดสรร และจัดจำหน่ายผลิตภัณฑ์การเกษตรที่มีประสิทธิภาพสูง ส่งมอบองค์ความรู้และเทคนิคการเพาะปลูกที่ทันสมัยอย่างต่อเนื่อง พร้อมทั้งสร้างเครือข่ายความร่วมมือกับเกษตรกรและชุมชน เพื่อผลผลิตที่คุ้มค่าและเป็นมิตรต่อสิ่งแวดล้อม
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SECTION 6: ไทม์ไลน์ความสำเร็จ (Timeline)
+       ================================================================ -->
+  <section class="timeline-section">
+    <div class="timeline-container">
+
+      <div class="section-title-center">
+        <span class="sub-tag">OUR JOURNEY</span>
+        <h2>เส้นทางกว่า 30 ปีของ Farmora</h2>
+      </div>
+
+      <div class="timeline-list">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">พ.ศ. 2537</span>
+            <h4>จุดเริ่มต้นและก่อตั้งบริษัท</h4>
+            <p>บริษัท ฟาร์โมรา จำกัด ก่อตั้งขึ้นโดยกลุ่มผู้เชี่ยวชาญด้านเกษตรกรรม เริ่มต้นจากการคัดสรรและจัดจำหน่ายปุ๋ยและปัจจัยการผลิตคุณภาพสูง</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">พ.ศ. 2548</span>
+            <h4>ขยายศูนย์กระจายสินค้าและเมล็ดพันธุ์</h4>
+            <p>ขยายสายการผลิตเมล็ดพันธุ์ผักและข้าว พร้อมสร้างระบบคลังสินค้ามาตรฐานเพื่อรองรับการจัดส่งครอบคลุมภาคตะวันออกเฉียงเหนือและทั่วประเทศ</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">พ.ศ. 2558</span>
+            <h4>เกษตรแม่นยำและนวัตกรรมดิน</h4>
+            <p>ริเริ่มโครงการพัฒนาสารปรับปรุงดินและปุ๋ยอินทรีย์ชีวภาพ ผสานเทคโนโลยีการเกษตรสมัยใหม่เพื่อเพิ่มประสิทธิภาพการดูดซึมธาตุอาหารของพืช</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">พ.ศ. 2568 - ปัจจุบัน</span>
+            <h4>ก้าวสู่ยุคเกษตรอัจฉริยะ (Smart Agriculture)</h4>
+            <p>ยกระดับการให้บริการด้วยระบบดิจิทัล จัดส่งสินค้าทั่วไทยถึงมือเกษตรกร พร้อมเดินหน้าสู่ความยั่งยืนทางอาหารและสิ่งแวดล้อม</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SECTION 7: เสาหลักความมุ่งมั่น 4 ประการ (Core Values)
+       ================================================================ -->
+  <section class="core-values-section">
+    <div class="core-values-container">
+
+      <div class="section-title-center">
+        <span class="sub-tag">CORE VALUES</span>
+        <h2>เสาหลักความมุ่งมั่นของ Farmora</h2>
+      </div>
+
+      <div class="values-grid">
+
+        <div class="value-box">
+          <div class="value-box-icon">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <h4>ยกระดับผลผลิต</h4>
+          <p>ส่งมอบผลิตภัณฑ์คุณภาพที่ช่วยเพิ่มปริมาณและคุณภาพผลผลิตให้คุ้มค่าการลงทุน</p>
+        </div>
+
+        <div class="value-box">
+          <div class="value-box-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <h4>พร้อมส่งทั่วไทย</h4>
+          <p>เครือข่ายโลจิสติกส์ที่รวดเร็ว ปลอดภัย ทันต่อทุกฤดูกาลเพาะปลูกของเกษตรกร</p>
+        </div>
+
+        <div class="value-box">
+          <div class="value-box-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <h4>ลงพื้นที่จริง</h4>
+          <p>เคียงข้างเกษตรกร เข้าถึงแปลงปลูกจริงเพื่อรับฟังและร่วมแก้ปัญหาอย่างตรงจุด</p>
+        </div>
+
+        <div class="value-box">
+          <div class="value-box-icon">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <h4>ก้าวทันเทรนด์</h4>
+          <p>อัปเดตนวัตกรรมและแบ่งปันองค์ความรู้เกษตรสมัยใหม่อยู่เสมอ</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SECTION 8: Footer (ส่วนท้าย - คงเดิมตามคำสั่ง ไม่เปลี่ยนแปลง)
+       ================================================================ -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-inner">
+
+      <!-- คอลัมน์ 1: Brand -->
+      <div class="footer-brand">
+        <img src="images/logo fmr.png" alt="Farmora" class="footer-logo">
+        <p>
+          166/1-2 ถนนพรหมเทพ ตำบลในเมือง<br>
+          อำเภอเมืองสุรินทร์ จังหวัดสุรินทร์ 32000
+        </p>
+      </div>
+
+      <!-- คอลัมน์ 2: ติดต่อ -->
+      <div class="footer-contact">
+        <h4>ข้อมูลติดต่อ</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@farmora.co.th</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>090-688-6469<br>090-688-7989</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-clock"></i>
+            <span>จันทร์ - อาทิตย์ 09:00–18:00 น.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- คอลัมน์ 3: Social -->
+      <div class="footer-social">
+        <h4>ติดตามเรา</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook" title="Facebook" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon line" title="LINE" aria-label="LINE">
+            <i class="fa-brands fa-line"></i>
+          </a>
+          <a href="#" class="social-icon tiktok" title="TikTok" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a href="#" class="social-icon youtube" title="YouTube" aria-label="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      &copy; 2025 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ
+    </div>
+  </footer><!-- /footer -->
+
+
+  <!-- ================================================================
+       SCRIPTS
+       ================================================================ -->
+  <script src="js/navbar.js"></script>
+  <script src="js/cart.js"></script>
+
+</body>
+</html>

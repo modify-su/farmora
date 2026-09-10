@@ -1,4 +1,4 @@
-// push_to_github.js - Automates git commit and git push for Farmora Official
+// push_to_github.js - Automates sync, git commit and git push for Farmora Official
 const { execFileSync } = require('child_process');
 const path = require('path');
 
@@ -19,8 +19,16 @@ function runGit(args) {
   }
 }
 
-// 1. ตรวจสอบสถานะ Git และ Commit
-console.log('[1/2] กำลังเตรียมและบันทึกไฟล์ (git add .)...');
+// 1. ซิงค์ไฟล์ HTML เข้า Root
+console.log('[1/3] กำลังซิงค์ไฟล์ HTML ให้ Vercel และ Local ทำงานสมบูรณ์...');
+try {
+  require('./sync_root.js');
+} catch (e) {
+  console.log('  คำเตือน:', e.message);
+}
+
+// 2. ตรวจสอบสถานะ Git และ Commit
+console.log('\n[2/3] กำลังเตรียมและบันทึกไฟล์ (git add .)...');
 runGit(['add', '.']);
 const statusRes = runGit(['status', '--porcelain']);
 
@@ -38,8 +46,8 @@ if (statusRes.output && statusRes.output.length > 0) {
   console.log('  ✓ ไฟล์ทั้งหมดในโปรเจกต์ได้รับการบันทึกล่าสุดแล้ว');
 }
 
-// 2. Push ขึ้น GitHub
-console.log('\n[2/2] กำลังส่งข้อมูลขึ้น GitHub (git push origin main)...');
+// 3. Push ขึ้น GitHub
+console.log('\n[3/3] กำลังส่งข้อมูลขึ้น GitHub (git push origin main)...');
 let pushRes = runGit(['push', '-u', 'origin', 'main']);
 
 if (!pushRes.success && (pushRes.output.includes('rejected') || pushRes.output.includes('fetch first') || pushRes.output.includes('non-fast-forward'))) {
