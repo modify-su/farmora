@@ -1,11 +1,29 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/frontend/html", "destination": "/", "permanent": true },
+    { "source": "/frontend/html/", "destination": "/", "permanent": true },
+    { "source": "/frontend/html/index", "destination": "/", "permanent": true },
+    { "source": "/frontend/html/index.html", "destination": "/", "permanent": true },
+    { "source": "/frontend/html/about(.*)", "destination": "/about", "permanent": true },
+    { "source": "/frontend/html/news(.*)", "destination": "/news", "permanent": true },
+    { "source": "/frontend/html/products(.*)", "destination": "/products", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/frontend/html/index.html" },
+    { "source": "/css/admin.css", "destination": "/backend/css/admin.css" },
+    { "source": "/js/admin.js", "destination": "/backend/js/admin.js" },
+    { "source": "/js/data-store.js", "destination": "/backend/js/data-store.js" },
+    { "source": "/css/(.*)", "destination": "/frontend/css/$1" },
+    { "source": "/images/(.*)", "destination": "/frontend/images/$1" },
+    { "source": "/js/(.*)", "destination": "/frontend/js/$1" },
+    { "source": "/fonts/(.*)", "destination": "/frontend/fonts/$1" },
+    { "source": "/backend", "destination": "/backend/index.html" },
+    { "source": "/backend/(.*)", "destination": "/backend/$1" },
     { "source": "/about", "destination": "/frontend/html/about.html" },
     { "source": "/news", "destination": "/frontend/html/news.html" },
     { "source": "/products", "destination": "/frontend/html/products.html" },
-    { "source": "/backend", "destination": "/backend/index.html" }
+    { "source": "/", "destination": "/frontend/html/index.html" }
   ],
   "headers": [
     {
