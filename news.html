@@ -14,12 +14,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- ✅ CSS Files -->
-  <link rel="stylesheet" href="css/navbar.css">       <!-- สไตล์ Navbar -->
-  <link rel="stylesheet" href="css/news.css">         <!-- สไตล์เฉพาะหน้าข่าวสาร -->
-  <link rel="stylesheet" href="css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง 100%) -->
+  <link rel="stylesheet" href="frontend/css/navbar.css">       <!-- สไตล์ Navbar -->
+  <link rel="stylesheet" href="frontend/css/news.css">         <!-- สไตล์เฉพาะหน้าข่าวสาร -->
+  <link rel="stylesheet" href="frontend/css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง 100%) -->
 
   <!-- 🎨 Dynamic CI Theme & Colors -->
-  <script src="js/theme.js"></script>
+  <script src="frontend/js/theme.js"></script>
 </head>
 <body>
 
@@ -32,7 +32,7 @@
     <div class="left-group">
       <div class="logo">
         <a href="index.html">
-          <img src="images/logo fmr.png" alt="Farmora logo">
+          <img src="frontend/images/logo fmr.png" alt="Farmora logo">
         </a>
       </div>
 
@@ -170,7 +170,7 @@
   <section class="news-featured-section">
     <div class="featured-card">
       <div class="featured-img-wrap" onclick="window.FarmoraNews.openModal('n1')">
-        <img src="images/news-hero.jpg" alt="Farmora ศูนย์กระจายสินค้าใหม่">
+        <img src="frontend/images/news-hero.jpg" alt="Farmora ศูนย์กระจายสินค้าใหม่">
         <span class="featured-cat-tag cat-news">ข่าวล่าสุด</span>
       </div>
       <div class="featured-body">
@@ -272,7 +272,7 @@
           </h4>
           <div class="sidebar-recent-list">
             <div class="recent-news-item" onclick="window.FarmoraNews.openModal('n4')">
-              <img src="images/about-team.jpg" alt="Field Day" class="recent-news-img">
+              <img src="frontend/images/about-team.jpg" alt="Field Day" class="recent-news-img">
               <div class="recent-news-info">
                 <h4>งานวันเกษตรกร Field Day 2568 เกษตรกรแห่ร่วมกว่า 1,500 ราย</h4>
                 <time><i class="fa-regular fa-calendar"></i> 18 ส.ค. 2568</time>
@@ -280,7 +280,7 @@
             </div>
 
             <div class="recent-news-item" onclick="window.FarmoraNews.openModal('n7')">
-              <img src="images/product-fertilizer.jpg" alt="ปุ๋ยข้าว" class="recent-news-img">
+              <img src="frontend/images/product-fertilizer.jpg" alt="ปุ๋ยข้าว" class="recent-news-img">
               <div class="recent-news-info">
                 <h4>5 เคล็ดลับการเตรียมดินและผสมปุ๋ย สำหรับนาข้าวให้ได้ผลผลิตตันต่อไร่</h4>
                 <time><i class="fa-regular fa-calendar"></i> 12 ก.ค. 2568</time>
@@ -288,7 +288,7 @@
             </div>
 
             <div class="recent-news-item" onclick="window.FarmoraNews.openModal('n2')">
-              <img src="images/product-pesticide.jpg" alt="FarmoShield Pro" class="recent-news-img">
+              <img src="frontend/images/product-pesticide.jpg" alt="FarmoShield Pro" class="recent-news-img">
               <div class="recent-news-info">
                 <h4>เปิดตัว "FarmoShield Pro" ชีวภัณฑ์กำจัดแมลงสูตรพิเศษ ปลอดภัย ไร้สารตกค้าง</h4>
                 <time><i class="fa-regular fa-calendar"></i> 2 ก.ย. 2568</time>
@@ -371,7 +371,7 @@
 
       <!-- คอลัมน์ 1: Brand -->
       <div class="footer-brand">
-        <img src="images/logo fmr.png" alt="Farmora" class="footer-logo">
+        <img src="frontend/images/logo fmr.png" alt="Farmora" class="footer-logo">
         <p>
           166/1-2 ถนนพรหมเทพ ตำบลในเมือง<br>
           อำเภอเมืองสุรินทร์ จังหวัดสุรินทร์ 32000
@@ -428,9 +428,9 @@
   <!-- ================================================================
        SCRIPTS
        ================================================================ -->
-  <script src="js/navbar.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/news.js"></script>
+  <script src="frontend/js/navbar.js"></script>
+  <script src="frontend/js/cart.js"></script>
+  <script src="frontend/js/news.js"></script>
 
 </body>
 </html>

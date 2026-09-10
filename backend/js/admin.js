@@ -75,16 +75,24 @@
   }
 
   function handleLogin(e) {
-    e.preventDefault();
-    const user = document.getElementById('authUsername').value.trim();
-    const pass = document.getElementById('authPassword').value.trim();
+    if (e && e.preventDefault) e.preventDefault();
+    const userInput = document.getElementById('authUsername');
+    const passInput = document.getElementById('authPassword');
+    const user = (userInput ? userInput.value : 'admin').trim();
+    const pass = (passInput ? passInput.value : '').trim();
 
-    // Simple Admin Auth
-    if (user !== 'admin' || pass !== 'farmora2025') {
+    // Simple Admin Auth (ยอมรับทั้ง farmora2025 และ farmora2026)
+    if (user !== 'admin' || (pass !== 'farmora2025' && pass !== 'farmora2026')) {
       const err = document.getElementById('authError');
-      if (err) err.style.display = 'block';
+      if (err) {
+        err.style.display = 'block';
+        err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (กรุณาใช้ admin / farmora2026)';
+      }
       return;
     }
+
+    const err = document.getElementById('authError');
+    if (err) err.style.display = 'none';
 
     localStorage.setItem('farmora_admin_authed', 'true');
     const authOverlay = document.getElementById('authOverlay');
@@ -275,16 +283,23 @@
         document.getElementById('slideBtnLink').value = s.btnLink || '';
         document.getElementById('slideOrder').value = s.order || 1;
         document.getElementById('slideIsActive').checked = s.isActive !== false;
+        document.getElementById('slideOpenNewTab').checked = !!s.openNewTab;
+        const qLink = document.getElementById('slideQuickLink');
+        if (qLink) qLink.value = '';
       }
     } else {
       document.getElementById('slideForm').reset();
       document.getElementById('slideTag1').value = 'ข่าวสาร';
       document.getElementById('slideTag2').value = 'บทความ';
       document.getElementById('slideBtnText').value = 'อ่านต่อ';
+      document.getElementById('slideBtnLink').value = '';
       document.getElementById('slideOrder').value = (DS.Slides.getAll().length + 1);
       document.getElementById('slideIsActive').checked = true;
+      document.getElementById('slideOpenNewTab').checked = false;
       document.getElementById('slideFgImage').value = '../frontend/images/picture 1.jpg';
       document.getElementById('slideBgImage').value = '../frontend/images/picture 1.jpg';
+      const qLink = document.getElementById('slideQuickLink');
+      if (qLink) qLink.value = '';
     }
 
     updateSlideLivePreview();
@@ -300,6 +315,29 @@
     if (previewBg) previewBg.src = DS.resolveImg(bg);
   }
 
+  function copyForegroundToBackground() {
+    const fg = document.getElementById('slideFgImage')?.value.trim();
+    if (!fg) {
+      showToast('กรุณาระบุหรืออัปโหลดภาพด้านหน้าก่อน', true);
+      return;
+    }
+    const bgInput = document.getElementById('slideBgImage');
+    if (bgInput) {
+      bgInput.value = fg;
+      updateSlideLivePreview();
+      showToast('คัดลอกภาพด้านหน้ามาใช้เป็นภาพพื้นหลังเบลอเรียบร้อย');
+    }
+  }
+
+  function applyQuickLink(targetInputId, url) {
+    if (!url) return;
+    const target = document.getElementById(targetInputId);
+    if (target) {
+      target.value = url;
+      showToast(`แนบลิงก์ปลายทาง: ${url}`);
+    }
+  }
+
   function saveSlide(e) {
     if (e) e.preventDefault();
     const id = document.getElementById('slideId').value;
@@ -313,6 +351,7 @@
       bgImage: document.getElementById('slideBgImage').value.trim(),
       btnText: document.getElementById('slideBtnText').value.trim() || 'อ่านต่อ',
       btnLink: document.getElementById('slideBtnLink').value.trim() || '#',
+      openNewTab: document.getElementById('slideOpenNewTab').checked,
       order: parseInt(document.getElementById('slideOrder').value || '1', 10),
       isActive: document.getElementById('slideIsActive').checked
     };
@@ -1162,6 +1201,161 @@
   }
 
   /* --------------------------------------------------------------------------
+     10.5. Direct Image Upload & Media Picker Helper (สำหรับทุกฟอร์มในระบบ)
+     -------------------------------------------------------------------------- */
+  let activeMediaPickerTargetId = null;
+
+  function handleImageUpload(e, targetInputId) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('กรุณาเลือกไฟล์ที่เป็นรูปภาพเท่านั้น (JPG, PNG, WebP)', true);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+      const targetInput = document.getElementById(targetInputId);
+      if (targetInput) {
+        targetInput.value = base64;
+      }
+
+      // อัปเดตพรีวิวตามฟิลด์เป้าหมาย
+      if (targetInputId === 'slideFgImage' || targetInputId === 'slideBgImage') {
+        updateSlideLivePreview();
+      } else if (targetInputId === 'newsImage') {
+        const p = document.getElementById('previewNewsImg');
+        if (p) p.src = base64;
+      } else if (targetInputId === 'articleImage') {
+        const p = document.getElementById('previewArticleImg');
+        if (p) p.src = base64;
+      } else if (targetInputId === 'productImage') {
+        const p = document.getElementById('previewProductImg');
+        if (p) p.src = base64;
+      } else if (targetInputId === 'aboutStoryImage') {
+        updateAboutStoryImgPreview();
+      }
+
+      // บันทึกลงในคลังรูปภาพ (Media Library) ให้อัตโนมัติ
+      const sizeKB = Math.round(file.size / 1024) + ' KB';
+      DS.Media.add({
+        name: file.name,
+        url: base64,
+        tag: 'อัปโหลดจากฟอร์ม',
+        size: sizeKB
+      });
+      renderMediaGrid();
+      renderStats();
+
+      showToast(`📸 อัปโหลดรูปภาพ "${file.name}" สำเร็จและบันทึกลงคลังรูปภาพแล้ว!`);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }
+
+  function openMediaPicker(targetInputId) {
+    activeMediaPickerTargetId = targetInputId;
+    const searchInput = document.getElementById('searchMediaPicker');
+    if (searchInput) searchInput.value = '';
+    renderMediaPickerGrid('');
+    openModal('mediaPickerModal');
+  }
+
+  function renderMediaPickerGrid(filterKeyword = '') {
+    const grid = document.getElementById('mediaPickerGrid');
+    if (!grid) return;
+
+    const items = DS.Media.getAll();
+    const kw = (filterKeyword || '').toLowerCase().trim();
+    const filtered = kw
+      ? items.filter(m => (m.name && m.name.toLowerCase().includes(kw)) || (m.tag && m.tag.toLowerCase().includes(kw)))
+      : items;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+          <i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 10px; color: #ccc;"></i>
+          <p>ไม่พบรูปภาพในคลังรูปภาพ สามารถกดปุ่ม "อัปโหลดรูปใหม่เข้าคลัง" ด้านบนได้ทันที</p>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(m => `
+      <div class="media-picker-item" onclick="AdminApp.selectMediaForTarget('${m.url.replace(/'/g, "\\'")}')" title="คลิกเพื่อเลือกรูปนี้">
+        <div class="media-picker-thumb">
+          <img src="${DS.resolveImg(m.url)}" alt="${m.name}" loading="lazy">
+        </div>
+        <div class="media-picker-info">
+          <span class="media-picker-name">${m.name}</span>
+          <span class="media-picker-size">${m.size || ''}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function selectMediaForTarget(url) {
+    if (!activeMediaPickerTargetId) return;
+    const targetInput = document.getElementById(activeMediaPickerTargetId);
+    if (targetInput) {
+      targetInput.value = url;
+    }
+
+    // อัปเดตพรีวิว
+    if (activeMediaPickerTargetId === 'slideFgImage' || activeMediaPickerTargetId === 'slideBgImage') {
+      updateSlideLivePreview();
+    } else if (activeMediaPickerTargetId === 'newsImage') {
+      const p = document.getElementById('previewNewsImg');
+      if (p) p.src = DS.resolveImg(url);
+    } else if (activeMediaPickerTargetId === 'articleImage') {
+      const p = document.getElementById('previewArticleImg');
+      if (p) p.src = DS.resolveImg(url);
+    } else if (activeMediaPickerTargetId === 'productImage') {
+      const p = document.getElementById('previewProductImg');
+      if (p) p.src = DS.resolveImg(url);
+    } else if (activeMediaPickerTargetId === 'aboutStoryImage') {
+      updateAboutStoryImgPreview();
+    }
+
+    closeModal();
+    showToast('เลือกรูปภาพจากคลังรูปภาพเรียบร้อยแล้ว');
+  }
+
+  function handlePickerDirectUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('กรุณาเลือกไฟล์ที่เป็นรูปภาพเท่านั้น', true);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+      const sizeKB = Math.round(file.size / 1024) + ' KB';
+      DS.Media.add({
+        name: file.name,
+        url: base64,
+        tag: 'อัปโหลดใหม่',
+        size: sizeKB
+      });
+      renderMediaGrid();
+      renderStats();
+      renderMediaPickerGrid();
+
+      if (activeMediaPickerTargetId) {
+        selectMediaForTarget(base64);
+      } else {
+        showToast(`อัปโหลดรูปภาพ "${file.name}" สำเร็จ!`);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }
+
+  /* --------------------------------------------------------------------------
      11. Backup & Restore
      -------------------------------------------------------------------------- */
   function exportBackup() {
@@ -1636,6 +1830,14 @@
     saveSlide,
     deleteSlide,
     updateSlideLivePreview,
+    copyForegroundToBackground,
+    applyQuickLink,
+    // Universal Image Upload & Media Picker
+    handleImageUpload,
+    openMediaPicker,
+    renderMediaPickerGrid,
+    selectMediaForTarget,
+    handlePickerDirectUpload,
     // About Us
     renderAboutForm,
     saveAboutForm,

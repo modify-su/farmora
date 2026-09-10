@@ -15,13 +15,13 @@ pages.forEach(file => {
   if (fs.existsSync(srcPath)) {
     let content = fs.readFileSync(srcPath, 'utf8');
 
-    // Replace relative paths so root files work seamlessly
+    // Replace relative paths so root files work seamlessly both locally (file://) and on server/Vercel
     content = content
-      .replace(/href="\.\.\/css\//g, 'href="css/')
-      .replace(/src="\.\.\/images\//g, 'src="images/')
-      .replace(/src="\.\.\/js\//g, 'src="js/')
+      .replace(/href="\.\.\/css\//g, 'href="frontend/css/')
+      .replace(/src="\.\.\/images\//g, 'src="frontend/images/')
+      .replace(/src="\.\.\/js\//g, 'src="frontend/js/')
       .replace(/href="\.\.\/\.\.\/backend\/index\.html"/g, 'href="backend/index.html"')
-      .replace(/href="\.\.\/fonts\//g, 'href="fonts/');
+      .replace(/href="\.\.\/fonts\//g, 'href="frontend/fonts/');
 
     fs.writeFileSync(destPath, content, 'utf8');
     console.log(`  ✓ Synced frontend/html/${file} -> ${file}`);
@@ -30,4 +30,17 @@ pages.forEach(file => {
   }
 });
 
-console.log('✅ HTML sync complete!');
+// Sync JS files from frontend/js/ to root js/
+const frontendJsDir = path.join(rootDir, 'frontend', 'js');
+const rootJsDir = path.join(rootDir, 'js');
+if (!fs.existsSync(rootJsDir)) fs.mkdirSync(rootJsDir, { recursive: true });
+if (fs.existsSync(frontendJsDir)) {
+  fs.readdirSync(frontendJsDir).forEach(f => {
+    if (f.endsWith('.js')) {
+      fs.copyFileSync(path.join(frontendJsDir, f), path.join(rootJsDir, f));
+      console.log(`  ✓ Synced js: ${f}`);
+    }
+  });
+}
+
+console.log('✅ HTML & JS sync complete!');

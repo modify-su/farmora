@@ -31,13 +31,16 @@
       <p class="auth-subtitle">ระบบจัดการสไลด์ ข่าวสาร บทความ สินค้า และเมนูเว็บไซต์</p>
 
       <form onsubmit="AdminApp.handleLogin(event)">
+        <div id="authError" style="display: none; background: #fee2e2; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 13.5px; margin-bottom: 14px; border: 1px solid #fca5a5; text-align: left;">
+          <i class="fa-solid fa-triangle-exclamation"></i> ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+        </div>
         <div class="form-group" style="text-align: left; margin-bottom: 14px;">
           <label class="form-label">ชื่อผู้ดูแลระบบ (Username)</label>
-          <input type="text" class="form-control" value="admin" required>
+          <input type="text" id="authUsername" class="form-control" value="admin" required autocomplete="username">
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 24px;">
           <label class="form-label">รหัสผ่าน (Password)</label>
-          <input type="password" class="form-control" value="farmora2026" required>
+          <input type="password" id="authPassword" class="form-control" value="farmora2026" required autocomplete="current-password">
         </div>
         <button type="submit" class="btn btn-primary auth-quick-btn">
           <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบจัดการหลังบ้าน
@@ -45,7 +48,7 @@
       </form>
 
       <div>
-        <a href="../frontend/html/index.html" class="auth-back-link">
+        <a href="../index.html" class="auth-back-link">
           <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าเว็บไซต์หลัก
         </a>
       </div>
@@ -143,7 +146,7 @@
           <div class="sidebar-user-role">Administrator</div>
         </div>
       </div>
-      <a href="../frontend/html/index.html" class="btn-view-site" target="_blank">
+      <a href="../index.html" class="btn-view-site" target="_blank">
         <i class="fa-solid fa-globe"></i> ดูเว็บไซต์จริง
       </a>
     </div>
@@ -163,7 +166,7 @@
         <h1 class="header-title" id="pageHeaderTitle">ภาพรวมระบบ (Overview)</h1>
       </div>
       <div class="header-right">
-        <a href="../frontend/html/index.html" target="_blank" class="btn btn-outline btn-sm">
+        <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> ไปที่หน้าเว็บ
         </a>
         <button type="button" class="btn btn-danger btn-sm" onclick="AdminApp.handleLogout()">
@@ -425,15 +428,24 @@
                 <textarea id="aboutStoryHighlight" class="form-control" rows="2" placeholder="ใส่คำพูดเน้นย้ำ..."></textarea>
               </div>
 
-              <div class="form-row">
+              <div class="form-row" style="align-items: start;">
                 <div class="form-group" style="flex: 2;">
-                  <label class="form-label">ภาพประกอบเรื่องราว (Image Path) *</label>
+                  <label class="form-label"><i class="fa-solid fa-image"></i> ภาพประกอบเรื่องราว (Image Path) *</label>
+                  <div class="upload-action-bar">
+                    <label class="upload-btn-label">
+                      <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
+                      <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'aboutStoryImage')">
+                    </label>
+                    <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('aboutStoryImage')">
+                      <i class="fa-solid fa-photo-film"></i> เลือกจากคลังรูปภาพ
+                    </button>
+                  </div>
                   <input type="text" id="aboutStoryImage" class="form-control" required oninput="AdminApp.updateAboutStoryImgPreview()" placeholder="../frontend/images/picture 1.jpg">
-                  <span class="form-hint">สามารถคัดลอก Path รูปจากแท็บ "คลังรูปภาพ" มาวางได้</span>
+                  <span class="form-hint">สามารถกดอัปโหลดไฟล์จากเครื่อง หรือวางลิงก์รูปภาพ (URL) ได้ทันที</span>
                 </div>
                 <div class="form-group" style="flex: 1;">
                   <label class="form-label">ตัวอย่างรูปภาพ</label>
-                  <div style="width: 100%; height: 75px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #eee;">
+                  <div style="width: 100%; height: 85px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #eee; margin-top: 36px;">
                     <img id="previewAboutStoryImg" src="../frontend/images/picture 1.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                   </div>
                 </div>
@@ -1273,27 +1285,74 @@
             <textarea id="slideDesc" class="form-control" rows="3" placeholder="ระบุเนื้อหาย่อสไลด์..."></textarea>
           </div>
 
-          <div class="form-row">
+          <div class="form-row" style="align-items: start;">
+            <!-- 1. Foreground Image Upload & Link -->
             <div class="form-group">
-              <label class="form-label">ภาพคมชัดด้านหน้า (Foreground Image Path) *</label>
-              <input type="text" id="slideFgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="../frontend/images/picture 1.jpg">
-              <span class="form-hint">สามารถคัดลอกจากแท็บ "คลังรูปภาพ" มาวางได้</span>
+              <label class="form-label"><i class="fa-solid fa-image"></i> ภาพคมชัดด้านหน้า (Foreground Image) *</label>
+              <div class="upload-action-bar">
+                <label class="upload-btn-label">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
+                  <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'slideFgImage')">
+                </label>
+                <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('slideFgImage')">
+                  <i class="fa-solid fa-photo-film"></i> เลือกจากคลังรูปภาพ
+                </button>
+              </div>
+              <input type="text" id="slideFgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path เช่น https://... หรือ ../frontend/images/...">
+              <span class="form-hint">สามารถกดอัปโหลดไฟล์จากเครื่อง หรือวางลิงก์รูปภาพ (URL) ได้ทันที</span>
             </div>
+
+            <!-- 2. Backdrop Blur Image Upload & Link -->
             <div class="form-group">
-              <label class="form-label">ภาพเบลอด้านหลัง (Backdrop Blur Image Path) *</label>
-              <input type="text" id="slideBgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="../frontend/images/picture 1.jpg">
-              <span class="form-hint">มักใช้ภาพเดียวกับด้านหน้าเพื่อให้กลมกลืน</span>
+              <label class="form-label"><i class="fa-solid fa-mountain-sun"></i> ภาพเบลอด้านหลัง (Backdrop Blur Image) *</label>
+              <div class="upload-action-bar">
+                <button type="button" class="btn-media-picker" style="color: var(--primary-green); font-weight: 600;" onclick="AdminApp.copyForegroundToBackground()" title="ใช้ภาพเดียวกับด้านหน้าเพื่อให้โทนสีกลมกลืน">
+                  <i class="fa-solid fa-arrows-rotate"></i> ใช้ภาพเดียวกับด้านหน้า
+                </button>
+                <label class="upload-btn-label">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพ
+                  <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'slideBgImage')">
+                </label>
+                <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('slideBgImage')">
+                  <i class="fa-solid fa-photo-film"></i> คลังภาพ
+                </button>
+              </div>
+              <input type="text" id="slideBgImage" class="form-control" required oninput="AdminApp.updateSlideLivePreview()" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path...">
+              <span class="form-hint">แนะนำใช้ภาพเดียวกับด้านหน้าเพื่อให้ระบบเบลออย่างกลมกลืน</span>
             </div>
           </div>
 
-          <div class="form-row">
+          <div class="form-row" style="align-items: start;">
             <div class="form-group">
-              <label class="form-label">ข้อความบนปุ่ม (Button Text)</label>
-              <input type="text" id="slideBtnText" class="form-control" value="อ่านต่อ">
+              <label class="form-label"><i class="fa-solid fa-font"></i> ข้อความบนปุ่ม (Button Text)</label>
+              <input type="text" id="slideBtnText" class="form-control" value="อ่านต่อ" placeholder="เช่น อ่านต่อ, ดูรายละเอียด, สั่งซื้อเลย">
             </div>
+
             <div class="form-group">
-              <label class="form-label">URL ลิงก์ปลายทาง (Button Link)</label>
-              <input type="text" id="slideBtnLink" class="form-control" placeholder="news.html?cat=news">
+              <label class="form-label"><i class="fa-solid fa-link"></i> URL แนบลิงก์ปลายทาง (Button Link)</label>
+              <div style="margin-bottom: 8px;">
+                <select id="slideQuickLink" class="form-control" style="font-size: 13px; padding: 7px 10px;" onchange="AdminApp.applyQuickLink('slideBtnLink', this.value)">
+                  <option value="">⚡ เลือกลิงก์ด่วนภายในเว็บ (Quick Link)</option>
+                  <option value="../frontend/html/index.html">🏠 หน้าแรก (index.html)</option>
+                  <option value="../frontend/html/about.html">🌿 เกี่ยวกับเรา (about.html)</option>
+                  <option value="../frontend/html/products.html">🛒 สินค้าทั้งหมด (products.html)</option>
+                  <option value="../frontend/html/products.html?cat=fertilizer">🌾 ปุ๋ยและธาตุอาหารพืช</option>
+                  <option value="../frontend/html/products.html?cat=pesticide">🛡️ เคมีเกษตรและยากำจัดศัตรูพืช</option>
+                  <option value="../frontend/html/products.html?cat=irrigation">💧 ระบบน้ำและชลประทาน</option>
+                  <option value="../frontend/html/products.html?cat=machinery">🚜 เครื่องจักรกลเกษตร</option>
+                  <option value="../frontend/html/news.html">📰 ข่าวสารและกิจกรรม (news.html)</option>
+                  <option value="../frontend/html/news.html?cat=news">📢 ข่าวล่าสุด</option>
+                  <option value="../frontend/html/news.html?cat=activity">🎪 กิจกรรมที่ผ่านมา</option>
+                  <option value="../frontend/html/news.html?cat=announcement">📣 ข่าวประชาสัมพันธ์</option>
+                  <option value="#contact">💬 ส่วนติดต่อเรา (#contact)</option>
+                </select>
+              </div>
+              <input type="text" id="slideBtnLink" class="form-control" placeholder="เช่น ../frontend/html/news.html?cat=news หรือ https://...">
+              <div style="margin-top: 6px;">
+                <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); cursor: pointer;">
+                  <input type="checkbox" id="slideOpenNewTab"> เปิดในแท็บใหม่ (Open in new tab)
+                </label>
+              </div>
             </div>
           </div>
 
@@ -1352,8 +1411,17 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Path รูปภาพหน้าปกข่าว *</label>
-            <input type="text" id="newsImage" class="form-control" required oninput="document.getElementById('previewNewsImg').src = this.value">
+            <label class="form-label"><i class="fa-solid fa-image"></i> รูปภาพหน้าปกข่าว *</label>
+            <div class="upload-action-bar">
+              <label class="upload-btn-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
+                <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'newsImage')">
+              </label>
+              <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('newsImage')">
+                <i class="fa-solid fa-photo-film"></i> เลือกจากคลังรูปภาพ
+              </button>
+            </div>
+            <input type="text" id="newsImage" class="form-control" required oninput="document.getElementById('previewNewsImg').src = DS.resolveImg(this.value)" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path...">
             <div class="img-preview-box">
               <img id="previewNewsImg" src="../frontend/images/news-hero.jpg" alt="">
             </div>
@@ -1416,8 +1484,17 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Path รูปภาพบทความ *</label>
-            <input type="text" id="articleImage" class="form-control" required oninput="document.getElementById('previewArticleImg').src = this.value">
+            <label class="form-label"><i class="fa-solid fa-image"></i> รูปภาพบทความ *</label>
+            <div class="upload-action-bar">
+              <label class="upload-btn-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
+                <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'articleImage')">
+              </label>
+              <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('articleImage')">
+                <i class="fa-solid fa-photo-film"></i> เลือกจากคลังรูปภาพ
+              </button>
+            </div>
+            <input type="text" id="articleImage" class="form-control" required oninput="document.getElementById('previewArticleImg').src = DS.resolveImg(this.value)" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path...">
             <div class="img-preview-box">
               <img id="previewArticleImg" src="../frontend/images/hero2.jpg" alt="">
             </div>
@@ -1496,8 +1573,17 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Path รูปภาพสินค้า *</label>
-            <input type="text" id="productImage" class="form-control" required oninput="document.getElementById('previewProductImg').src = this.value">
+            <label class="form-label"><i class="fa-solid fa-image"></i> รูปภาพสินค้า *</label>
+            <div class="upload-action-bar">
+              <label class="upload-btn-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
+                <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'productImage')">
+              </label>
+              <button type="button" class="btn-media-picker" onclick="AdminApp.openMediaPicker('productImage')">
+                <i class="fa-solid fa-photo-film"></i> เลือกจากคลังรูปภาพ
+              </button>
+            </div>
+            <input type="text" id="productImage" class="form-control" required oninput="document.getElementById('previewProductImg').src = DS.resolveImg(this.value)" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path...">
             <div class="img-preview-box">
               <img id="previewProductImg" src="../frontend/images/product-fertilizer.jpg" alt="">
             </div>
@@ -1603,6 +1689,36 @@
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกหมุดไทม์ไลน์</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 7. MEDIA PICKER MODAL (หน้าต่างเลือกรูปภาพจากคลัง) -->
+  <div class="modal-backdrop" id="mediaPickerModal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-photo-film"></i> 🖼️ เลือกรูปภาพจากคลังรูปภาพ (Media Library)</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+          <div class="search-input-wrap" style="flex: 1; max-width: 320px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchMediaPicker" class="search-input" placeholder="ค้นหาชื่อรูปภาพ..." oninput="AdminApp.renderMediaPickerGrid(this.value)">
+          </div>
+          <label class="btn btn-primary btn-sm" style="cursor: pointer; margin: 0; display: inline-flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดรูปใหม่เข้าคลัง
+            <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handlePickerDirectUpload(event)">
+          </label>
+        </div>
+
+        <!-- Picker Grid -->
+        <div class="media-picker-grid" id="mediaPickerGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ปิดหน้าต่าง</button>
+      </div>
     </div>
   </div>
 

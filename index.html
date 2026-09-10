@@ -18,14 +18,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- ✅ CSS Files (เรียงลำดับตาม dependency) -->
-  <link rel="stylesheet" href="css/navbar.css">       <!-- แก้ไข: +right-group, sticky -->
-  <link rel="stylesheet" href="css/navslide.css">     <!-- แก้ไข: +tabs, +dots -->
-  <link rel="stylesheet" href="css/features.css">     <!-- ใหม่: feature strip + photo cards -->
-  <link rel="stylesheet" href="css/products.css">     <!-- ใหม่: หมวดหมู่สินค้า -->
-  <link rel="stylesheet" href="css/footer.css">       <!-- ใหม่: footer -->
+  <link rel="stylesheet" href="frontend/css/navbar.css">       <!-- แก้ไข: +right-group, sticky -->
+  <link rel="stylesheet" href="frontend/css/navslide.css">     <!-- แก้ไข: +tabs, +dots -->
+  <link rel="stylesheet" href="frontend/css/features.css">     <!-- ใหม่: feature strip + photo cards -->
+  <link rel="stylesheet" href="frontend/css/products.css">     <!-- ใหม่: หมวดหมู่สินค้า -->
+  <link rel="stylesheet" href="frontend/css/footer.css">       <!-- ใหม่: footer -->
 
   <!-- 🎨 Dynamic CI Theme & Colors -->
-  <script src="js/theme.js"></script>
+  <script src="frontend/js/theme.js"></script>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
     <div class="left-group">
       <div class="logo">
         <a href="index.html">
-          <img src="images/logo fmr.png" alt="Farmora logo">
+          <img src="frontend/images/logo fmr.png" alt="Farmora logo">
         </a>
       </div>
 
@@ -117,13 +117,13 @@
            📌 SLIDE 1: ข่าวสารพันธุ์ข้าวและนาข้าว 2025
            ────────────────────────────────────────────────────────────────
            📸 จุดเปลี่ยนรูปภาพ:
-           - ภาพเบลอด้านหลัง: <img class="backdrop-img" src="images/picture 1.jpg">
-           - ภาพคมชัดด้านหน้า: .slide-image <img src="images/picture 1.jpg">
+           - ภาพเบลอด้านหลัง: <img class="backdrop-img" src="frontend/images/picture 1.jpg">
+           - ภาพคมชัดด้านหน้า: .slide-image <img src="frontend/images/picture 1.jpg">
            ================================================================ -->
       <div class="slide active">
         <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
         <div class="slide-backdrop">
-          <img src="images/picture 1.jpg" alt="" class="backdrop-img">
+          <img src="frontend/images/picture 1.jpg" alt="" class="backdrop-img">
           <div class="backdrop-overlay"></div>
         </div>
 
@@ -131,7 +131,7 @@
         <div class="slide-inner">
           <div class="slide-image">
             <img
-              src="images/picture 1.jpg"
+              src="frontend/images/picture 1.jpg"
               alt="งานแสดงพันธุ์ข้าวและนาข้าว 2025">
           </div>
           <div class="slide-content">
@@ -158,7 +158,7 @@
         <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
         <div class="slide-backdrop">
           <img 
-            src="images/hero1.jpg" 
+            src="frontend/images/hero1.jpg" 
             alt="" 
             class="backdrop-img">
           <div class="backdrop-overlay"></div>
@@ -168,7 +168,7 @@
         <div class="slide-inner">
           <div class="slide-image">
             <img
-              src="images/hero1.jpg"
+              src="frontend/images/hero1.jpg"
               alt="งานเกษตรแฟร์ 2026">
           </div>
           <div class="slide-content">
@@ -195,7 +195,7 @@
         <!-- ✏️ ภาพพื้นหลังเบลอซ้อนด้านหลัง -->
         <div class="slide-backdrop">
           <img 
-            src="images/hero2.jpg" 
+            src="frontend/images/hero2.jpg" 
             alt="" 
             class="backdrop-img">
           <div class="backdrop-overlay"></div>
@@ -205,7 +205,7 @@
         <div class="slide-inner">
           <div class="slide-image">
             <img
-              src="images/hero2.jpg"
+              src="frontend/images/hero2.jpg"
               alt="โครงการฝึกอบรมเกษตรกร 2025">
           </div>
           <div class="slide-content">
@@ -256,7 +256,7 @@
           <p class="feature-title">ยกระดับผลผลิต<br>ด้วยผลิตภัณฑ์</p>
         </div>
         <div class="photo-card">
-          <img src="images/picture 2.jpg" alt="เพราะความสำเร็จของคุณ">
+          <img src="frontend/images/picture 2.jpg" alt="เพราะความสำเร็จของคุณ">
           <div class="photo-card-body">
             <p>เพราะความสำเร็จของคุณ คือความสำเร็จของเรา เราช่วยแก้ปัญหาให้เกษตรกรเพิ่มผลผลิตอย่างยั่งยืน</p>
           </div>
@@ -272,7 +272,7 @@
           <p class="feature-title">พร้อมจัดส่งสินค้า<br>ทั่วประเทศ</p>
         </div>
         <div class="photo-card">
-          <img src="images/picture 3.jpg" alt="พร้อมจัดส่งสินค้า">
+          <img src="frontend/images/picture 3.jpg" alt="พร้อมจัดส่งสินค้า">
           <div class="photo-card-body">
             <p>สต็อกสินค้าพร้อมจัดส่ง ถึงร้านค้า/เกษตรกรทั่วประเทศ เรานำส่งสินค้าให้คุณได้ทุกที่ ทันต่อฤดูกาล</p>
           </div>
@@ -288,7 +288,7 @@
           <p class="feature-title">ลงพื้นที่จริง<br>เกี่ยวข้องลูกค้า</p>
         </div>
         <div class="photo-card">
-          <img src="images/picture 4.jpg" alt="ลงพื้นที่จริงเกี่ยวข้องลูกค้า">
+          <img src="frontend/images/picture 4.jpg" alt="ลงพื้นที่จริงเกี่ยวข้องลูกค้า">
           <div class="photo-card-body">
             <p>พนักงานของเรา ลงพื้นที่จริง เพื่อดูแลคุณภาพอย่างใกล้ชิด พร้อมให้คำปรึกษาเพื่อดูแลลูกค้าของเรา</p>
           </div>
@@ -304,7 +304,7 @@
           <p class="feature-title">ก้าวทันเทรนด์<br>อัปเดตความรู้เสมอ</p>
         </div>
         <div class="photo-card">
-          <img src="images/picture 5.jpg" alt="ฝึกอบรมและพัฒนาทีมงาน">
+          <img src="frontend/images/picture 5.jpg" alt="ฝึกอบรมและพัฒนาทีมงาน">
           <div class="photo-card-body">
             <p>เพื่อให้คุณได้รับเทคนิคที่ดีที่สุด เราฝึกอบรมทีมงานอย่างต่อเนื่อง มีประสิทธิภาพด้านเทคโนโลยีการเกษตร</p>
           </div>
@@ -333,7 +333,7 @@
       <div class="product-card">
         <div class="product-card-image">
           <!-- ภาพตัวอย่าง: เปลี่ยนเป็น path ภาพจริงเมื่อพร้อม -->
-          <img src="images/vg 1.jpg"
+          <img src="frontend/images/vg 1.jpg"
                alt="เมล็ดพันธุ์ผัก">
         </div>
         <div class="product-card-body">
@@ -353,7 +353,7 @@
       <!-- Card 2: เมล็ดพันธุ์ข้าว -->
       <div class="product-card">
         <div class="product-card-image">
-          <img src="images/vg 2.jpg"
+          <img src="frontend/images/vg 2.jpg"
                alt="เมล็ดพันธุ์ข้าว">
         </div>
         <div class="product-card-body">
@@ -373,7 +373,7 @@
       <!-- Card 3: สินค้าการเกษตร -->
       <div class="product-card">
         <div class="product-card-image">
-          <img src="images/vg 3.jpg"
+          <img src="frontend/images/vg 3.jpg"
                alt="สินค้าการเกษตร">
         </div>
         <div class="product-card-body">
@@ -393,7 +393,7 @@
       <!-- Card 4: อาหารสัตว์ -->
       <div class="product-card">
         <div class="product-card-image">
-          <img src="images/vg 4.jpg"
+          <img src="frontend/images/vg 4.jpg"
                alt="อาหารสัตว์">
         </div>
         <div class="product-card-body">
@@ -426,7 +426,7 @@
 
       <!-- คอลัมน์ 1: Brand -->
       <div class="footer-brand">
-        <img src="images/logo fmr.png" alt="Farmora" class="footer-logo">
+        <img src="frontend/images/logo fmr.png" alt="Farmora" class="footer-logo">
         <p>
           166/1-2 ถนนพรหมเทพ ตำบลในเมือง<br>
           อำเภอเมืองสุรินทร์ จังหวัดสุรินทร์ 32000
@@ -485,9 +485,9 @@
        แก้ไข: เพิ่ม hamburger menu toggle script (inline)
               slide.js และ cart.js ยังใช้ path เดิม
        ================================================================ -->
-  <script src="js/navbar.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/slide.js"></script>
+  <script src="frontend/js/navbar.js"></script>
+  <script src="frontend/js/cart.js"></script>
+  <script src="frontend/js/slide.js"></script>
 
 </body>
 </html>
