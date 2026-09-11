@@ -33,8 +33,8 @@
     return isRoot ? ('frontend/images/' + clean) : ('../images/' + clean);
   }
 
-  // ฐานข้อมูลเนื้อหาข่าวสารแบบละเอียด (สำหรับ Modal & Grid)
-  const NEWS_DATA = [
+  // ฐานข้อมูลเนื้อหาข่าวสารเริ่มต้น (Default Fallback)
+  const DEFAULT_NEWS = [
     {
       id: 'n1',
       category: 'news',
@@ -210,7 +210,104 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
     }
   ];
 
-  // DOM Elements
+  const STORAGE_KEY = 'farmora_news_v2';
+  let activeNewsData = [];
+
+  // ดึงข้อมูลข่าวสารจาก localStorage หรือใช้ fallback ค่าเริ่มต้น
+  function getStoredNews() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const hasFeatured = parsed.some(n => n.id === 'n1' || (n.title && n.title.includes('เปิดตัวคลังกระจายสินค้า')));
+          // ถ้ามีข่าวเด่นและข่าวครบอย่างน้อย 5 รายการ แสดงว่าอัปเกรดแล้ว
+          if (hasFeatured && parsed.length >= 5) {
+            return parsed.map(item => {
+              const cat = item.cat || item.category || 'news';
+              let catName = item.catName || item.categoryName;
+              if (!catName) {
+                if (cat === 'news') catName = 'ข่าวล่าสุด';
+                else if (cat === 'activity') catName = 'กิจกรรมที่ผ่านมา';
+                else if (cat === 'article') catName = 'บทความ';
+                else if (cat === 'promotion') catName = 'โปรโมชั่น';
+                else catName = 'ข่าวประชาสัมพันธ์';
+              }
+              return {
+                id: item.id,
+                title: item.title,
+                category: cat,
+                cat: cat,
+                categoryName: catName,
+                catName: catName,
+                categoryClass: item.categoryClass || ('cat-' + cat),
+                date: item.date || '',
+                views: item.views || '1,840 ครั้ง',
+                author: item.author || 'ทีมข่าว Farmora',
+                image: item.image,
+                isFeatured: !!item.isFeatured,
+                isHot: !!item.isHot,
+                excerpt: item.excerpt || '',
+                fullContent: item.content || item.fullContent || item.excerpt || ''
+              };
+            });
+          }
+        }
+      }
+      // หากยังไม่มี หรือเป็นชุดเก่าใน browser ให้บันทึกชุดข่าวจริง 10 รายการลง localStorage ทันที
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_NEWS));
+    } catch (e) {
+      console.warn('Error reading farmora_news_v2 from localStorage:', e);
+    }
+    return DEFAULT_NEWS;
+  }
+
+  // อัปเดตและแสดงผลการ์ดข่าวเด่นแบนเนอร์ใหญ่ (Featured News Banner)
+  function renderFeaturedNews() {
+    // เลือกข่าวที่มี isFeatured: true หรือข่าวแรก
+    const featured = activeNewsData.find(n => n.isFeatured) || activeNewsData[0];
+    if (!featured) return;
+
+    const featImgWrap = document.getElementById('featuredImgWrap');
+    const featImg = document.getElementById('featuredNewsImg');
+    const featCatBadge = document.getElementById('featuredNewsCatBadge');
+    const featDate = document.getElementById('featuredNewsDate');
+    const featViews = document.getElementById('featuredNewsViews');
+    const featTitle = document.getElementById('featuredNewsTitle');
+    const featDesc = document.getElementById('featuredNewsDesc');
+    const featBtn = document.getElementById('featuredNewsBtn');
+
+    if (featImg) {
+      featImg.src = resolveImgPath(featured.image);
+      featImg.alt = featured.title;
+    }
+    if (featCatBadge) {
+      featCatBadge.textContent = featured.categoryName || featured.catName || 'ข่าวล่าสุด';
+      featCatBadge.className = `featured-cat-tag ${featured.categoryClass || ('cat-' + featured.category)}`;
+    }
+    if (featDate) {
+      featDate.innerHTML = `<i class="fa-regular fa-calendar"></i> ${featured.date || ''}`;
+    }
+    if (featViews) {
+      featViews.innerHTML = `<i class="fa-regular fa-eye"></i> ${featured.views || '1,840 ครั้ง'}`;
+    }
+    if (featTitle) {
+      featTitle.textContent = featured.title;
+    }
+    if (featDesc) {
+      featDesc.textContent = featured.excerpt || '';
+    }
+    if (featImgWrap) {
+      featImgWrap.onclick = function () {
+        window.FarmoraNews.openModal(featured.id);
+      };
+    }
+    if (featBtn) {
+      featBtn.onclick = function () {
+        window.FarmoraNews.openModal(featured.id);
+      };
+    }
+  }
   const tabButtons      = document.querySelectorAll('.filter-tab-btn');
   const sidebarCatLinks = document.querySelectorAll('.sidebar-cat-link');
   const searchInput     = document.getElementById('news-search-input');
@@ -243,7 +340,7 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
     if (!newsGrid) return;
 
     // กรองตาม Category และ Search Query
-    const filtered = NEWS_DATA.filter(item => {
+    const filtered = activeNewsData.filter(item => {
       const matchCat = (currentCategory === 'all') || (item.category === currentCategory);
       const q = currentSearchQuery.toLowerCase();
       const matchSearch = !q ||
@@ -307,14 +404,14 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
   // ── 2. Helper: อัปเดตตัวเลขจำนวนในปุ่มแท็บและ Sidebar ───────
   function updateCategoryCounts() {
     const counts = {
-      all: NEWS_DATA.length,
+      all: activeNewsData.length,
       news: 0,
       activity: 0,
       article: 0,
       promotion: 0
     };
 
-    NEWS_DATA.forEach(item => {
+    activeNewsData.forEach(item => {
       if (counts[item.category] !== undefined) {
         counts[item.category]++;
       }
@@ -425,7 +522,7 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
 
   // ── 5. ฟังก์ชันเปิด/ปิด Interactive Modal ───────────────────
   function openModal(id) {
-    const item = NEWS_DATA.find(n => n.id === id);
+    const item = activeNewsData.find(n => n.id === id);
     if (!item || !modalBackdrop) return;
 
     if (modalImg) modalImg.src = resolveImgPath(item.image);
@@ -525,7 +622,28 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
   }
 
   // ── 8. เริ่มต้นทำงานเมื่อโหลดหน้า (Initialize) ────────────
-  updateCategoryCounts();
+  function reloadNews() {
+    activeNewsData = getStoredNews();
+    renderFeaturedNews();
+    updateCategoryCounts();
+    renderNewsCards();
+  }
+
+  // โหลดและเรนเดอร์ข้อมูลข่าวทั้งหมด
+  reloadNews();
+
+  // รองรับการซิงค์แบบ Real-time ข้ามแท็บเมื่อบันทึกจากระบบหลังบ้าน
+  window.addEventListener('storage', (e) => {
+    if (!e.key || e.key === STORAGE_KEY) {
+      reloadNews();
+    }
+  });
+
+  window.addEventListener('farmora:dataChanged', (e) => {
+    if (!e.detail || !e.detail.key || e.detail.key === STORAGE_KEY) {
+      reloadNews();
+    }
+  });
 
   // ตรวจสอบ Parameter จาก URL (เช่น ?cat=news, ?cat=activity, ?cat=article)
   const urlParams = new URLSearchParams(window.location.search);

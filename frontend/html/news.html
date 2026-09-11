@@ -167,21 +167,21 @@
   <!-- ================================================================
        SECTION 4: Featured News (ข่าวเด่นประจำสัปดาห์)
        ================================================================ -->
-  <section class="news-featured-section">
-    <div class="featured-card">
-      <div class="featured-img-wrap" onclick="window.FarmoraNews.openModal('n1')">
-        <img src="../images/news-hero.jpg" alt="Farmora ศูนย์กระจายสินค้าใหม่">
-        <span class="featured-cat-tag cat-news">ข่าวล่าสุด</span>
+  <section class="news-featured-section" id="featuredNewsSection">
+    <div class="featured-card" id="featuredNewsCard">
+      <div class="featured-img-wrap" id="featuredImgWrap" onclick="window.FarmoraNews.openModal('n1')">
+        <img id="featuredNewsImg" src="../images/news-hero.jpg" alt="Farmora ศูนย์กระจายสินค้าใหม่">
+        <span id="featuredNewsCatBadge" class="featured-cat-tag cat-news">ข่าวล่าสุด</span>
       </div>
       <div class="featured-body">
         <div class="featured-meta">
           <span class="featured-badge-highlight"><i class="fa-solid fa-star"></i> ข่าวเด่นแนะนำ</span>
-          <span><i class="fa-regular fa-calendar"></i> 8 กันยายน 2568</span>
-          <span><i class="fa-regular fa-eye"></i> 1,840 ครั้ง</span>
+          <span id="featuredNewsDate"><i class="fa-regular fa-calendar"></i> 8 กันยายน 2568</span>
+          <span id="featuredNewsViews"><i class="fa-regular fa-eye"></i> 1,840 ครั้ง</span>
         </div>
-        <h2>Farmora เปิดตัวคลังกระจายสินค้าใหม่ภาคอีสาน พร้อมส่งด่วนถึงแปลงภายใน 24 ชม.</h2>
-        <p>ยกระดับความเร็วในการจัดส่งปุ๋ยเคมี ปุ๋ยอินทรีย์ และชีวภัณฑ์เกษตรสู่มือเกษตรกรและร้านค้าตัวแทน ทันต่อทุกช่วงเวลาการเพาะปลูก ด้วยระบบคลังดิจิทัลมาตรฐานสากล</p>
-        <button class="btn-read-featured" onclick="window.FarmoraNews.openModal('n1')">
+        <h2 id="featuredNewsTitle">Farmora เปิดตัวคลังกระจายสินค้าใหม่ภาคอีสาน พร้อมส่งด่วนถึงแปลงภายใน 24 ชม.</h2>
+        <p id="featuredNewsDesc">ยกระดับความเร็วในการจัดส่งปุ๋ยเคมี ปุ๋ยอินทรีย์ และชีวภัณฑ์เกษตรสู่มือเกษตรกรและร้านค้าตัวแทน ทันต่อทุกช่วงเวลาการเพาะปลูก ด้วยระบบคลังดิจิทัลมาตรฐานสากล</p>
+        <button id="featuredNewsBtn" class="btn-read-featured" onclick="window.FarmoraNews.openModal('n1')">
           อ่านรายละเอียดข่าว <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>

@@ -51,6 +51,7 @@
     renderStats();
     renderSlidesList();
     renderAboutForm();
+    renderFeaturedNewsBanner();
     renderNewsTable();
     renderArticlesTable();
     renderProductsTable();
@@ -630,6 +631,75 @@
   /* --------------------------------------------------------------------------
      6. News & Events Management (ข่าวสารและกิจกรรม)
      -------------------------------------------------------------------------- */
+  function renderFeaturedNewsBanner() {
+    const container = document.getElementById('featuredNewsBannerContainer');
+    if (!container) return;
+
+    const featured = DS.News.getFeatured();
+    if (!featured) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px; color: #047857;">
+          <p style="margin-bottom: 12px; font-size: 14px;">ยังไม่มีข่าวเด่นแนะนำที่เลือกไว้</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="AdminApp.openNewsModal()">➕ เพิ่มข่าวสารใหม่และตั้งเป็นข่าวเด่น</button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap; background: #ffffff; border-radius: 12px; padding: 18px; border: 1px solid #d1fae5; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="position: relative; width: 240px; min-width: 220px; height: 160px; border-radius: 10px; overflow: hidden; background: #e2e8f0; flex-shrink: 0;">
+          <img src="${DS.resolveImg(featured.image)}" alt="${featured.title}" style="width: 100%; height: 100%; object-fit: cover;">
+          <span style="position: absolute; top: 8px; left: 8px; background: rgba(5, 150, 105, 0.92); color: #ffffff; font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 6px; backdrop-filter: blur(4px);">
+            ${featured.catName || featured.categoryName || 'ข่าวล่าสุด'}
+          </span>
+        </div>
+        <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 13px; color: #64748b; flex-wrap: wrap;">
+              <span style="background: #fef3c7; color: #b45309; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; border: 1px solid #fde68a;">
+                <i class="fa-solid fa-star"></i> ข่าวเด่นแนะนำ
+              </span>
+              <span><i class="fa-regular fa-calendar"></i> ${featured.date || '-'}</span>
+              <span><i class="fa-regular fa-eye"></i> ${featured.views || '1,840 ครั้ง'}</span>
+              <span><i class="fa-regular fa-user"></i> ${featured.author || 'ทีมข่าว Farmora'}</span>
+            </div>
+            <h4 style="font-size: 17px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0; line-height: 1.4;">
+              ${featured.title}
+            </h4>
+            <p style="font-size: 13.5px; color: #475569; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+              ${featured.excerpt || ''}
+            </p>
+          </div>
+          <div style="margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="AdminApp.openNewsModal('${featured.id}')" style="background: #059669; border-color: #059669; font-weight: 600;">
+              <i class="fa-solid fa-pen-to-square"></i> แก้ไขข้อมูลข่าวเด่นนี้
+            </button>
+            <a href="../news.html" target="_blank" class="btn btn-outline btn-sm" style="color: #059669; border-color: #059669;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> ดูหน้าเว็บจริง (news.html)
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function editFeaturedNews() {
+    const featured = DS.News.getFeatured();
+    if (featured) {
+      openNewsModal(featured.id);
+    } else {
+      openNewsModal();
+    }
+  }
+
+  function toggleFeaturedNews(id) {
+    DS.News.setFeatured(id);
+    showToast('ตั้งข่าวนี้เป็น "ข่าวเด่นแนะนำ" เรียบร้อยแล้ว ⭐');
+    renderFeaturedNewsBanner();
+    renderNewsTable();
+  }
+
   function renderNewsTable() {
     const tbody = document.getElementById('newsTableBody');
     if (!tbody) return;
@@ -651,12 +721,18 @@
     }
 
     tbody.innerHTML = items.map(n => `
-      <tr>
+      <tr style="${n.isFeatured ? 'background-color: #f0fdf4;' : ''}">
         <td>
-          <img src="${DS.resolveImg(n.image)}" alt="" class="tbl-thumb">
+          <div style="position: relative; display: inline-block;">
+            <img src="${DS.resolveImg(n.image)}" alt="" class="tbl-thumb">
+            ${n.isFeatured ? '<span style="position: absolute; top: -3px; right: -3px; background: #f59e0b; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 99px; border: 1px solid #fff;" title="ข่าวเด่นแนะนำ"><i class="fa-solid fa-star"></i></span>' : ''}
+          </div>
         </td>
         <td>
-          <span class="tbl-title-main">${n.title}</span>
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
+            ${n.isFeatured ? '<span style="background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid #fde68a;"><i class="fa-solid fa-star"></i> ข่าวเด่นแนะนำ</span>' : ''}
+            <span class="tbl-title-main" style="font-weight: 600;">${n.title}</span>
+          </div>
           <span class="tbl-subtitle">${(n.excerpt || '').substring(0, 70)}...</span>
         </td>
         <td>
@@ -665,9 +741,12 @@
           </span>
         </td>
         <td>${n.date || '-'}</td>
-        <td><i class="fa-regular fa-eye"></i> ${n.views || 0}</td>
+        <td><i class="fa-regular fa-eye"></i> ${n.views || '0 ครั้ง'}</td>
         <td>
           <div class="tbl-actions">
+            <button class="btn btn-sm ${n.isFeatured ? 'btn-success' : 'btn-outline'}" onclick="AdminApp.toggleFeaturedNews('${n.id}')" title="${n.isFeatured ? 'เป็นข่าวเด่นแนะนำอยู่แล้ว' : 'คลิกเพื่อตั้งเป็นข่าวเด่นประจำหน้าเว็บ'}">
+              <i class="fa-solid fa-star" style="${n.isFeatured ? 'color: #ffffff;' : 'color: #f59e0b;'}"></i>
+            </button>
             <button class="btn btn-outline btn-sm" onclick="AdminApp.openNewsModal('${n.id}')" title="แก้ไข">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
@@ -690,9 +769,15 @@
     if (id) {
       const n = DS.News.getById(id);
       if (n) {
+        const featCheck = document.getElementById('newsIsFeatured');
+        if (featCheck) featCheck.checked = !!n.isFeatured;
         document.getElementById('newsTitle').value = n.title || '';
         document.getElementById('newsCat').value = n.cat || 'news';
         document.getElementById('newsDate').value = n.date || '';
+        const authorInput = document.getElementById('newsAuthor');
+        if (authorInput) authorInput.value = n.author || 'ทีมข่าว Farmora';
+        const viewsInput = document.getElementById('newsViews');
+        if (viewsInput) viewsInput.value = n.views || '1,840 ครั้ง';
         document.getElementById('newsImage').value = n.image || '';
         document.getElementById('newsExcerpt').value = n.excerpt || '';
         document.getElementById('newsContent').value = n.content || '';
@@ -700,8 +785,14 @@
       }
     } else {
       document.getElementById('newsForm').reset();
+      const featCheck = document.getElementById('newsIsFeatured');
+      if (featCheck) featCheck.checked = false;
       const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
       document.getElementById('newsDate').value = today;
+      const authorInput = document.getElementById('newsAuthor');
+      if (authorInput) authorInput.value = 'ทีมข่าว Farmora';
+      const viewsInput = document.getElementById('newsViews');
+      if (viewsInput) viewsInput.value = '1,840 ครั้ง';
       document.getElementById('newsImage').value = '../frontend/images/news-hero.jpg';
       document.getElementById('previewNewsImg').src = '../frontend/images/news-hero.jpg';
     }
@@ -714,13 +805,20 @@
     const id = document.getElementById('newsId').value;
     const catSelect = document.getElementById('newsCat');
     const catName = catSelect.options[catSelect.selectedIndex].text;
+    const isFeaturedChecked = document.getElementById('newsIsFeatured')?.checked || false;
 
     const newsData = {
       id: id || undefined,
+      isFeatured: isFeaturedChecked,
       title: document.getElementById('newsTitle').value.trim(),
       cat: catSelect.value,
       catName: catName,
+      category: catSelect.value,
+      categoryName: catName,
+      categoryClass: 'cat-' + catSelect.value,
       date: document.getElementById('newsDate').value.trim(),
+      author: (document.getElementById('newsAuthor')?.value || '').trim() || 'ทีมข่าว Farmora',
+      views: (document.getElementById('newsViews')?.value || '').trim() || '1,840 ครั้ง',
       image: document.getElementById('newsImage').value.trim() || '../frontend/images/news-hero.jpg',
       excerpt: document.getElementById('newsExcerpt').value.trim(),
       content: document.getElementById('newsContent').value.trim()
@@ -734,6 +832,7 @@
     DS.News.save(newsData);
     closeModal();
     showToast(id ? 'บันทึกข่าวสารเรียบร้อยแล้ว' : 'เพิ่มข่าวสารสำเร็จ');
+    renderFeaturedNewsBanner();
     renderNewsTable();
     renderStats();
   }
@@ -742,6 +841,7 @@
     if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข่าวสารนี้?')) {
       DS.News.delete(id);
       showToast('ลบข่าวสารเรียบร้อยแล้ว');
+      renderFeaturedNewsBanner();
       renderNewsTable();
       renderStats();
     }
@@ -1846,6 +1946,9 @@
     saveTimeline,
     deleteTimeline,
     // News
+    renderFeaturedNewsBanner,
+    editFeaturedNews,
+    toggleFeaturedNews,
     openNewsModal,
     saveNews,
     deleteNews,
