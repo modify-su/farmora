@@ -1284,8 +1284,21 @@
 
 /* Responsive หน้าแรก */
 @media (max-width: 768px) {
+  .products-section {
+    padding: 48px 16px;
+  }
+
+  .products-header {
+    margin-bottom: 32px;
+  }
+
+  .products-header h2 {
+    font-size: 26px;
+  }
+
   .products-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .product-card {
@@ -1297,8 +1310,49 @@
     height: 180px;
   }
 
+  .product-card-body {
+    padding: 18px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-section {
+    padding: 36px 12px;
+  }
+
+  .products-header {
+    margin-bottom: 24px;
+  }
+
   .products-header h2 {
-    font-size: 26px;
+    font-size: 22px;
+  }
+
+  .products-header p {
+    font-size: 14px;
+  }
+
+  .product-card-image {
+    height: 155px;
+  }
+
+  .product-card-body {
+    padding: 16px;
+  }
+
+  .product-card-body h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .product-card-body ul li {
+    font-size: 13.5px;
+    padding: 3px 0;
+  }
+
+  .btn-products {
+    padding: 8px 18px;
+    font-size: 13px;
   }
 }
 

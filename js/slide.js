@@ -179,6 +179,37 @@
     if (slider) {
       slider.onmouseenter = stopAutoPlay;
       slider.onmouseleave = startAutoPlay;
+
+      // ── Touch Swipe สำหรับหน้าจอมือถือและแท็บเล็ต ─────────────
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      slider.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          stopAutoPlay();
+        }
+      }, { passive: true });
+
+      slider.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length === 1) {
+          const touchEndX = e.changedTouches[0].clientX;
+          const touchEndY = e.changedTouches[0].clientY;
+          const diffX = touchEndX - touchStartX;
+          const diffY = touchEndY - touchStartY;
+
+          // เลื่อนแนวนอนมากกว่าแนวตั้งอย่างน้อย 40px
+          if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+              nextSlide();
+            } else {
+              prevSlide();
+            }
+          }
+          startAutoPlay();
+        }
+      }, { passive: true });
     }
 
     document.onkeydown = (e) => {

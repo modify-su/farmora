@@ -566,3 +566,25 @@
     height: 320px;
   }
 }
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 45px 14px 35px;
+  }
+
+  .about-hero h1 {
+    font-size: 24px;
+  }
+
+  .about-hero p {
+    font-size: 14.5px;
+  }
+
+  .about-story-image img {
+    height: 220px;
+  }
+
+  .stat-number {
+    font-size: 32px;
+  }
+}

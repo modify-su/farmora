@@ -1054,3 +1054,33 @@
     height: 210px;
   }
 }
+
+@media (max-width: 480px) {
+  .news-hero {
+    padding: 45px 14px 35px;
+  }
+
+  .news-hero h1 {
+    font-size: 24px;
+  }
+
+  .news-hero p {
+    font-size: 14.5px;
+  }
+
+  .news-card-img {
+    height: 170px;
+  }
+
+  .modal-img-wrap {
+    height: 180px;
+  }
+
+  .modal-content-body {
+    padding: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+}
