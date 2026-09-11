@@ -55,6 +55,7 @@
     renderNewsTable();
     renderArticlesTable();
     renderProductsTable();
+    renderOrdersTable();
     renderMenusTable();
     renderMediaGrid();
     renderThemeSettings();
@@ -120,6 +121,7 @@
     news: 'จัดการข่าวสารและกิจกรรม (News & Events)',
     articles: 'จัดการบทความเกษตร (Articles)',
     products: 'จัดการสินค้า (Products)',
+    orders: 'รายการคำสั่งซื้อและการจัดส่ง (Orders Management)',
     menus: 'ตั้งค่าเมนูเว็บไซต์ (Navigation Menus)',
     media: 'คลังรูปภาพ (Media Library)',
     theme: 'ปรับแต่งธีมและสี UX/UI (Theme & Colors)',
@@ -162,6 +164,10 @@
 
     document.getElementById('searchProducts')?.addEventListener('input', renderProductsTable);
     document.getElementById('filterProductCat')?.addEventListener('change', renderProductsTable);
+
+    document.getElementById('searchOrders')?.addEventListener('input', renderOrdersTable);
+    document.getElementById('filterOrderStatus')?.addEventListener('change', renderOrdersTable);
+    document.getElementById('filterOrderPayment')?.addEventListener('change', renderOrdersTable);
   }
 
   function switchTab(tab) {
@@ -199,12 +205,16 @@
     const articles = DS.Articles.getAll();
     const products = DS.Products.getAll();
     const media = DS.Media.getAll();
+    const orderStats = DS.Orders ? DS.Orders.getStats() : { totalOrders: 0, pendingCount: 0, shippingCount: 0, completedCount: 0, totalRevenue: 0 };
 
     document.getElementById('statSlides') && (document.getElementById('statSlides').textContent = slides.length);
     document.getElementById('statNews') && (document.getElementById('statNews').textContent = news.length);
     document.getElementById('statArticles') && (document.getElementById('statArticles').textContent = articles.length);
     document.getElementById('statProducts') && (document.getElementById('statProducts').textContent = products.length);
     document.getElementById('statMedia') && (document.getElementById('statMedia').textContent = media.length);
+    document.getElementById('statOrders') && (document.getElementById('statOrders').textContent = orderStats.totalOrders);
+    document.getElementById('statRevenue') && (document.getElementById('statRevenue').textContent = `฿${orderStats.totalRevenue.toLocaleString('th-TH')}`);
+    document.getElementById('quickPendingOrders') && (document.getElementById('quickPendingOrders').textContent = orderStats.pendingCount);
 
     // Sidebar badges
     document.getElementById('badgeSlidesCount') && (document.getElementById('badgeSlidesCount').textContent = slides.length);
@@ -212,6 +222,14 @@
     document.getElementById('badgeArticlesCount') && (document.getElementById('badgeArticlesCount').textContent = articles.length);
     document.getElementById('badgeProductsCount') && (document.getElementById('badgeProductsCount').textContent = products.length);
     document.getElementById('badgeMediaCount') && (document.getElementById('badgeMediaCount').textContent = media.length);
+    document.getElementById('badgeOrdersCount') && (document.getElementById('badgeOrdersCount').textContent = orderStats.pendingCount || orderStats.totalOrders);
+
+    // Pane Orders KPI Cards
+    document.getElementById('orderStatTotal') && (document.getElementById('orderStatTotal').textContent = orderStats.totalOrders);
+    document.getElementById('orderStatPending') && (document.getElementById('orderStatPending').textContent = orderStats.pendingCount);
+    document.getElementById('orderStatShipping') && (document.getElementById('orderStatShipping').textContent = orderStats.shippingCount);
+    document.getElementById('orderStatCompleted') && (document.getElementById('orderStatCompleted').textContent = orderStats.completedCount);
+    document.getElementById('orderStatRevenue') && (document.getElementById('orderStatRevenue').textContent = `฿${orderStats.totalRevenue.toLocaleString('th-TH')}`);
   }
 
   /* --------------------------------------------------------------------------
@@ -1856,7 +1874,229 @@
   }
 
   /* --------------------------------------------------------------------------
-     12. Modal Helpers & Toast
+     12. Orders Management (รายการคำสั่งซื้อและการจัดส่ง)
+     -------------------------------------------------------------------------- */
+  let currentViewingOrderId = null;
+
+  function renderOrdersTable() {
+    renderStats();
+    const tbody = document.getElementById('ordersTableBody');
+    if (!tbody) return;
+
+    if (!DS.Orders) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#999;">กำลังโหลดระบบคำสั่งซื้อ...</td></tr>';
+      return;
+    }
+
+    let orders = DS.Orders.getAll();
+
+    // Filters
+    const query = (document.getElementById('searchOrders')?.value || '').toLowerCase().trim();
+    const statusFilter = document.getElementById('filterOrderStatus')?.value || 'all';
+    const payFilter = document.getElementById('filterOrderPayment')?.value || 'all';
+
+    if (query) {
+      orders = orders.filter(o =>
+        (o.id && o.id.toLowerCase().includes(query)) ||
+        (o.customer?.name && o.customer.name.toLowerCase().includes(query)) ||
+        (o.customer?.phone && o.customer.phone.includes(query)) ||
+        (o.customer?.address && o.customer.address.toLowerCase().includes(query))
+      );
+    }
+
+    if (statusFilter !== 'all') {
+      orders = orders.filter(o => o.status === statusFilter);
+    }
+
+    if (payFilter !== 'all') {
+      orders = orders.filter(o => o.paymentMethod === payFilter);
+    }
+
+    if (orders.length === 0) {
+      const isFiltered = query || statusFilter !== 'all' || payFilter !== 'all';
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center; padding: 40px; color: var(--text-muted);">
+            <i class="fa-solid fa-cart-arrow-down" style="font-size: 2.5rem; color: #ccc; margin-bottom: 10px; display: block;"></i>
+            ${isFiltered 
+              ? 'ไม่พบรายการคำสั่งซื้อตามเงื่อนไขที่ค้นหา' 
+              : 'ยังไม่มีประวัติคำสั่งซื้อในระบบ (0 รายการ)<br><button type="button" class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="AdminApp.restoreDefaultOrders()"><i class="fa-solid fa-rotate-left"></i> โหลดข้อมูลคำสั่งซื้อตัวอย่างเริ่มต้น</button>'}
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = orders.map(order => {
+      const items = order.items || [];
+      const itemsCount = items.reduce((s, i) => s + (Number(i.qty) || 1), 0);
+      const itemsPreview = items.slice(0, 2).map(i => `• ${i.name} (x${i.qty})`).join('<br>');
+      const moreItems = items.length > 2 ? `<span style="color:var(--text-muted); font-size:11.5px;">+ อีก ${items.length - 2} รายการ</span>` : '';
+
+      return `
+        <tr>
+          <td>
+            <strong style="color: var(--primary-green); cursor: pointer;" onclick="AdminApp.openOrderDetailModal('${order.id}')">${order.id}</strong>
+          </td>
+          <td style="font-size: 13px; color: var(--text-muted); white-space: nowrap;">
+            ${order.date || order.createdAt?.substring(0, 16) || '-'}
+          </td>
+          <td>
+            <strong style="color: var(--text-main);">${order.customer?.name || '-'}</strong><br>
+            <span style="font-size: 12.5px; color: var(--text-muted);"><i class="fa-solid fa-phone" style="font-size: 11px;"></i> ${order.customer?.phone || '-'}</span>
+          </td>
+          <td>
+            <div class="order-items-preview">
+              <span>${itemsPreview}</span>
+              ${moreItems}
+              <small style="color: var(--primary-green); font-weight: 600;">รวม ${itemsCount} ชิ้น</small>
+            </div>
+          </td>
+          <td>
+            <strong style="color: #006837; font-size: 15px;">฿${(Number(order.total) || 0).toLocaleString('th-TH')}</strong>
+          </td>
+          <td>
+            <span style="font-size: 13px;">${order.paymentMethodName || (order.paymentMethod === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงิน')}</span>
+          </td>
+          <td>
+            <select class="filter-select" style="padding: 4px 8px; font-size: 12.5px; font-weight: 600;" onchange="AdminApp.changeOrderStatus('${order.id}', this.value)">
+              <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>🟡 รอดำเนินการ</option>
+              <option value="paid" ${order.status === 'paid' ? 'selected' : ''}>🔵 ชำระแล้ว</option>
+              <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>🟣 กำลังจัดส่ง</option>
+              <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>🟢 สำเร็จแล้ว</option>
+              <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>🔴 ยกเลิกแล้ว</option>
+            </select>
+          </td>
+          <td style="text-align: center; white-space: nowrap;">
+            <button type="button" class="btn-action edit" onclick="AdminApp.openOrderDetailModal('${order.id}')" title="ดูรายละเอียด / ใบเสร็จ">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+            <button type="button" class="btn-action delete" onclick="AdminApp.deleteOrder('${order.id}')" title="ลบคำสั่งซื้อ">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function changeOrderStatus(orderId, newStatus) {
+    if (!DS.Orders) return;
+    const updated = DS.Orders.updateStatus(orderId, newStatus);
+    if (updated) {
+      showToast(`อัปเดตสถานะคำสั่งซื้อ #${orderId} เป็น "${updated.statusName}" สำเร็จ`);
+      renderOrdersTable();
+    }
+  }
+
+  function changeSelectedOrderStatus(newStatus) {
+    if (!currentViewingOrderId) return;
+    changeOrderStatus(currentViewingOrderId, newStatus);
+  }
+
+  function openOrderDetailModal(orderId) {
+    if (!DS.Orders) return;
+    const order = DS.Orders.getById(orderId);
+    if (!order) return;
+
+    currentViewingOrderId = orderId;
+
+    const idEl = document.getElementById('invOrderId');
+    const dateEl = document.getElementById('invOrderDate');
+    const nameEl = document.getElementById('invCustName');
+    const phoneEl = document.getElementById('invCustPhone');
+    const lineEl = document.getElementById('invCustLine');
+    const addrEl = document.getElementById('invCustAddress');
+    const noteEl = document.getElementById('invCustNote');
+    const payEl = document.getElementById('invPaymentMethod');
+    const statusSelect = document.getElementById('modalOrderStatusSelect');
+    const tbody = document.getElementById('invItemsTableBody');
+    const subtotalEl = document.getElementById('invSubtotal');
+    const shippingEl = document.getElementById('invShipping');
+    const totalEl = document.getElementById('invTotal');
+
+    if (idEl) idEl.textContent = order.id;
+    if (dateEl) dateEl.textContent = `วันที่: ${order.date || order.createdAt?.substring(0, 16) || '-'}`;
+    if (nameEl) nameEl.textContent = order.customer?.name || '-';
+    if (phoneEl) phoneEl.textContent = order.customer?.phone || '-';
+    if (lineEl) lineEl.textContent = order.customer?.lineId || '-';
+    if (addrEl) addrEl.textContent = order.customer?.address || '-';
+    if (noteEl) noteEl.textContent = order.note || '-';
+    if (payEl) payEl.textContent = order.paymentMethodName || (order.paymentMethod === 'cod' ? 'เก็บเงินปลายทาง (COD)' : 'โอนเงินผ่านธนาคาร');
+    if (statusSelect) statusSelect.value = order.status || 'pending';
+
+    const items = order.items || [];
+    if (tbody) {
+      tbody.innerHTML = items.map((item, idx) => {
+        const itemImg = DS.resolveImg(item.image || '../frontend/images/product-fertilizer.jpg');
+        return `
+          <tr>
+            <td style="text-align: center;">${idx + 1}</td>
+            <td>
+              <img src="${itemImg}" alt="" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid #ddd;" onerror="this.src='https://placehold.co/80x80?text=Farmora'">
+            </td>
+            <td>
+              <strong>${item.name}</strong>
+              <div style="font-size: 12px; color: #888;">${item.unit || ''}</div>
+            </td>
+            <td style="text-align: right;">฿${(Number(item.price) || 0).toLocaleString('th-TH')}</td>
+            <td style="text-align: center; font-weight: 600;">${item.qty || 1}</td>
+            <td style="text-align: right; font-weight: 600; color: #006837;">฿${(Number(item.total) || 0).toLocaleString('th-TH')}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    if (subtotalEl) subtotalEl.textContent = `฿${(Number(order.subtotal) || 0).toLocaleString('th-TH')}`;
+    if (shippingEl) shippingEl.textContent = (order.shipping === 0) ? 'ฟรี (โปรโมชั่น)' : `฿${(Number(order.shipping) || 0).toLocaleString('th-TH')}`;
+    if (totalEl) totalEl.textContent = `฿${(Number(order.total) || 0).toLocaleString('th-TH')}`;
+
+    openModal('orderDetailModal');
+  }
+
+  function deleteOrder(orderId) {
+    if (!confirm(`คุณต้องการลบคำสั่งซื้อ #${orderId} ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`)) return;
+    if (DS.Orders) {
+      DS.Orders.delete(orderId);
+      showToast(`ลบคำสั่งซื้อ #${orderId} เรียบร้อยแล้ว`);
+      renderOrdersTable();
+    }
+  }
+
+  function printOrderInvoice() {
+    window.print();
+  }
+
+  function clearAllOrders() {
+    const list = DS.Orders ? DS.Orders.getAll() : [];
+    if (list.length === 0) {
+      showToast('ไม่มีประวัติคำสั่งซื้อในระบบอยู่แล้ว');
+      return;
+    }
+
+    if (!confirm(`⚠️ ยืนยันการล้างประวัติคำสั่งซื้อ!\n\nคุณแน่ใจหรือไม่ว่าต้องการลบคำสั่งซื้อทั้งหมด ${list.length} รายการออกจากระบบ?\n(การกระทำนี้จะล้างประวัติทั้งหมดเป็น 0 รายการ และไม่สามารถย้อนกลับได้)`)) {
+      return;
+    }
+
+    if (DS.Orders) {
+      DS.Orders.clearAll();
+      showToast('🗑️ ล้างประวัติคำสั่งซื้อทั้งหมดเรียบร้อยแล้ว');
+      renderOrdersTable();
+    }
+  }
+
+  function restoreDefaultOrders() {
+    if (confirm('คุณต้องการโหลดชุดคำสั่งซื้อตัวอย่างเริ่มต้นกลับมาใช่หรือไม่?')) {
+      if (DS.Orders) {
+        DS.Orders.resetDefaults();
+        showToast('โหลดชุดคำสั่งซื้อตัวอย่างเริ่มต้นเรียบร้อยแล้ว');
+        renderOrdersTable();
+      }
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     13. Modal Helpers & Toast
      -------------------------------------------------------------------------- */
   function openModal(id) {
     activeModal = document.getElementById(id);
@@ -1960,6 +2200,15 @@
     openProductModal,
     saveProduct,
     deleteProduct,
+    // Orders Management
+    renderOrdersTable,
+    changeOrderStatus,
+    changeSelectedOrderStatus,
+    openOrderDetailModal,
+    deleteOrder,
+    clearAllOrders,
+    restoreDefaultOrders,
+    printOrderInvoice,
     // Menus
     openMenuModal,
     saveMenu,

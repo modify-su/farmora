@@ -1504,3 +1504,136 @@ button, input, select, textarea {
   color: var(--text-muted);
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   13. ORDERS MANAGEMENT & INVOICE PRINTING
+   ══════════════════════════════════════════════════════════════════ */
+.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.order-status-badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.order-status-badge.paid {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.order-status-badge.shipping {
+  background-color: #ede9fe;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+.order-status-badge.completed {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.order-status-badge.cancelled {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.order-items-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  max-width: 280px;
+}
+
+.order-items-preview span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.invoice-box {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.invoice-logo img {
+  height: 50px;
+  object-fit: contain;
+}
+
+.invoice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.invoice-info-group h4 {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.invoice-info-group p {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #orderDetailModal, #orderDetailModal * {
+    visibility: visible;
+  }
+  #orderDetailModal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+  .modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+  .modal-header, .modal-footer, .no-print {
+    display: none !important;
+  }
+}
+
+

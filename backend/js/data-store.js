@@ -21,6 +21,8 @@
     NEWS: 'farmora_news_v2',
     ARTICLES: 'farmora_articles_v2',
     PRODUCTS: 'farmora_products_v2',
+    ORDERS: 'farmora_orders_v2',
+    CART: 'farmora_cart_v2',
     MENUS: 'farmora_menus_v2',
     MEDIA: 'farmora_media_v2',
     AUTH: 'farmora_auth_v2',
@@ -548,6 +550,159 @@
   ];
 
   /* --------------------------------------------------------------------------
+     7. รายการคำสั่งซื้อเริ่มต้น (Default Orders)
+     -------------------------------------------------------------------------- */
+  const DEFAULT_ORDERS = [
+    {
+      id: 'ORD-2026-1001',
+      date: '2026-09-08 10:30',
+      customer: {
+        name: 'คุณสมชาย ใจดี',
+        phone: '081-234-5678',
+        lineId: 'somchai_farm',
+        address: '45 หมู่ 3 ต.ในเมือง อ.เมือง จ.สุรินทร์ 32000'
+      },
+      items: [
+        {
+          id: 'p1',
+          name: 'FarmoGrow Plus 16-16-16',
+          price: 650,
+          unit: '/ถุง 25 กก.',
+          qty: 4,
+          total: 2600,
+          image: '../frontend/images/product-fertilizer.jpg'
+        },
+        {
+          id: 'p2',
+          name: 'Super Rain 46-0-0 ยูเรียเกล็ดขาว',
+          price: 580,
+          unit: '/ถุง 25 กก.',
+          qty: 2,
+          total: 1160,
+          image: '../frontend/images/product-fertilizer.jpg'
+        }
+      ],
+      subtotal: 3760,
+      shipping: 0,
+      total: 3760,
+      paymentMethod: 'bank_transfer',
+      paymentMethodName: 'โอนเงินผ่านธนาคาร',
+      paymentStatus: 'paid',
+      status: 'completed',
+      statusName: 'สำเร็จแล้ว',
+      note: 'นำส่งที่หน้าแปลงนา ขอโทรแจ้งก่อนถึง 1 ชม.'
+    },
+    {
+      id: 'ORD-2026-1002',
+      date: '2026-09-10 14:15',
+      customer: {
+        name: 'คุณวิภาวรรณ เกษตรพัฒนา',
+        phone: '089-987-6543',
+        lineId: 'wipawan_agri',
+        address: '128 หมู่ 5 ต.ท่าตูม อ.ท่าตูม จ.สุรินทร์ 32120'
+      },
+      items: [
+        {
+          id: 'p5',
+          name: 'FarmoShield Pro ชีวภัณฑ์กำจัดแมลง',
+          price: 420,
+          unit: '/ขวด 1 ลิตร',
+          qty: 3,
+          total: 1260,
+          image: '../frontend/images/product-pesticide.jpg'
+        },
+        {
+          id: 'p7',
+          name: 'ฮอร์โมนเร่งรากและตาดอก FarmoBloom',
+          price: 350,
+          unit: '/ขวด 1 ลิตร',
+          qty: 2,
+          total: 700,
+          image: '../frontend/images/product-hormone.jpg'
+        }
+      ],
+      subtotal: 1960,
+      shipping: 100,
+      total: 2060,
+      paymentMethod: 'cod',
+      paymentMethodName: 'เก็บเงินปลายทาง (COD)',
+      paymentStatus: 'pending',
+      status: 'shipping',
+      statusName: 'กำลังจัดส่ง',
+      note: 'ฝากไว้ที่ร้านปุ๋ยเจ๊วิภา'
+    },
+    {
+      id: 'ORD-2026-1003',
+      date: '2026-09-11 09:20',
+      customer: {
+        name: 'คุณธนกฤต ทุ่งทอง',
+        phone: '092-456-7890',
+        lineId: 'thanakrit_tt',
+        address: '89 หมู่ 2 ต.ปราสาท อ.ปราสาท จ.สุรินทร์ 32140'
+      },
+      items: [
+        {
+          id: 'p8',
+          name: 'เมล็ดพันธุ์แตงกวาญี่ปุ่น F1 พรีเมียม',
+          price: 180,
+          unit: '/ซอง 100 เมล็ด',
+          qty: 10,
+          total: 1800,
+          image: '../frontend/images/vg 1.jpg'
+        },
+        {
+          id: 'p6',
+          name: 'สารปรับปรุงดิน FarmoHumic',
+          price: 490,
+          unit: '/ถุง 20 กก.',
+          qty: 1,
+          total: 490,
+          image: '../frontend/images/product-soil.jpg'
+        }
+      ],
+      subtotal: 2290,
+      shipping: 100,
+      total: 2390,
+      paymentMethod: 'bank_transfer',
+      paymentMethodName: 'โอนเงินผ่านธนาคาร',
+      paymentStatus: 'paid',
+      status: 'pending',
+      statusName: 'รอตรวจสอบ',
+      note: 'ต้องการรอบส่งด่วนวันนี้ครับ'
+    },
+    {
+      id: 'ORD-2026-1004',
+      date: '2026-09-11 10:45',
+      customer: {
+        name: 'คุณอนันต์ มีทรัพย์',
+        phone: '084-555-1234',
+        lineId: 'anant_cowfarm',
+        address: '15 หมู่ 8 ต.สังขะ อ.สังขะ จ.สุรินทร์ 32150'
+      },
+      items: [
+        {
+          id: 'p9',
+          name: 'อาหารโคนมผสมสำเร็จรูป (TMR) โปรตีน 18%',
+          price: 450,
+          unit: '/กระสอบ 30 กก.',
+          qty: 5,
+          total: 2250,
+          image: '../frontend/images/vg 4.jpg'
+        }
+      ],
+      subtotal: 2250,
+      shipping: 100,
+      total: 2350,
+      paymentMethod: 'cod',
+      paymentMethodName: 'เก็บเงินปลายทาง (COD)',
+      paymentStatus: 'pending',
+      status: 'pending',
+      statusName: 'รอดำเนินการ',
+      note: 'ฟาร์มโคนมอนันต์ ประตูรั้วสีฟ้า'
+    }
+  ];
+
+  /* --------------------------------------------------------------------------
      Core Data Access Functions (CRUD)
      -------------------------------------------------------------------------- */
   function getRaw(key, defaultData) {
@@ -578,6 +733,7 @@
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
       setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
       setRaw(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
+      setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
       setRaw(STORAGE_KEYS.MENUS, DEFAULT_MENUS);
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
       localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
@@ -595,6 +751,10 @@
     const hasFeaturedWarehouseNews = existingNews.some(n => n.id === 'n1' || (n.title && n.title.includes('เปิดตัวคลังกระจายสินค้า')));
     if (!hasFeaturedWarehouseNews || existingNews.length < 5) {
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นรายการคำสั่งซื้อหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
+      setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
     }
   }
 
@@ -808,6 +968,85 @@
     }
   };
 
+  // ── Orders API ──
+  const Orders = {
+    getAll: () => getRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS),
+    getById: (id) => Orders.getAll().find(o => o.id === id),
+    save: (order) => {
+      const list = Orders.getAll();
+      const index = list.findIndex(o => o.id === order.id);
+      if (index >= 0) {
+        list[index] = { ...list[index], ...order, updatedAt: new Date().toISOString() };
+      } else {
+        if (!order.id) {
+          const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+          order.id = `ORD-${new Date().getFullYear()}-${randomSuffix}`;
+        }
+        order.createdAt = order.createdAt || new Date().toISOString();
+        list.unshift(order);
+      }
+      setRaw(STORAGE_KEYS.ORDERS, list);
+      return order;
+    },
+    updateStatus: (id, newStatus) => {
+      const list = Orders.getAll();
+      const index = list.findIndex(o => o.id === id);
+      if (index >= 0) {
+        list[index].status = newStatus;
+        const statusMap = {
+          'pending': 'รอดำเนินการ',
+          'paid': 'ชำระเงินแล้ว',
+          'shipping': 'กำลังจัดส่ง',
+          'completed': 'สำเร็จแล้ว',
+          'cancelled': 'ยกเลิกแล้ว'
+        };
+        list[index].statusName = statusMap[newStatus] || newStatus;
+        if (newStatus === 'paid') list[index].paymentStatus = 'paid';
+        list[index].updatedAt = new Date().toISOString();
+        setRaw(STORAGE_KEYS.ORDERS, list);
+        return list[index];
+      }
+      return null;
+    },
+    delete: (id) => {
+      const filtered = Orders.getAll().filter(o => o.id !== id);
+      setRaw(STORAGE_KEYS.ORDERS, filtered);
+    },
+    clearAll: () => {
+      setRaw(STORAGE_KEYS.ORDERS, []);
+      return [];
+    },
+    resetDefaults: () => {
+      setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
+      return DEFAULT_ORDERS;
+    },
+    getStats: () => {
+      const list = Orders.getAll();
+      const totalOrders = list.length;
+      const pendingCount = list.filter(o => o.status === 'pending').length;
+      const shippingCount = list.filter(o => o.status === 'shipping').length;
+      const completedCount = list.filter(o => o.status === 'completed').length;
+      const totalRevenue = list
+        .filter(o => o.status !== 'cancelled')
+        .reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+      return { totalOrders, pendingCount, shippingCount, completedCount, totalRevenue };
+    }
+  };
+
+  // ── Cart Storage API ──
+  const Cart = {
+    get: () => getRaw(STORAGE_KEYS.CART, []),
+    set: (items) => {
+      setRaw(STORAGE_KEYS.CART, items);
+      window.dispatchEvent(new CustomEvent('farmora:cartChanged', { detail: items }));
+      return items;
+    },
+    clear: () => {
+      setRaw(STORAGE_KEYS.CART, []);
+      window.dispatchEvent(new CustomEvent('farmora:cartChanged', { detail: [] }));
+    }
+  };
+
   // ── Backup & Restore ──
   const Backup = {
     exportJSON: () => {
@@ -820,6 +1059,7 @@
         news: News.getAll(),
         articles: Articles.getAll(),
         products: Products.getAll(),
+        orders: Orders.getAll(),
         menus: Menus.getAll(),
         media: Media.getAll()
       };
@@ -834,6 +1074,7 @@
         if (parsed.news) setRaw(STORAGE_KEYS.NEWS, parsed.news);
         if (parsed.articles) setRaw(STORAGE_KEYS.ARTICLES, parsed.articles);
         if (parsed.products) setRaw(STORAGE_KEYS.PRODUCTS, parsed.products);
+        if (parsed.orders) setRaw(STORAGE_KEYS.ORDERS, parsed.orders);
         if (parsed.menus) setRaw(STORAGE_KEYS.MENUS, parsed.menus);
         if (parsed.media) setRaw(STORAGE_KEYS.MEDIA, parsed.media);
         return { success: true };
@@ -848,6 +1089,7 @@
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
       setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
       setRaw(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
+      setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
       setRaw(STORAGE_KEYS.MENUS, DEFAULT_MENUS);
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
       return true;
@@ -865,6 +1107,8 @@
     News,
     Articles,
     Products,
+    Orders,
+    Cart,
     Menus,
     Media,
     Backup,

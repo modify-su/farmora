@@ -795,6 +795,11 @@
     const item = PRODUCTS_DATA.find(p => p.id === id);
     if (!item) return;
 
+    if (window.FarmoraCart && typeof window.FarmoraCart.addItem === 'function') {
+      window.FarmoraCart.addItem(item, qty);
+      return;
+    }
+
     // อัปเดตยอดตะกร้าใน Navbar
     const cartCountEl = document.getElementById('cart-count');
     if (cartCountEl) {
