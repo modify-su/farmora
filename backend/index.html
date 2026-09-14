@@ -30,17 +30,17 @@
       <h2 class="auth-title">เข้าสู่ระบบหลังบ้าน Farmora</h2>
       <p class="auth-subtitle">ระบบจัดการสไลด์ ข่าวสาร บทความ สินค้า และเมนูเว็บไซต์</p>
 
-      <form onsubmit="AdminApp.handleLogin(event)">
+      <form onsubmit="AdminApp.handleLogin(event)" autocomplete="off">
         <div id="authError" style="display: none; background: #fee2e2; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 13.5px; margin-bottom: 14px; border: 1px solid #fca5a5; text-align: left;">
           <i class="fa-solid fa-triangle-exclamation"></i> ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 14px;">
           <label class="form-label">ชื่อผู้ดูแลระบบ (Username)</label>
-          <input type="text" id="authUsername" class="form-control" value="admin" required autocomplete="username">
+          <input type="text" id="authUsername" class="form-control" placeholder="กรอกชื่อผู้ดูแลระบบ" required autocomplete="off">
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 24px;">
           <label class="form-label">รหัสผ่าน (Password)</label>
-          <input type="password" id="authPassword" class="form-control" value="farmora2026" required autocomplete="current-password">
+          <input type="password" id="authPassword" class="form-control" placeholder="กรอกรหัสผ่าน" required autocomplete="new-password">
         </div>
         <button type="submit" class="btn btn-primary auth-quick-btn">
           <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบจัดการหลังบ้าน

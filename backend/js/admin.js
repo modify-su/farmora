@@ -72,6 +72,10 @@
         authOverlay.style.display = 'none';
       } else {
         authOverlay.style.display = 'flex';
+        const uInp = document.getElementById('authUsername');
+        const pInp = document.getElementById('authPassword');
+        if (uInp) uInp.value = '';
+        if (pInp) pInp.value = '';
       }
     }
   }
@@ -80,7 +84,7 @@
     if (e && e.preventDefault) e.preventDefault();
     const userInput = document.getElementById('authUsername');
     const passInput = document.getElementById('authPassword');
-    const user = (userInput ? userInput.value : 'admin').trim();
+    const user = (userInput ? userInput.value : '').trim();
     const pass = (passInput ? passInput.value : '').trim();
 
     // Simple Admin Auth (ยอมรับทั้ง farmora2025 และ farmora2026)
@@ -88,7 +92,7 @@
       const err = document.getElementById('authError');
       if (err) {
         err.style.display = 'block';
-        err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (กรุณาใช้ admin / farmora2026)';
+        err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
       }
       return;
     }
@@ -99,6 +103,8 @@
     localStorage.setItem('farmora_admin_authed', 'true');
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) authOverlay.style.display = 'none';
+    if (userInput) userInput.value = '';
+    if (passInput) passInput.value = '';
     showToast('เข้าสู่ระบบหลังบ้านเรียบร้อยแล้ว');
   }
 
@@ -107,6 +113,10 @@
       localStorage.removeItem('farmora_admin_authed');
       const authOverlay = document.getElementById('authOverlay');
       if (authOverlay) authOverlay.style.display = 'flex';
+      const uInp = document.getElementById('authUsername');
+      const pInp = document.getElementById('authPassword');
+      if (uInp) uInp.value = '';
+      if (pInp) pInp.value = '';
       showToast('ออกจากระบบเรียบร้อยแล้ว');
     }
   }
