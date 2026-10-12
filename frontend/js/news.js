@@ -220,41 +220,37 @@ Farmora พร้อมให้คำแนะนำเรื่องสูต
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const hasFeatured = parsed.some(n => n.id === 'n1' || (n.title && n.title.includes('เปิดตัวคลังกระจายสินค้า')));
-          // ถ้ามีข่าวเด่นและข่าวครบอย่างน้อย 5 รายการ แสดงว่าอัปเกรดแล้ว
-          if (hasFeatured && parsed.length >= 5) {
-            return parsed.map(item => {
-              const cat = item.cat || item.category || 'news';
-              let catName = item.catName || item.categoryName;
-              if (!catName) {
-                if (cat === 'news') catName = 'ข่าวล่าสุด';
-                else if (cat === 'activity') catName = 'กิจกรรมที่ผ่านมา';
-                else if (cat === 'article') catName = 'บทความ';
-                else if (cat === 'promotion') catName = 'โปรโมชั่น';
-                else catName = 'ข่าวประชาสัมพันธ์';
-              }
-              return {
-                id: item.id,
-                title: item.title,
-                category: cat,
-                cat: cat,
-                categoryName: catName,
-                catName: catName,
-                categoryClass: item.categoryClass || ('cat-' + cat),
-                date: item.date || '',
-                views: item.views || '1,840 ครั้ง',
-                author: item.author || 'ทีมข่าว Farmora',
-                image: item.image,
-                isFeatured: !!item.isFeatured,
-                isHot: !!item.isHot,
-                excerpt: item.excerpt || '',
-                fullContent: item.content || item.fullContent || item.excerpt || ''
-              };
-            });
-          }
+          return parsed.map(item => {
+            const cat = item.cat || item.category || 'news';
+            let catName = item.catName || item.categoryName;
+            if (!catName) {
+              if (cat === 'news') catName = 'ข่าวล่าสุด';
+              else if (cat === 'activity') catName = 'กิจกรรมที่ผ่านมา';
+              else if (cat === 'article') catName = 'บทความ';
+              else if (cat === 'promotion') catName = 'โปรโมชั่น';
+              else catName = 'ข่าวประชาสัมพันธ์';
+            }
+            return {
+              id: item.id,
+              title: item.title,
+              category: cat,
+              cat: cat,
+              categoryName: catName,
+              catName: catName,
+              categoryClass: item.categoryClass || ('cat-' + cat),
+              date: item.date || '',
+              views: item.views || '1,840 ครั้ง',
+              author: item.author || 'ทีมข่าว Farmora',
+              image: item.image,
+              isFeatured: !!item.isFeatured,
+              isHot: !!item.isHot,
+              excerpt: item.excerpt || '',
+              fullContent: item.content || item.fullContent || item.excerpt || ''
+            };
+          });
         }
       }
-      // หากยังไม่มี หรือเป็นชุดเก่าใน browser ให้บันทึกชุดข่าวจริง 10 รายการลง localStorage ทันที
+      // หากยังไม่มีข้อมูลใน localStorage ให้บันทึกชุดข่าวเริ่มต้น
       localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_NEWS));
     } catch (e) {
       console.warn('Error reading farmora_news_v2 from localStorage:', e);

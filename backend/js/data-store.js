@@ -767,10 +767,8 @@
     if (!localStorage.getItem(STORAGE_KEYS.ABOUT)) {
       setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
     }
-    // ตรวจสอบและอัปเกรดฐานข้อมูลข่าวสารให้เป็นชุดข่าวเต็ม 10 รายการ และมีข่าวเด่นประจำสัปดาห์
-    const existingNews = getRaw(STORAGE_KEYS.NEWS, []);
-    const hasFeaturedWarehouseNews = existingNews.some(n => n.id === 'n1' || (n.title && n.title.includes('เปิดตัวคลังกระจายสินค้า')));
-    if (!hasFeaturedWarehouseNews || existingNews.length < 5) {
+    // ตรวจสอบและตั้งค่าเริ่มต้นข่าวสารหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.NEWS)) {
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
     }
     // ตรวจสอบและตั้งค่าเริ่มต้นรายการคำสั่งซื้อหากยังไม่มี
@@ -780,6 +778,26 @@
     // ตรวจสอบและตั้งค่าเริ่มต้นระบบปิดปรับปรุงชั่วคราวหากยังไม่มี
     if (!localStorage.getItem(STORAGE_KEYS.MAINTENANCE)) {
       setRaw(STORAGE_KEYS.MAINTENANCE, DEFAULT_MAINTENANCE);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นสไลด์หากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.SLIDES)) {
+      setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นสินค้าหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+      setRaw(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นบทความหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.ARTICLES)) {
+      setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นเมนูหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.MENUS)) {
+      setRaw(STORAGE_KEYS.MENUS, DEFAULT_MENUS);
+    }
+    // ตรวจสอบและตั้งค่าเริ่มต้นคลังสื่อหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.MEDIA)) {
+      setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
     }
   }
 

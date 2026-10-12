@@ -35,8 +35,8 @@
     return isRoot ? ('frontend/images/' + clean) : ('../images/' + clean);
   }
 
-  // ── ฐานข้อมูลสินค้า Farmora ครบ 28 รายการ ─────────────────
-  const PRODUCTS_DATA = [
+  // ── ฐานข้อมูลสินค้า Farmora ครบ 28 รายการ (ชุดข้อมูลเริ่มต้น) ──
+  const DEFAULT_PRODUCTS_DATA = [
     /* ── หมวด 1: ปุ๋ยเคมี (fertilizer) ── */
     {
       id: 'p1',
@@ -453,6 +453,26 @@
       image: '../images/vg 3.jpg'
     }
   ];
+ 
+  // ── เชื่อมโยงฐานข้อมูลสินค้าจาก localStorage (farmora_products_v2) ──
+  const STORAGE_KEY_PRODUCTS = 'farmora_products_v2';
+
+  function getActiveProducts() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_PRODUCTS);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Error reading products from localStorage:', e);
+    }
+    return DEFAULT_PRODUCTS_DATA;
+  }
+
+  let PRODUCTS_DATA = getActiveProducts();
 
   // ── DOM Elements ──────────────────────────────────────────
   const prodGrid         = document.getElementById('prodGrid');
@@ -494,6 +514,7 @@
 
   // ── 1. Helper: อัปเดตตัวเลขนับจำนวนใน Sidebar ─────────────
   function updateCategoryCounts() {
+    PRODUCTS_DATA = getActiveProducts();
     const counts = { all: PRODUCTS_DATA.length };
     PRODUCTS_DATA.forEach(p => {
       counts[p.cat] = (counts[p.cat] || 0) + 1;
@@ -510,6 +531,7 @@
 
   // ── 2. Helper: ฟิลเตอร์และจัดเรียงสินค้า ──────────────────
   function getFilteredProducts() {
+    PRODUCTS_DATA = getActiveProducts();
     let list = PRODUCTS_DATA.filter(p => {
       // กรองหมวดหมู่
       const matchCat = (currentCategory === 'all') || (p.cat === currentCategory);
@@ -917,9 +939,22 @@
         window.scrollTo({ top: mainEl.offsetTop - 80, behavior: 'smooth' });
       }
     }, 150);
-  } else {
-    setCategory('all', false);
   }
+
+  // ดักจับการเปลี่ยนแปลงแบบเรียลไทม์เมื่อแก้ไขสินค้าจากระบบหลังบ้าน
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY_PRODUCTS) {
+      updateCategoryCounts();
+      renderProducts();
+    }
+  });
+
+  window.addEventListener('farmora:dataChanged', (e) => {
+    if (!e.detail || e.detail.key === STORAGE_KEY_PRODUCTS) {
+      updateCategoryCounts();
+      renderProducts();
+    }
+  });
 
   // ส่งออกฟังก์ชันสู่ Global Scope
   window.FarmoraProducts = {

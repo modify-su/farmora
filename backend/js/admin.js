@@ -66,15 +66,31 @@
      2. Authentication
      -------------------------------------------------------------------------- */
   function checkAuth() {
-    // ล้างค่าถาวรเดิมใน localStorage ออก เพื่อบังคับให้ล็อกอินทุกครั้ง ไม่จำสิทธิ์ข้ามเบราว์เซอร์
+    let isAuthed = false;
     try {
-      localStorage.removeItem('farmora_admin_authed');
-    } catch (e) {}
+      // 1. ตรวจสอบใน sessionStorage
+      if (sessionStorage.getItem('farmora_admin_authed') === 'true') {
+        isAuthed = true;
+      } else {
+        // 2. ตรวจสอบกรณีรีเฟรชหน้าเว็บ (เช่น file:/// บน Chrome ที่ sessionStorage อาจหลุดตอน F5)
+        const reloadToken = localStorage.getItem('farmora_admin_reload_token');
+        if (reloadToken) {
+          const diff = Date.now() - parseInt(reloadToken, 10);
+          if (diff >= 0 && diff < 30000) {
+            isAuthed = true;
+            sessionStorage.setItem('farmora_admin_authed', 'true');
+          }
+        }
+      }
+    } catch (_) {}
 
-    const isAuthed = sessionStorage.getItem('farmora_admin_authed');
+    // ล้าง reload_token และสิทธิ์ถาวรเพื่อความปลอดภัย
+    try { localStorage.removeItem('farmora_admin_reload_token'); } catch (_) {}
+    try { localStorage.removeItem('farmora_admin_authed'); } catch (_) {}
+
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) {
-      if (isAuthed === 'true') {
+      if (isAuthed) {
         authOverlay.style.display = 'none';
       } else {
         authOverlay.style.display = 'flex';
@@ -85,6 +101,15 @@
       }
     }
   }
+
+  // ดักจับจังหวะก่อนรีเฟรชหน้าเว็บ (F5 / Reload) เพื่อไม่ให้หลุดออกจากระบบขณะกำลังทำงาน
+  window.addEventListener('beforeunload', () => {
+    try {
+      if (sessionStorage.getItem('farmora_admin_authed') === 'true') {
+        localStorage.setItem('farmora_admin_reload_token', Date.now().toString());
+      }
+    } catch (_) {}
+  });
 
   function handleLogin(e) {
     if (e && e.preventDefault) e.preventDefault();
@@ -120,6 +145,7 @@
       sessionStorage.removeItem('farmora_admin_authed');
       try {
         localStorage.removeItem('farmora_admin_authed');
+        localStorage.removeItem('farmora_admin_reload_token');
       } catch (e) {}
       const authOverlay = document.getElementById('authOverlay');
       if (authOverlay) authOverlay.style.display = 'flex';
@@ -189,10 +215,25 @@
     document.getElementById('searchOrders')?.addEventListener('input', renderOrdersTable);
     document.getElementById('filterOrderStatus')?.addEventListener('change', renderOrdersTable);
     document.getElementById('filterOrderPayment')?.addEventListener('change', renderOrdersTable);
+
+    // คืนค่าแท็บเดิมที่กำลังทำงานอยู่ก่อนกดรีเฟรชหน้าเว็บ
+    try {
+      const savedTab = sessionStorage.getItem('farmora_admin_active_tab') || 
+                       localStorage.getItem('farmora_admin_active_tab') || 'overview';
+      if (savedTab && document.getElementById(`pane-${savedTab}`)) {
+        switchTab(savedTab);
+      }
+    } catch (_) {}
   }
 
   function switchTab(tab) {
+    if (!tab) return;
     currentTab = tab;
+
+    try {
+      sessionStorage.setItem('farmora_admin_active_tab', tab);
+      localStorage.setItem('farmora_admin_active_tab', tab);
+    } catch (_) {}
 
     // Sidebar active state
     document.querySelectorAll('.sidebar-link').forEach(link => {
@@ -2340,7 +2381,16 @@
       sessionStorage.removeItem('farmora_maint_dismissed_session');
     } catch (_) {}
 
-    const updated = DS.Maintenance.toggle(active);
+    const form = document.getElementById('maintenanceForm');
+    let updated;
+    if (form) {
+      const data = getMaintenanceFormData();
+      data.isActive = active;
+      updated = DS.Maintenance.set(data);
+    } else {
+      updated = DS.Maintenance.toggle(active);
+    }
+
     renderMaintenanceSettings();
     if (updated.isActive) {
       showToast('🛑 ปิดปรับปรุงเว็บไซต์แล้ว — นำปุ่มเข้าเว็บออกทั้งหมด ไม่อนุญาตให้บุคคลทั่วไปเข้าชม');
