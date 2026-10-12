@@ -1,0 +1,647 @@
+/* ==========================================================================
+   🌿 FARMORA OFFICIAL — Maintenance Mode CSS (maintenance.css)
+   ==========================================================================
+   ระบบหน้าต่างป๊อปอัปแจ้งเตือนปิดปรับปรุงชั่วคราว (Maintenance Alert & Stop Sign)
+   - รองรับทั้งโหมดป๊อปอัปแจ้งเตือน (Notice Modal) และโหมดป้ายหยุดล็อกทั้งเว็บไซต์ (Full Lockout)
+   - ป้ายหยุดสีแดง (Stop Sign 🛑) พร้อมแสงเรือง Pulse Animation
+   - สัญญาณหลักเตือน (Caution Triangle ⚠️), เขตปรับปรุง (🚧) และซ่อมบำรุง (🔧)
+   - กล่องเวลากำหนดเปิดให้บริการและนาฬิกานับถอยหลัง (Countdown Timer)
+   - ปุ่มโทรสายด่วน และปุ่มติดต่อด่วนผ่าน LINE OA
+   - รองรับการแสดงผลบนคอมพิวเตอร์และสมาร์ตโฟน 100%
+   ========================================================================== */
+
+/* ── 1. Fullscreen Backdrop Overlay ─────────────────────────────────────── */
+.farmora-maint-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at center, rgba(12, 45, 25, 0.92) 0%, rgba(5, 20, 11, 0.96) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  font-family: 'Kanit', sans-serif;
+  overflow-y: auto;
+}
+
+.farmora-maint-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── 2. Maintenance Modal Card ──────────────────────────────────────────── */
+.farmora-maint-card {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transform: translateY(25px) scale(0.96);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: auto;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.farmora-maint-overlay.active .farmora-maint-card {
+  transform: translateY(0) scale(1);
+}
+
+/* ── แถบลายสะท้อนแสงเตือนภัยด้านบนสุด (Hazard Caution Strip) ─────────────── */
+.farmora-maint-hazard-strip {
+  height: 8px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ffb300,
+    #ffb300 14px,
+    #212121 14px,
+    #212121 28px
+  );
+}
+
+.farmora-maint-hazard-strip.stop-hazard {
+  background: repeating-linear-gradient(
+    -45deg,
+    #e53935,
+    #e53935 14px,
+    #ffffff 14px,
+    #ffffff 28px
+  );
+}
+
+/* ── ปุ่มกากบาทปิด (สำหรับโหมด Popup Notice) ────────────────────────────── */
+.farmora-maint-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f2;
+  border: none;
+  color: #555;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.farmora-maint-close-btn:hover {
+  background: #e53935;
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* ── ส่วนเนื้อหาหลักในกล่อง ──────────────────────────────────────────────── */
+.farmora-maint-body {
+  padding: 32px 28px 24px;
+}
+
+/* ── 3. ป้ายสัญลักษณ์เตือนหลัก / ป้ายหยุด (Alert Sign Badge) ───────────────── */
+.farmora-maint-icon-wrap {
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🛑 แบบที่ 1: ป้ายหยุดสีแดง (Stop Sign) */
+.maint-sign-stop {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #ff1744 0%, #c62828 100%);
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 30px rgba(229, 57, 53, 0.45);
+  animation: stopGlowPulse 2.2s infinite ease-in-out;
+  position: relative;
+}
+
+.maint-sign-stop i {
+  font-size: 2.2rem;
+  margin-bottom: 2px;
+}
+
+.maint-sign-stop .stop-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1;
+}
+
+@keyframes stopGlowPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(229, 57, 53, 0.45);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 14px 40px rgba(229, 57, 53, 0.7);
+  }
+}
+
+/* ⚠️ แบบที่ 2: สัญญาณหลักเตือน (Caution Triangle) */
+.maint-sign-warning {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #ff9100 0%, #ff5722 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 30px rgba(255, 111, 34, 0.45);
+  animation: warningFlash 2s infinite ease-in-out;
+}
+
+.maint-sign-warning i {
+  font-size: 2.6rem;
+}
+
+@keyframes warningFlash {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.06); filter: brightness(1.15); box-shadow: 0 12px 35px rgba(255, 111, 34, 0.65); }
+}
+
+/* 🚧 แบบที่ 3: ป้ายเขตก่อสร้างและปรับปรุง (Under Construction) */
+.maint-sign-construction {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #ffd600 0%, #ff9100 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #212121;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 30px rgba(255, 160, 0, 0.4);
+  animation: bounceLight 2.4s infinite ease-in-out;
+}
+
+.maint-sign-construction i {
+  font-size: 2.6rem;
+}
+
+@keyframes bounceLight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* 🔧 แบบที่ 4: ช่างซ่อมบำรุงระบบ (Wrench & Gear) */
+.maint-sign-wrench {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #00A64C 0%, #0C7B3B 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 166, 76, 0.4);
+}
+
+.maint-sign-wrench i {
+  font-size: 2.4rem;
+  animation: rotateWrench 4s infinite ease-in-out;
+}
+
+@keyframes rotateWrench {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+/* ── แคปซูลหัวข้อ (Badge Pill) ───────────────────────────────────────────── */
+.farmora-maint-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff4e5;
+  color: #d9480f;
+  padding: 5px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  border: 1px solid #ffe8cc;
+}
+
+.farmora-maint-badge.badge-danger {
+  background: #ffe3e3;
+  color: #c92a2a;
+  border-color: #ffc9c9;
+}
+
+.farmora-maint-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #d9480f;
+  display: inline-block;
+  animation: pulseDot 1.4s infinite;
+}
+
+.farmora-maint-badge.badge-danger .farmora-maint-badge-dot {
+  background-color: #c92a2a;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+}
+
+/* ── ข้อความหัวข้อและรายละเอียด ───────────────────────────────────────── */
+.farmora-maint-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2e1d;
+  margin: 0 0 12px 0;
+  line-height: 1.35;
+}
+
+.farmora-maint-desc {
+  font-size: 14.5px;
+  color: #555555;
+  line-height: 1.65;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+/* ── กล่องกำหนดเวลาเปิดให้บริการ (Estimated Time Box) ───────────────────── */
+.farmora-maint-time-box {
+  background: #f7faf8;
+  border: 1.5px dashed #cde3d2;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #1a4325;
+}
+
+.farmora-maint-time-box i {
+  font-size: 1.3rem;
+  color: #00A64C;
+}
+
+.farmora-maint-time-text {
+  font-size: 14px;
+  text-align: left;
+}
+
+.farmora-maint-time-text strong {
+  display: block;
+  font-size: 14.5px;
+  color: #0C7B3B;
+}
+
+/* ── นาฬิกานับถอยหลัง (Countdown Timer Box) ─────────────────────────────── */
+.farmora-maint-countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.maint-count-unit {
+  background: #ffffff;
+  border: 1px solid #dceed5;
+  border-radius: 12px;
+  padding: 8px 12px;
+  min-width: 64px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.maint-count-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0C7B3B;
+  display: block;
+  line-height: 1.1;
+}
+
+.maint-count-lbl {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+/* ── ช่องทางติดต่อฉุกเฉิน (Emergency Contacts) ────────────────────────── */
+.farmora-maint-contacts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.maint-btn-contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.maint-btn-tel {
+  background: #edf7ef;
+  color: #0C7B3B;
+  border: 1.5px solid #00A64C;
+}
+
+.maint-btn-tel:hover {
+  background: #00A64C;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 166, 76, 0.25);
+}
+
+.maint-btn-line {
+  background: #06c755;
+  color: #ffffff;
+  border: 1.5px solid #06c755;
+}
+
+.maint-btn-line:hover {
+  background: #05b34c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(6, 199, 85, 0.35);
+}
+
+/* ── ส่วนท้ายปุ่มแอ็กชัน (Footer Actions) ──────────────────────────────── */
+.farmora-maint-footer {
+  border-top: 1px solid #eef3f0;
+  padding: 16px 28px;
+  background: #fbfdfc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.farmora-maint-btn-dismiss {
+  width: 100%;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00A64C, #0C7B3B);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 166, 76, 0.3);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.farmora-maint-btn-dismiss:hover {
+  background: linear-gradient(135deg, #00b955, #0a6932);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 166, 76, 0.4);
+}
+
+.farmora-maint-admin-bypass {
+  width: 100%;
+  font-size: 13px;
+  color: #6c757d;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.farmora-maint-admin-bypass:hover {
+  color: #0C7B3B;
+}
+
+/* ── ส่วนการเข้าถึงสำหรับผู้ได้รับอนุญาต (Authorized Lockout Actions) ─── */
+.farmora-maint-lockout-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.farmora-maint-passcode-toggle-btn {
+  background: transparent;
+  border: 1px dashed #b2d8be;
+  color: #1b5e20;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.farmora-maint-passcode-toggle-btn:hover {
+  background: #f0fdf4;
+  border-color: #00a64c;
+  color: #00a64c;
+}
+
+.farmora-maint-passcode-box {
+  width: 100%;
+  background: #f4faf6;
+  border: 1px solid #d8ebd9;
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.farmora-maint-passcode-form {
+  display: flex;
+  gap: 8px;
+}
+
+.farmora-maint-passcode-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #c2dec8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.farmora-maint-passcode-input:focus {
+  border-color: #00a64c;
+  box-shadow: 0 0 0 3px rgba(0, 166, 76, 0.15);
+}
+
+.farmora-maint-passcode-submit {
+  padding: 8px 16px;
+  background: #00a64c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.farmora-maint-passcode-submit:hover {
+  background: #0c7b3b;
+}
+
+.farmora-maint-passcode-error {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* ── 4. Responsive บนสมาร์ตโฟน ─────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .farmora-maint-overlay {
+    padding: 14px;
+  }
+
+  .farmora-maint-card {
+    border-radius: 20px;
+  }
+
+  .farmora-maint-body {
+    padding: 24px 18px 20px;
+  }
+
+  .maint-sign-stop,
+  .maint-sign-warning,
+  .maint-sign-construction,
+  .maint-sign-wrench {
+    width: 76px;
+    height: 76px;
+  }
+
+  .maint-sign-stop i,
+  .maint-sign-warning i,
+  .maint-sign-construction i,
+  .maint-sign-wrench i {
+    font-size: 2rem;
+  }
+
+  .farmora-maint-title {
+    font-size: 19px;
+  }
+
+  .farmora-maint-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .farmora-maint-contacts {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .farmora-maint-countdown {
+    gap: 6px;
+  }
+
+  .maint-count-unit {
+    min-width: 54px;
+    padding: 6px 8px;
+  }
+
+  .maint-count-num {
+    font-size: 18px;
+  }
+
+  .farmora-maint-footer {
+    padding: 14px 18px;
+  }
+
+  .maint-floating-reopen {
+    bottom: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+}
+
+/* ── 9. ปุ่มลอยเปิดป้ายเตือนซ้ำ (Floating Re-open Pill) ──────────────────── */
+.maint-floating-reopen {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 99999;
+  background: #c62828;
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(198, 40, 40, 0.45);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  animation: floatPulse 2s infinite ease-in-out;
+  border: 2px solid #ffffff;
+}
+
+.maint-floating-reopen:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: #b71c1c;
+  box-shadow: 0 6px 22px rgba(198, 40, 40, 0.65);
+}
+
+@keyframes floatPulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.45);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(198, 40, 40, 0.75);
+  }
+}
+

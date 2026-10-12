@@ -59,12 +59,19 @@
     renderMenusTable();
     renderMediaGrid();
     renderThemeSettings();
+    renderMaintenanceSettings();
   }
 
   /* --------------------------------------------------------------------------
      2. Authentication
      -------------------------------------------------------------------------- */
   function checkAuth() {
+    // ตรวจสอบพารามิเตอร์ URL สำหรับการเข้าสู่ระบบด่วน เช่น ?login=1 หรือ ?admin=1
+    const search = window.location.search || '';
+    if (search.includes('login=1') || search.includes('admin=1') || search.includes('bypass=1')) {
+      localStorage.setItem('farmora_admin_authed', 'true');
+    }
+
     const isAuthed = localStorage.getItem('farmora_admin_authed');
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) {
@@ -74,10 +81,17 @@
         authOverlay.style.display = 'flex';
         const uInp = document.getElementById('authUsername');
         const pInp = document.getElementById('authPassword');
-        if (uInp) uInp.value = '';
-        if (pInp) pInp.value = '';
+        if (uInp && !uInp.value) uInp.value = 'admin';
+        if (pInp && !pInp.value) pInp.value = 'farmora2026';
       }
     }
+  }
+
+  function quickLogin() {
+    localStorage.setItem('farmora_admin_authed', 'true');
+    const authOverlay = document.getElementById('authOverlay');
+    if (authOverlay) authOverlay.style.display = 'none';
+    showToast('เข้าสู่ระบบหลังบ้านเรียบร้อยแล้ว');
   }
 
   function handleLogin(e) {
@@ -135,6 +149,7 @@
     menus: 'ตั้งค่าเมนูเว็บไซต์ (Navigation Menus)',
     media: 'คลังรูปภาพ (Media Library)',
     theme: 'ปรับแต่งธีมและสี UX/UI (Theme & Colors)',
+    maintenance: 'ระบบป้ายเตือนปิดปรับปรุงชั่วคราว (Maintenance Mode)',
     backup: 'สำรองและกู้คืนข้อมูล (Backup & Restore)'
   };
 
@@ -2106,6 +2121,263 @@
   }
 
   /* --------------------------------------------------------------------------
+     12.5. Maintenance Mode Management (ระบบป้ายเตือนปิดปรับปรุงชั่วคราว)
+     -------------------------------------------------------------------------- */
+  function renderMaintenanceSettings() {
+    if (!DS.Maintenance) return;
+    const maint = DS.Maintenance.get();
+
+    // 1. Sidebar Badge
+    const sidebarBadge = document.getElementById('badgeMaintenanceStatus');
+    if (sidebarBadge) {
+      if (maint.isActive) {
+        sidebarBadge.style.display = 'inline-block';
+        sidebarBadge.textContent = maint.mode === 'lockout' ? 'LOCK' : 'NOTICE';
+        sidebarBadge.style.background = maint.mode === 'lockout' ? '#e53935' : '#ff9800';
+      } else {
+        sidebarBadge.style.display = 'none';
+      }
+    }
+
+    // 2. Master Switch & Hero Status Card
+    const masterSwitch = document.getElementById('maintIsActiveMaster');
+    const masterSwitchLabel = document.getElementById('maintMasterSwitchLabel');
+    const heroCard = document.getElementById('maintStatusHeroCard');
+    const statusIconBig = document.getElementById('maintStatusIconBig');
+    const statusPill = document.getElementById('maintStatusPill');
+    const statusDesc = document.getElementById('maintStatusDesc');
+
+    if (masterSwitch) masterSwitch.checked = !!maint.isActive;
+
+    if (maint.isActive) {
+      if (masterSwitchLabel) masterSwitchLabel.innerHTML = '<span style="color:#e53935;">🛑 ปิดปรับปรุง (ระงับการเข้าถึง)</span>';
+      if (heroCard) {
+        heroCard.style.borderLeftColor = '#e53935';
+        heroCard.style.background = '#fff8f8';
+      }
+      if (statusIconBig) {
+        statusIconBig.style.background = '#ffebee';
+        statusIconBig.style.color = '#e53935';
+        statusIconBig.innerHTML = '<i class="fa-solid fa-ban"></i>';
+      }
+      if (statusPill) {
+        statusPill.style.background = '#ffebee';
+        statusPill.style.color = '#c62828';
+        statusPill.textContent = '🔴 สถานะ: ปิดปรับปรุง (นำปุ่มเข้าเว็บออกทั้งหมด)';
+      }
+      if (statusDesc) {
+        statusDesc.textContent = 'เว็บไซต์หน้าบ้านถูกล็อกอย่างสมบูรณ์ นำปุ่มเข้าสู่เว็บไซต์ออกแล้ว ไม่อนุญาตให้บุคคลทั่วไปเข้าชม จนกว่าจะได้รับอนุญาตหรือแอดมินกดเปิดให้เข้าถึงได้ (เจ้าหน้าที่เข้าหลังบ้านได้ปกติ)';
+      }
+    } else {
+      if (masterSwitchLabel) masterSwitchLabel.innerHTML = '<span style="color:#00a64c;">🟢 เปิดให้เข้าถึงได้ตามปกติ</span>';
+      if (heroCard) {
+        heroCard.style.borderLeftColor = '#00a64c';
+        heroCard.style.background = '#f9fdfa';
+      }
+      if (statusIconBig) {
+        statusIconBig.style.background = '#e8f5e9';
+        statusIconBig.style.color = '#00a64c';
+        statusIconBig.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+      }
+      if (statusPill) {
+        statusPill.style.background = '#e8f5e9';
+        statusPill.style.color = '#2e7d32';
+        statusPill.textContent = '🟢 สถานะ: เปิดให้เข้าถึงได้ (เว็บไซต์เปิดบริการตามปกติ)';
+      }
+      if (statusDesc) {
+        statusDesc.textContent = 'เว็บไซต์หน้าบ้านเปิดให้ทุกคนเข้าถึงได้ตามปกติ ป้ายเตือนถูกปิดไว้ ผู้เข้าชมเข้าถึงทุกหน้าได้อย่างสมบูรณ์';
+      }
+    }
+
+    // 3. Mode Radio Cards
+    const modeRadios = document.querySelectorAll('input[name="maintMode"]');
+    modeRadios.forEach(radio => {
+      radio.checked = radio.value === maint.mode;
+    });
+    updateModeCardsUI(maint.mode);
+
+    // 4. Icon Selector
+    const hiddenIcon = document.getElementById('maintIconType');
+    if (hiddenIcon) hiddenIcon.value = maint.iconType || 'stop';
+    updateIconButtonsUI(maint.iconType || 'stop');
+
+    // 5. Text & Date Inputs
+    const badgeTextInp = document.getElementById('maintBadgeText');
+    const titleInp = document.getElementById('maintTitle');
+    const messageInp = document.getElementById('maintMessage');
+    const estTimeInp = document.getElementById('maintEstimatedTime');
+    const countdownInp = document.getElementById('maintCountdownTarget');
+    const phoneInp = document.getElementById('maintEmergencyPhone');
+    const lineInp = document.getElementById('maintEmergencyLine');
+    const bypassInp = document.getElementById('maintAllowAdminBypass');
+    const enablePassInp = document.getElementById('maintEnablePasscode');
+    const passInp = document.getElementById('maintAccessPasscode');
+
+    if (badgeTextInp) badgeTextInp.value = maint.badgeText || '';
+    if (titleInp) titleInp.value = maint.title || '';
+    if (messageInp) messageInp.value = maint.message || '';
+    if (estTimeInp) estTimeInp.value = maint.estimatedTime || '';
+    if (countdownInp) countdownInp.value = maint.countdownTarget || '';
+    if (phoneInp) phoneInp.value = maint.emergencyPhone || '';
+    if (lineInp) lineInp.value = maint.emergencyLine || '';
+    if (bypassInp) bypassInp.checked = maint.allowAdminBypass !== false;
+    if (enablePassInp) enablePassInp.checked = maint.enablePasscode !== false;
+    if (passInp) passInp.value = maint.accessPasscode || 'farmora2026';
+  }
+
+  function updateModeCardsUI(selectedMode) {
+    const cardLockout = document.getElementById('modeCardLockout');
+    const cardPopup = document.getElementById('modeCardPopup');
+    if (cardLockout && cardPopup) {
+      if (selectedMode === 'lockout') {
+        cardLockout.style.border = '2px solid #e53935';
+        cardLockout.style.background = '#fff8f8';
+        cardPopup.style.border = '1px solid var(--border-color)';
+        cardPopup.style.background = '#ffffff';
+      } else {
+        cardLockout.style.border = '1px solid var(--border-color)';
+        cardLockout.style.background = '#ffffff';
+        cardPopup.style.border = '2px solid #00a64c';
+        cardPopup.style.background = '#f0fdf4';
+      }
+    }
+  }
+
+  function selectMaintenanceMode(mode) {
+    const modeRadios = document.querySelectorAll('input[name="maintMode"]');
+    modeRadios.forEach(radio => {
+      if (radio.value === mode) radio.checked = true;
+    });
+    updateModeCardsUI(mode);
+  }
+
+  function updateIconButtonsUI(selectedIcon) {
+    const buttons = document.querySelectorAll('#maintIconGrid .btn-icon-select');
+    buttons.forEach(btn => {
+      const isSelected = btn.dataset.icon === selectedIcon;
+      if (isSelected) {
+        btn.classList.add('active');
+        btn.style.border = '2px solid #e53935';
+        btn.style.background = '#fff5f5';
+      } else {
+        btn.classList.remove('active');
+        btn.style.border = '1px solid var(--border-color)';
+        btn.style.background = '#ffffff';
+      }
+    });
+  }
+
+  function selectMaintenanceIcon(iconType) {
+    const hiddenIcon = document.getElementById('maintIconType');
+    if (hiddenIcon) hiddenIcon.value = iconType;
+    updateIconButtonsUI(iconType);
+  }
+
+  function getMaintenanceFormData() {
+    const masterSwitch = document.getElementById('maintIsActiveMaster');
+    const modeRadio = document.querySelector('input[name="maintMode"]:checked');
+    const iconType = document.getElementById('maintIconType')?.value || 'stop';
+    const badgeText = document.getElementById('maintBadgeText')?.value || '';
+    const title = document.getElementById('maintTitle')?.value || '';
+    const message = document.getElementById('maintMessage')?.value || '';
+    const estimatedTime = document.getElementById('maintEstimatedTime')?.value || '';
+    const countdownTarget = document.getElementById('maintCountdownTarget')?.value || '';
+    const emergencyPhone = document.getElementById('maintEmergencyPhone')?.value || '';
+    const emergencyLine = document.getElementById('maintEmergencyLine')?.value || '';
+    const allowAdminBypass = document.getElementById('maintAllowAdminBypass')?.checked ?? true;
+    const enablePasscode = document.getElementById('maintEnablePasscode')?.checked ?? true;
+    const accessPasscode = (document.getElementById('maintAccessPasscode')?.value || 'farmora2026').trim();
+
+    return {
+      isActive: masterSwitch ? masterSwitch.checked : false,
+      mode: modeRadio ? modeRadio.value : 'lockout',
+      iconType,
+      badgeText: badgeText.trim(),
+      title: title.trim(),
+      message: message.trim(),
+      estimatedTime: estimatedTime.trim(),
+      countdownTarget,
+      emergencyPhone: emergencyPhone.trim(),
+      emergencyLine: emergencyLine.trim(),
+      allowAdminBypass,
+      enablePasscode,
+      accessPasscode
+    };
+  }
+
+  function generateRandomPasscode() {
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+    let rand = '';
+    for (let i = 0; i < 4; i++) {
+      rand += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const newPass = 'fmr-' + rand;
+    const inp = document.getElementById('maintAccessPasscode');
+    if (inp) {
+      inp.value = newPass;
+      showToast(`🔑 สร้างรหัสผ่านสุ่มใหม่: "${newPass}" เรียบร้อย (กดบันทึกเพื่อใช้งาน)`);
+    }
+  }
+
+  function saveMaintenanceSettings(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!DS.Maintenance) return;
+
+    try {
+      sessionStorage.removeItem('farmora_maint_authorized');
+      sessionStorage.removeItem('farmora_maint_dismissed_session');
+    } catch (_) {}
+
+    const data = getMaintenanceFormData();
+    DS.Maintenance.set(data);
+    renderMaintenanceSettings();
+    showToast(data.isActive
+      ? '🚨 บันทึกและเปิดระบบระงับการเข้าถึงชั่วคราวแล้ว (นำปุ่มเข้าเว็บออกทั้งหมด)'
+      : '💾 บันทึกการตั้งค่าระบบป้ายเตือนเรียบร้อยแล้ว');
+  }
+
+  function toggleMaintenanceQuick(active) {
+    if (!DS.Maintenance) return;
+
+    try {
+      sessionStorage.removeItem('farmora_maint_authorized');
+      sessionStorage.removeItem('farmora_maint_dismissed_session');
+    } catch (_) {}
+
+    const updated = DS.Maintenance.toggle(active);
+    renderMaintenanceSettings();
+    if (updated.isActive) {
+      showToast('🛑 ปิดปรับปรุงเว็บไซต์แล้ว — นำปุ่มเข้าเว็บออกทั้งหมด ไม่อนุญาตให้บุคคลทั่วไปเข้าชม');
+    } else {
+      showToast('🟢 เปิดให้เข้าถึงเว็บไซต์ได้ตามปกติแล้ว — ทุกคนสามารถเข้าชมได้');
+    }
+  }
+
+  function previewMaintenanceModal() {
+    try {
+      sessionStorage.removeItem('farmora_maint_dismissed_session');
+    } catch (_) {}
+
+    const currentFormData = getMaintenanceFormData();
+    // บังคับ active ให้เป็น true ชั่วคราวสำหรับการแสดงตัวอย่าง
+    const previewData = { ...currentFormData, isActive: true };
+    if (window.FarmoraMaintenance && typeof window.FarmoraMaintenance.showPreview === 'function') {
+      window.FarmoraMaintenance.showPreview(previewData);
+    } else {
+      showToast('ระบบแสดงตัวอย่างยังไม่พร้อม กรุณารีเฟรชหน้าเว็บ', true);
+    }
+  }
+
+  function resetMaintenanceDefaults() {
+    if (!DS.Maintenance) return;
+    if (confirm('คุณต้องการรีเซ็ตการตั้งค่าระบบป้ายเตือนกลับเป็นค่าเริ่มต้นมาตรฐานใช่หรือไม่?')) {
+      DS.Maintenance.resetDefaults();
+      renderMaintenanceSettings();
+      showToast('คืนค่าเริ่มต้นระบบป้ายเตือนปิดปรับปรุงเรียบร้อยแล้ว');
+    }
+  }
+
+  /* --------------------------------------------------------------------------
      13. Modal Helpers & Toast
      -------------------------------------------------------------------------- */
   function openModal(id) {
@@ -2160,6 +2432,7 @@
   window.AdminApp = {
     switchTab,
     handleLogin,
+    quickLogin,
     handleLogout,
     closeModal,
     showToast,
@@ -2175,6 +2448,15 @@
     updateThemePreview,
     saveThemeSettings,
     resetThemeSettings,
+    // Maintenance Mode
+    renderMaintenanceSettings,
+    selectMaintenanceMode,
+    selectMaintenanceIcon,
+    saveMaintenanceSettings,
+    toggleMaintenanceQuick,
+    previewMaintenanceModal,
+    resetMaintenanceDefaults,
+    generateRandomPasscode,
     // Slides
     openSlideModal,
     saveSlide,

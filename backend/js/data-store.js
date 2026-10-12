@@ -25,6 +25,7 @@
     CART: 'farmora_cart_v2',
     MENUS: 'farmora_menus_v2',
     MEDIA: 'farmora_media_v2',
+    MAINTENANCE: 'farmora_maintenance_v4',
     AUTH: 'farmora_auth_v2',
     INITIALIZED: 'farmora_backend_initialized_v2'
   };
@@ -53,6 +54,26 @@
     shadowLevel: 'medium', // 'soft' | 'medium' | 'strong' | 'glow'
     borderRadius: '12px',  // '6px' | '12px' | '18px' | '24px'
     activePreset: 'official'
+  };
+
+  /* --------------------------------------------------------------------------
+     0.1 ข้อมูลเริ่มต้นระบบปิดปรับปรุงชั่วคราว (Default Maintenance Mode - v4)
+     -------------------------------------------------------------------------- */
+  const DEFAULT_MAINTENANCE = {
+    isActive: true,                    // สถานะเปิดใช้งานปิดปรับปรุง (ระงับการเข้าถึง)
+    mode: 'lockout',                   // โหมดล็อกทั้งเว็บไซต์ นำปุ่มเข้าเว็บออกทั้งหมด จนกว่าจะได้รับอนุญาตหรือเปิดให้เข้าถึงได้
+    iconType: 'stop',                  // 'stop' (ป้ายหยุด 🛑) | 'warning' (สัญญาณเตือน ⚠️) | 'construction' (ปรับปรุง 🚧) | 'wrench' (ซ่อมบำรุง 🔧)
+    badgeText: 'ระงับการเข้าถึงชั่วคราว: กำลังปรับปรุงระบบ',
+    title: 'เว็บไซต์ปิดปรับปรุงชั่วคราว',
+    message: 'ขออภัยในความไม่สะดวก ขณะนี้เว็บไซต์ฟาร์โมรากำลังอยู่ระหว่างการปิดปรับปรุงและบำรุงรักษาระบบ ไม่อนุญาตให้เข้าชมจนกว่าระบบจะเปิดให้เข้าถึงได้',
+    estimatedTime: 'คาดว่าจะเปิดให้บริการในวันที่ 12 ตุลาคม 2569 เวลา 18:00 น.',
+    countdownTarget: '',               // วันเวลาเป้าหมายสำหรับนับถอยหลัง เช่น '2026-10-12T18:00'
+    emergencyPhone: '02-123-4567',
+    emergencyLine: '@farmora',
+    allowAdminBypass: true,            // ลิงก์เข้าหลังบ้านสำหรับเจ้าหน้าที่
+    enablePasscode: true,              // อนุญาตให้ผู้มีรหัสผ่านเข้าถึงได้
+    accessPasscode: 'farmora2026',     // รหัสผ่านสำหรับผู้ได้รับอนุญาต
+    updatedAt: new Date().toISOString()
   };
 
   /* --------------------------------------------------------------------------
@@ -756,6 +777,10 @@
     if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
       setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
     }
+    // ตรวจสอบและตั้งค่าเริ่มต้นระบบปิดปรับปรุงชั่วคราวหากยังไม่มี
+    if (!localStorage.getItem(STORAGE_KEYS.MAINTENANCE)) {
+      setRaw(STORAGE_KEYS.MAINTENANCE, DEFAULT_MAINTENANCE);
+    }
   }
 
   // ── Theme & CI Colors API ──
@@ -1047,6 +1072,34 @@
     }
   };
 
+  // ── Maintenance Mode API ──
+  const Maintenance = {
+    get: () => getRaw(STORAGE_KEYS.MAINTENANCE, DEFAULT_MAINTENANCE),
+    set: (data) => {
+      const current = Maintenance.get();
+      const merged = { ...current, ...data, updatedAt: new Date().toISOString() };
+      setRaw(STORAGE_KEYS.MAINTENANCE, merged);
+      window.dispatchEvent(new CustomEvent('farmora:maintenanceChanged', { detail: merged }));
+      window.dispatchEvent(new CustomEvent('farmora:dataChanged', { detail: { key: STORAGE_KEYS.MAINTENANCE, data: merged } }));
+      return merged;
+    },
+    toggle: (active) => {
+      const current = Maintenance.get();
+      const newStatus = typeof active === 'boolean' ? active : !current.isActive;
+      const updated = { ...current, isActive: newStatus, updatedAt: new Date().toISOString() };
+      setRaw(STORAGE_KEYS.MAINTENANCE, updated);
+      window.dispatchEvent(new CustomEvent('farmora:maintenanceChanged', { detail: updated }));
+      window.dispatchEvent(new CustomEvent('farmora:dataChanged', { detail: { key: STORAGE_KEYS.MAINTENANCE, data: updated } }));
+      return updated;
+    },
+    resetDefaults: () => {
+      setRaw(STORAGE_KEYS.MAINTENANCE, DEFAULT_MAINTENANCE);
+      window.dispatchEvent(new CustomEvent('farmora:maintenanceChanged', { detail: DEFAULT_MAINTENANCE }));
+      window.dispatchEvent(new CustomEvent('farmora:dataChanged', { detail: { key: STORAGE_KEYS.MAINTENANCE, data: DEFAULT_MAINTENANCE } }));
+      return DEFAULT_MAINTENANCE;
+    }
+  };
+
   // ── Backup & Restore ──
   const Backup = {
     exportJSON: () => {
@@ -1055,6 +1108,7 @@
         exportedAt: new Date().toISOString(),
         theme: Theme.get(),
         about: About.get(),
+        maintenance: Maintenance.get(),
         slides: Slides.getAll(),
         news: News.getAll(),
         articles: Articles.getAll(),
@@ -1070,6 +1124,7 @@
         const parsed = JSON.parse(jsonString);
         if (parsed.theme) setRaw(STORAGE_KEYS.THEME, parsed.theme);
         if (parsed.about) setRaw(STORAGE_KEYS.ABOUT, parsed.about);
+        if (parsed.maintenance) setRaw(STORAGE_KEYS.MAINTENANCE, parsed.maintenance);
         if (parsed.slides) setRaw(STORAGE_KEYS.SLIDES, parsed.slides);
         if (parsed.news) setRaw(STORAGE_KEYS.NEWS, parsed.news);
         if (parsed.articles) setRaw(STORAGE_KEYS.ARTICLES, parsed.articles);
@@ -1085,6 +1140,7 @@
     resetDefaults: () => {
       setRaw(STORAGE_KEYS.THEME, DEFAULT_THEME);
       setRaw(STORAGE_KEYS.ABOUT, DEFAULT_ABOUT);
+      setRaw(STORAGE_KEYS.MAINTENANCE, DEFAULT_MAINTENANCE);
       setRaw(STORAGE_KEYS.SLIDES, DEFAULT_SLIDES);
       setRaw(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
       setRaw(STORAGE_KEYS.ARTICLES, DEFAULT_ARTICLES);
@@ -1103,6 +1159,7 @@
   window.FarmoraDataStore = {
     Theme,
     About,
+    Maintenance,
     Slides,
     News,
     Articles,
