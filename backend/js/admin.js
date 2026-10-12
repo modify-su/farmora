@@ -66,13 +66,12 @@
      2. Authentication
      -------------------------------------------------------------------------- */
   function checkAuth() {
-    // ตรวจสอบพารามิเตอร์ URL สำหรับการเข้าสู่ระบบด่วน เช่น ?login=1 หรือ ?admin=1
-    const search = window.location.search || '';
-    if (search.includes('login=1') || search.includes('admin=1') || search.includes('bypass=1')) {
-      localStorage.setItem('farmora_admin_authed', 'true');
-    }
+    // ล้างค่าถาวรเดิมใน localStorage ออก เพื่อบังคับให้ล็อกอินทุกครั้ง ไม่จำสิทธิ์ข้ามเบราว์เซอร์
+    try {
+      localStorage.removeItem('farmora_admin_authed');
+    } catch (e) {}
 
-    const isAuthed = localStorage.getItem('farmora_admin_authed');
+    const isAuthed = sessionStorage.getItem('farmora_admin_authed');
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) {
       if (isAuthed === 'true') {
@@ -81,17 +80,10 @@
         authOverlay.style.display = 'flex';
         const uInp = document.getElementById('authUsername');
         const pInp = document.getElementById('authPassword');
-        if (uInp && !uInp.value) uInp.value = 'admin';
-        if (pInp && !pInp.value) pInp.value = 'farmora2026';
+        if (uInp) uInp.value = '';
+        if (pInp) pInp.value = '';
       }
     }
-  }
-
-  function quickLogin() {
-    localStorage.setItem('farmora_admin_authed', 'true');
-    const authOverlay = document.getElementById('authOverlay');
-    if (authOverlay) authOverlay.style.display = 'none';
-    showToast('เข้าสู่ระบบหลังบ้านเรียบร้อยแล้ว');
   }
 
   function handleLogin(e) {
@@ -106,7 +98,7 @@
       const err = document.getElementById('authError');
       if (err) {
         err.style.display = 'block';
-        err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+        err.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
       }
       return;
     }
@@ -114,7 +106,8 @@
     const err = document.getElementById('authError');
     if (err) err.style.display = 'none';
 
-    localStorage.setItem('farmora_admin_authed', 'true');
+    // บันทึกเฉพาะใน sessionStorage สำหรับเซสชันปัจจุบันเท่านั้น
+    sessionStorage.setItem('farmora_admin_authed', 'true');
     const authOverlay = document.getElementById('authOverlay');
     if (authOverlay) authOverlay.style.display = 'none';
     if (userInput) userInput.value = '';
@@ -124,7 +117,10 @@
 
   function handleLogout() {
     if (confirm('คุณต้องการออกจากระบบจัดการหลังบ้านหรือไม่?')) {
-      localStorage.removeItem('farmora_admin_authed');
+      sessionStorage.removeItem('farmora_admin_authed');
+      try {
+        localStorage.removeItem('farmora_admin_authed');
+      } catch (e) {}
       const authOverlay = document.getElementById('authOverlay');
       if (authOverlay) authOverlay.style.display = 'flex';
       const uInp = document.getElementById('authUsername');
@@ -2432,7 +2428,6 @@
   window.AdminApp = {
     switchTab,
     handleLogin,
-    quickLogin,
     handleLogout,
     closeModal,
     showToast,

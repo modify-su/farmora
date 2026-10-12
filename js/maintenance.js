@@ -144,9 +144,9 @@
     }
 
     const isStopIcon = config.iconType === 'stop';
-    // คำนวณลิงก์สำหรับ Admin Bypass (พร้อมพารามิเตอร์ ?login=1 เพื่อปลดล็อกเข้าหลังบ้านได้ทันที)
+    // คำนวณลิงก์สำหรับเข้าสู่ระบบหลังบ้าน
     const isRoot = !(/[\\/]frontend[\\/]html/i.test(window.location.pathname || window.location.href));
-    const backendUrl = (isRoot ? 'backend/index.html' : '../../backend/index.html') + '?login=1';
+    const backendUrl = isRoot ? 'backend/index.html' : '../../backend/index.html';
 
     overlay.innerHTML = `
       <div class="farmora-maint-card">
