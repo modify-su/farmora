@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="frontend/css/navbar.css">       <!-- สไตล์ Navbar -->
   <link rel="stylesheet" href="frontend/css/products.css">     <!-- สไตล์เฉพาะหน้าสินค้า -->
   <link rel="stylesheet" href="frontend/css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง 100%) -->
-  <link rel="stylesheet" href="frontend/css/cart.css">         <!-- 🛒 ระบบตะกร้าสินค้าและสั่งซื้อ -->
   <link rel="stylesheet" href="frontend/css/maintenance.css">  <!-- 🚨 ป้ายเตือนปิดปรับปรุงชั่วคราว -->
 
   <!-- 🎨 Dynamic CI Theme & Colors -->
@@ -74,10 +73,6 @@
 
     <!-- กลุ่มขวา: icons + ปุ่มติดต่อเรา -->
     <div class="right-group">
-      <a href="#" class="icon" id="cart-icon" title="ตะกร้าสินค้า">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" style="display:none">0</span>
-      </a>
       <a href="backend/index.html" class="icon" title="ระบบหลังบ้าน (Backend Admin)">
         <i class="fa-solid fa-user"></i>
       </a>
@@ -201,31 +196,6 @@
             </ul>
           </div>
 
-          <!-- 3. กรองช่วงราคา -->
-          <div class="psb-card">
-            <h4 class="psb-title">
-              <span><i class="fa-solid fa-coins"></i> ช่วงราคา</span>
-            </h4>
-            <div class="price-filter-list">
-              <label class="pf-label">
-                <input type="radio" name="price" value="all" checked>
-                <span>ทุกระดับราคา</span>
-              </label>
-              <label class="pf-label">
-                <input type="radio" name="price" value="under500">
-                <span>ต่ำกว่า ฿500</span>
-              </label>
-              <label class="pf-label">
-                <input type="radio" name="price" value="500-1000">
-                <span>฿500 – ฿1,000</span>
-              </label>
-              <label class="pf-label">
-                <input type="radio" name="price" value="over1000">
-                <span>มากกว่า ฿1,000</span>
-              </label>
-            </div>
-          </div>
-
           <!-- 4. กรองชนิดพืชที่เหมาะสม -->
           <div class="psb-card">
             <h4 class="psb-title">
@@ -294,9 +264,8 @@
               <!-- ตัวเลือกจัดเรียง -->
               <select id="sortSelect" class="sort-select" aria-label="จัดเรียงสินค้า">
                 <option value="default">เรียงตาม: แนะนำ</option>
-                <option value="price-asc">ราคา: ต่ำ ➔ สูง</option>
-                <option value="price-desc">ราคา: สูง ➔ ต่ำ</option>
                 <option value="name-asc">ชื่อสินค้า: ก – ฮ (A–Z)</option>
+                <option value="name-desc">ชื่อสินค้า: ฮ – ก (Z–A)</option>
               </select>
 
               <!-- ปุ่มสลับมุมมอง Grid / List -->
@@ -352,10 +321,29 @@
       </button>
 
       <div class="pdm-grid">
-        <!-- ฝั่งซ้าย: รูปภาพสินค้า -->
+        <!-- ฝั่งซ้าย: สไลด์รูปภาพสินค้า (Product Image Slider & Gallery) -->
         <div class="pdm-gallery">
-          <div class="pdm-main-view">
-            <img id="pdmMainImg" src="" alt="รูปภาพสินค้า">
+          <div class="pdm-slider-container">
+            <div class="pdm-main-view" id="pdmMainView">
+              <img id="pdmMainImg" src="" alt="รูปภาพสินค้า" class="pdm-slider-img active">
+              
+              <!-- ปุ่มสลับภาพสไลด์ ซ้าย - ขวา -->
+              <button type="button" class="pdm-nav-btn prev" id="pdmSlidePrev" onclick="window.FarmoraProducts.changeSlide(-1)" aria-label="ภาพก่อนหน้า">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button type="button" class="pdm-nav-btn next" id="pdmSlideNext" onclick="window.FarmoraProducts.changeSlide(1)" aria-label="ภาพถัดไป">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              
+              <!-- ตัวนับภาพ (Badge) -->
+              <span class="pdm-slide-badge" id="pdmSlideBadge">1 / 4</span>
+              
+              <!-- จุดบอกตำแหน่งสไลด์ (Dots) -->
+              <div class="pdm-slide-dots" id="pdmSlideDots"></div>
+            </div>
+
+            <!-- แถบรูปภาพขนาดย่อ (Thumbnail Gallery) -->
+            <div class="pdm-thumbs-wrap" id="pdmThumbsWrap"></div>
           </div>
         </div>
 
@@ -365,9 +353,10 @@
             <span class="pdm-cat-badge" id="pdmCatName">หมวดหมู่</span>
             <h2 class="pdm-title" id="pdmTitle">ชื่อสินค้า</h2>
             
-            <div class="pdm-price-row">
-              <span class="pdm-price-val" id="pdmPrice">฿0</span>
-              <span class="pdm-price-unit" id="pdmUnit">/หน่วย</span>
+            <!-- ข้อมูลบรรจุภัณฑ์ & ติดต่อสอบถามราคา (แทนที่แถบราคาเดิม) -->
+            <div class="pdm-inquiry-box">
+              <span class="pdm-inquiry-badge"><i class="fa-solid fa-box-open"></i> ขนาดบรรจุ: <strong id="pdmUnit">/หน่วย</strong></span>
+              <span class="pdm-inquiry-hint"><i class="fa-solid fa-comments"></i> สนใจสอบถามข้อมูล ราคา และสั่งซื้อ ติดต่อทีมงาน Farmora ได้โดยตรง</span>
             </div>
 
             <div class="pdm-crops-row">
@@ -378,24 +367,13 @@
             <div class="pdm-desc-full" id="pdmDesc">คำอธิบายสรรพคุณสินค้า</div>
           </div>
 
-          <!-- ตัวเลือกจำนวน + ปุ่มลงตะกร้า -->
+          <!-- ปุ่มติดต่อสอบถามราคาและสั่งซื้อ -->
           <div>
-            <div class="pdm-cart-row">
-              <div class="pdm-qty-picker">
-                <button type="button" class="pdm-qty-btn" onclick="window.changeModalQty(-1)">-</button>
-                <input type="number" id="pdmQtyInput" class="pdm-qty-input" value="1" min="1" max="999" aria-label="จำนวน">
-                <button type="button" class="pdm-qty-btn" onclick="window.changeModalQty(1)">+</button>
-              </div>
-              <button type="button" class="btn-pdm-add-cart" id="btnPdmAddToCart">
-                <i class="fa-solid fa-cart-plus"></i> เพิ่มลงในตะกร้า
-              </button>
-            </div>
-
             <div class="pdm-contacts-row">
               <a href="tel:0906886469" class="pdm-btn-call">
                 <i class="fa-solid fa-phone"></i> โทรปรึกษา / สั่งซื้อ
               </a>
-              <a href="#" class="pdm-btn-line">
+              <a href="https://line.me/ti/p/~@farmora" target="_blank" class="pdm-btn-line">
                 <i class="fa-brands fa-line"></i> สั่งผ่าน LINE @farmora
               </a>
             </div>
@@ -403,15 +381,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-
-  <!-- ================================================================
-       SECTION 5: Toast Notification (แจ้งเตือนเพิ่มลงตะกร้า)
-       ================================================================ -->
-  <div class="toast-notice" id="toastNotice">
-    <i class="fa-solid fa-circle-check"></i>
-    <span id="toastMsg">เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว!</span>
   </div>
 
 
@@ -481,7 +450,6 @@
        SCRIPTS
        ================================================================ -->
   <script src="frontend/js/navbar.js"></script>
-  <script src="frontend/js/cart.js"></script>
   <script src="frontend/js/products.js"></script>
   <script src="frontend/js/maintenance.js"></script>
 

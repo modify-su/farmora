@@ -607,14 +607,6 @@
       });
     }
 
-    if (priceFilter === 'under500') {
-      tags.push({ label: 'ราคา < ฿500', type: 'price' });
-    } else if (priceFilter === '500-1000') {
-      tags.push({ label: 'ราคา ฿500 - ฿1,000', type: 'price' });
-    } else if (priceFilter === 'over1000') {
-      tags.push({ label: 'ราคา > ฿1,000', type: 'price' });
-    }
-
     selectedCrops.forEach(c => {
       const cropMap = {
         rice: 'ข้าว', cassava: 'มันสำปะหลัง', sugarcane: 'อ้อย',
@@ -673,11 +665,8 @@
             ${p.badge ? `<span class="pc-badge ${badgeClass}">${p.badgeText}</span>` : ''}
             
             <div class="pc-hover-actions">
-              <button class="pc-action-btn" title="ดูรายละเอียด" onclick="event.stopPropagation(); window.FarmoraProducts.openDetail('${p.id}')">
+              <button class="pc-action-btn" title="ดูรายละเอียดสินค้า" onclick="event.stopPropagation(); window.FarmoraProducts.openDetail('${p.id}')">
                 <i class="fa-solid fa-magnifying-glass"></i>
-              </button>
-              <button class="pc-action-btn" title="สนใจสินค้า" onclick="event.stopPropagation(); window.FarmoraProducts.handleAddToCart('${p.id}')">
-                <i class="fa-solid fa-cart-shopping"></i>
               </button>
             </div>
           </div>
@@ -694,12 +683,8 @@
             ` : ''}
 
             <div class="pc-footer">
-              <div class="pc-price-box">
-                <span class="pc-price-main">฿${p.price.toLocaleString('th-TH')}</span>
-                <span class="pc-price-unit">${p.unit}</span>
-              </div>
-              <button class="btn-add-cart" title="เพิ่มลงตะกร้า" onclick="window.FarmoraProducts.handleAddToCart('${p.id}')" aria-label="เพิ่มลงตะกร้า">
-                <i class="fa-solid fa-cart-plus"></i>
+              <button type="button" class="btn-card-detail" onclick="window.FarmoraProducts.openDetail('${p.id}')">
+                <i class="fa-solid fa-circle-info"></i> ดูรายละเอียดสินค้า
               </button>
             </div>
           </div>
@@ -768,6 +753,151 @@
     renderProducts();
   }
 
+  // ── 8. Product Detail Modal Image Slider ──────────────────
+  let modalSlideImages = [];
+  let modalSlideIndex = 0;
+
+  // Helper: รวบรวมชุดภาพสไลด์สำหรับสินค้าแต่ละรายการ
+  function getProductImages(item) {
+    if (!item) return [];
+
+    // 1. ถ้ามีอาร์เรย์ images กำหนดไว้ในตัวสินค้า
+    if (Array.isArray(item.images) && item.images.length > 0) {
+      return item.images;
+    }
+
+    const list = [];
+    if (item.image) list.push(item.image);
+
+    // 2. เติมเต็มภาพประกอบคุณภาพสูงตามหมวดหมู่สินค้า เพื่อให้มีสไลด์หลากหลายมุมมอง
+    const cat = item.cat || '';
+    const categoryGalleryMap = {
+      fertilizer: ['../images/picture 1.jpg', '../images/picture 2.jpg', '../images/cert-iso.jpg'],
+      organic:    ['../images/picture 4.jpg', '../images/picture 1.jpg', '../images/cert-iso.jpg'],
+      pesticide:  ['../images/product-pesticide.jpg', '../images/picture 3.jpg', '../images/about-lab.jpg'],
+      herbicide:  ['../images/picture 3.jpg', '../images/picture 1.jpg', '../images/cert-iso.jpg'],
+      hormone:    ['../images/product-hormone.jpg', '../images/picture 2.jpg', '../images/about-lab.jpg'],
+      soil:       ['../images/product-soil.jpg', '../images/picture 4.jpg', '../images/about-lab.jpg'],
+      seeds:      ['../images/vg 2.jpg', '../images/vg 1.jpg', '../images/picture 1.jpg'],
+      feed:       ['../images/vg 4.jpg', '../images/vg 3.jpg', '../images/picture 5.jpg']
+    };
+
+    const extras = categoryGalleryMap[cat] || ['../images/picture 1.jpg', '../images/picture 2.jpg', '../images/cert-iso.jpg'];
+    extras.forEach(img => {
+      if (!list.includes(img)) list.push(img);
+    });
+
+    return list.slice(0, 4); // สูงสุด 4 ภาพต่อสินค้า
+  }
+
+  // เริ่มต้นสร้างสไลด์รูปภาพสินค้าใน Modal
+  function initModalSlider(item) {
+    modalSlideImages = getProductImages(item);
+    modalSlideIndex = 0;
+    updateModalSlide(0, false);
+    renderModalThumbnails();
+    renderModalDots();
+  }
+
+  function updateModalSlide(index, animate = true) {
+    if (!modalSlideImages || modalSlideImages.length === 0) return;
+
+    if (index >= modalSlideImages.length) index = 0;
+    if (index < 0) index = modalSlideImages.length - 1;
+    modalSlideIndex = index;
+
+    const imgEl = document.getElementById('pdmMainImg');
+    const badgeEl = document.getElementById('pdmSlideBadge');
+    const prevBtn = document.getElementById('pdmSlidePrev');
+    const nextBtn = document.getElementById('pdmSlideNext');
+    const targetSrc = resolveImgPath(modalSlideImages[modalSlideIndex]);
+
+    if (imgEl) {
+      if (animate) {
+        imgEl.style.opacity = '0';
+        imgEl.style.transform = 'scale(0.97)';
+        setTimeout(() => {
+          imgEl.src = targetSrc;
+          imgEl.style.opacity = '1';
+          imgEl.style.transform = 'scale(1)';
+        }, 140);
+      } else {
+        imgEl.src = targetSrc;
+        imgEl.style.opacity = '1';
+        imgEl.style.transform = 'scale(1)';
+      }
+    }
+
+    if (badgeEl) {
+      badgeEl.textContent = `${modalSlideIndex + 1} / ${modalSlideImages.length}`;
+      badgeEl.style.display = modalSlideImages.length > 1 ? 'inline-block' : 'none';
+    }
+
+    if (prevBtn && nextBtn) {
+      const showNav = modalSlideImages.length > 1;
+      prevBtn.style.display = showNav ? 'flex' : 'none';
+      nextBtn.style.display = showNav ? 'flex' : 'none';
+    }
+
+    // อัปเดตไฮไลต์ Thumbnails
+    const thumbs = document.querySelectorAll('.pdm-thumb');
+    thumbs.forEach((th, i) => {
+      th.classList.toggle('active', i === modalSlideIndex);
+    });
+
+    // อัปเดตไฮไลต์ Dots
+    const dots = document.querySelectorAll('.pdm-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === modalSlideIndex);
+    });
+  }
+
+  function changeSlide(direction) {
+    updateModalSlide(modalSlideIndex + direction, true);
+  }
+
+  function setSlide(index) {
+    updateModalSlide(index, true);
+  }
+
+  function renderModalThumbnails() {
+    const wrap = document.getElementById('pdmThumbsWrap');
+    if (!wrap) return;
+
+    if (modalSlideImages.length <= 1) {
+      wrap.innerHTML = '';
+      wrap.style.display = 'none';
+      return;
+    }
+
+    wrap.style.display = 'flex';
+    wrap.innerHTML = modalSlideImages.map((src, i) => `
+      <button type="button" class="pdm-thumb ${i === modalSlideIndex ? 'active' : ''}" 
+              onclick="window.FarmoraProducts.setSlide(${i})" 
+              aria-label="ดูภาพสินค้าที่ ${i + 1}">
+        <img src="${resolveImgPath(src)}" alt="ภาพตัวอย่าง ${i + 1}" loading="lazy">
+      </button>
+    `).join('');
+  }
+
+  function renderModalDots() {
+    const dotsWrap = document.getElementById('pdmSlideDots');
+    if (!dotsWrap) return;
+
+    if (modalSlideImages.length <= 1) {
+      dotsWrap.innerHTML = '';
+      dotsWrap.style.display = 'none';
+      return;
+    }
+
+    dotsWrap.style.display = 'flex';
+    dotsWrap.innerHTML = modalSlideImages.map((_, i) => `
+      <span class="pdm-dot ${i === modalSlideIndex ? 'active' : ''}" 
+            onclick="window.FarmoraProducts.setSlide(${i})" 
+            title="ภาพที่ ${i + 1}"></span>
+    `).join('');
+  }
+
   // ── 8. Product Detail Modal ────────────────────────────────
   function openDetail(id) {
     const item = PRODUCTS_DATA.find(p => p.id === id);
@@ -775,13 +905,13 @@
 
     currentModalItem = item;
 
-    if (pdmMainImg) pdmMainImg.src = resolveImgPath(item.image);
+    // เริ่มต้นแสดงภาพสไลด์สินค้า (Product Image Slider)
+    initModalSlider(item);
+
     if (pdmCatName) pdmCatName.textContent = item.catName;
     if (pdmTitle) pdmTitle.textContent = item.name;
-    if (pdmPrice) pdmPrice.textContent = `฿${item.price.toLocaleString('th-TH')}`;
-    if (pdmUnit) pdmUnit.textContent = item.unit;
+    if (pdmUnit) pdmUnit.textContent = item.unit ? item.unit.replace(/^\//, '') : 'ตามมาตรฐานบรรจุภัณฑ์';
     if (pdmDesc) pdmDesc.textContent = item.fullDesc || item.desc;
-    if (pdmQtyInput) pdmQtyInput.value = 1;
 
     if (pdmCropsList) {
       if (item.cropNames && item.cropNames.length > 0) {
@@ -918,9 +1048,32 @@
     });
   }
 
-  // ESC key to close modal
+  // Touch Swipe & Keyboard Navigation สำหรับสไลด์สินค้าใน Modal
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const mainViewEl = document.getElementById('pdmMainView');
+  if (mainViewEl) {
+    mainViewEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    mainViewEl.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (Math.abs(touchEndX - touchStartX) > 40) {
+        if (touchEndX < touchStartX) changeSlide(1);
+        else changeSlide(-1);
+      }
+    }, { passive: true });
+  }
+
+  // Keyboard Navigation: ลูกศรซ้าย/ขวาสลับสไลด์, Escape ปิด Modal
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && pdmBackdrop && pdmBackdrop.classList.contains('open')) {
+    if (!pdmBackdrop || !pdmBackdrop.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft') {
+      changeSlide(-1);
+    } else if (e.key === 'ArrowRight') {
+      changeSlide(1);
+    } else if (e.key === 'Escape') {
       closeDetail();
     }
   });
@@ -960,6 +1113,8 @@
   window.FarmoraProducts = {
     openDetail: openDetail,
     closeDetail: closeDetail,
+    changeSlide: changeSlide,
+    setSlide: setSlide,
     handleAddToCart: handleAddToCart,
     setCategory: setCategory,
     removeFilterTag: removeFilterTag,
