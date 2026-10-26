@@ -28,11 +28,11 @@
   --slide-padding-bottom: 55px;      /* ปรับระยะห่าง [ล่าง] ภายในสไลด์ */
   --slide-padding-left: 90px;        /* ปรับระยะห่าง [ซ้าย] (เว้นช่องให้ลูกศรซ้าย) */
   --slide-padding-right: 90px;       /* ปรับระยะห่าง [ขวา] (เว้นช่องให้ลูกศรขวา) */
-  --slide-content-gap: 50px;         /* ระยะห่างระหว่าง "รูปด้านหน้า" กับ "ข้อความด้านขวา" */
+  --slide-content-gap: 40px;         /* ระยะห่างระหว่าง "รูปด้านหน้า" กับ "ข้อความด้านขวา" */
 
   /* ── 3. ขนาดของรูปภาพคมชัดด้านหน้า (Foreground Image) ── */
-  --fg-image-width: 440px;           /* ปรับ [ความกว้าง] ของรูปภาพด้านหน้า */
-  --fg-image-height: 350px;          /* ปรับ [ความสูง] ของรูปภาพด้านหน้า */
+  --fg-image-width: 580px;           /* ปรับ [ความกว้าง] ของรูปภาพด้านหน้า (ขยายกว้างขึ้นไม่ให้ภาพแคบหรือตัดขอบ) */
+  --fg-image-height: 340px;          /* ปรับ [ความสูง] ของรูปภาพด้านหน้า (สัดส่วน ~16:9 สวยงาม) */
   --fg-image-radius: 18px;           /* ปรับ [ความโค้งมน] ของขอบรูปภาพด้านหน้า */
   --fg-image-shadow: 0 14px 35px rgba(0, 0, 0, 0.32); /* เงาของรูปภาพด้านหน้า */
 
@@ -165,7 +165,7 @@ body {
   /* ✏️ จุดปรับแต่ง: ระยะห่างระหว่างรูปกับข้อความ */
   gap: var(--slide-content-gap);
   width: 100%;
-  max-width: 1140px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -191,6 +191,7 @@ body {
   height: var(--fg-image-height);
   border-radius: var(--fg-image-radius);
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -417,11 +418,21 @@ body {
 /* ==========================================================================
    📱 SECTION: Responsive (รองรับมือถือและแท็บเล็ตทุกรุ่น ยืดหยุ่นเป็นธรรมชาติ)
    ========================================================================== */
+@media (max-width: 1200px) {
+  :root {
+    --fg-image-width: 500px;
+    --fg-image-height: 310px;
+    --slide-content-gap: 32px;
+    --slide-padding-left: 65px;
+    --slide-padding-right: 65px;
+  }
+}
+
 @media (max-width: 992px) {
   :root {
-    --fg-image-width: 340px;
-    --fg-image-height: 270px;
-    --slide-content-gap: 28px;
+    --fg-image-width: 400px;
+    --fg-image-height: 260px;
+    --slide-content-gap: 24px;
     --slide-padding-top: 40px;
     --slide-padding-bottom: 45px;
     --slide-padding-left: 50px;

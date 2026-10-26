@@ -445,7 +445,13 @@
       desc: 'ปุ๋ยเคมีสูตรสมดุล NPK เหมาะสำหรับพืชทุกชนิด บำรุงการเจริญเติบโต ลำต้น ราก และใบ ช่วยเพิ่มผลผลิต',
       crops: ['rice', 'cassava', 'sugarcane', 'fruit', 'vegetable'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'อ้อย', 'ไม้ผล', 'ผักทั่วไป'],
-      image: '../frontend/images/product-fertilizer.jpg',
+      image: '../frontend/images/mockup-p1.jpg',
+      images: [
+        '../frontend/images/mockup-p1.jpg',
+        '../frontend/images/mockup-back-fertilizer.jpg',
+        '../frontend/images/product-fertilizer.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-01'
     },
     {
@@ -460,7 +466,13 @@
       desc: 'ปุ๋ยไนโตรเจนสูง เร่งการเจริญเติบโตของใบ ต้น และกิ่งก้าน เหมาะสำหรับข้าวระยะแตกกอ',
       crops: ['rice', 'corn', 'sugarcane'],
       cropNames: ['ข้าว', 'ข้าวโพด', 'อ้อย'],
-      image: '../frontend/images/product-fertilizer.jpg',
+      image: '../frontend/images/mockup-p2.jpg',
+      images: [
+        '../frontend/images/mockup-p2.jpg',
+        '../frontend/images/mockup-back-fertilizer.jpg',
+        '../frontend/images/product-fertilizer.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-02'
     },
     {
@@ -475,7 +487,13 @@
       desc: 'ปุ๋ยอินทรีย์แท้ 100% หมักด้วยจุลินทรีย์สายพันธุ์ดี ฟื้นฟูดินเสื่อมสภาพ ดินร่วนซุย อุดมด้วยธาตุอาหารรอง',
       crops: ['rice', 'vegetable', 'fruit'],
       cropNames: ['ข้าว', 'ผักทั่วไป', 'ไม้ผล'],
-      image: '../frontend/images/product-fertilizer.jpg',
+      image: '../frontend/images/mockup-p5.jpg',
+      images: [
+        '../frontend/images/mockup-p5.jpg',
+        '../frontend/images/mockup-back-organic.jpg',
+        '../frontend/images/product-soil.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-03'
     },
     {
@@ -490,7 +508,13 @@
       desc: 'กำจัดหนอนเจาะ หนอนม้วนใบ และเพลี้ยไฟในนาข้าวและพืชไร่ ออกฤทธิ์เร็ว คุมนาน ปลอดภัยต่อพืชประธาน',
       crops: ['rice', 'corn', 'vegetable'],
       cropNames: ['ข้าว', 'ข้าวโพด', 'ผักทั่วไป'],
-      image: '../frontend/images/product-pesticide.jpg',
+      image: '../frontend/images/mockup-p9.jpg',
+      images: [
+        '../frontend/images/mockup-p9.jpg',
+        '../frontend/images/mockup-back-pesticide.jpg',
+        '../frontend/images/product-pesticide.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-04'
     },
     {
@@ -505,7 +529,13 @@
       desc: 'กำจัดหญ้าข้าวนก หญ้าดอกขาว และผักปอดนาในแปลงนาข้าว ปลอดภัยต่อต้นข้าว ไม่ชะงักการเจริญเติบโต',
       crops: ['rice'],
       cropNames: ['ข้าว'],
-      image: '../frontend/images/product-pesticide.jpg',
+      image: '../frontend/images/mockup-p13.jpg',
+      images: [
+        '../frontend/images/mockup-p13.jpg',
+        '../frontend/images/mockup-back-herbicide.jpg',
+        '../frontend/images/picture 3.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-05'
     },
     {
@@ -520,7 +550,13 @@
       desc: 'กระตุ้นการแตกรากฝอยอย่างรวดเร็ว ขยายตาดอก ช่วยให้พืชดูดซึมธาตุอาหารได้เต็มที่ ติดผลดก',
       crops: ['fruit', 'vegetable'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป'],
-      image: '../frontend/images/product-hormone.jpg',
+      image: '../frontend/images/mockup-p17.jpg',
+      images: [
+        '../frontend/images/mockup-p17.jpg',
+        '../frontend/images/mockup-back-hormone.jpg',
+        '../frontend/images/product-hormone.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-06'
     },
     {
@@ -535,7 +571,13 @@
       desc: 'ลดความเป็นกรดของดิน แก้ปัญหาดินเปรี้ยว ดินแน่นทึบ เติมแคลเซียมและแมกนีเซียมธรรมชาติให้ดิน',
       crops: ['rice', 'cassava', 'sugarcane'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'อ้อย'],
-      image: '../frontend/images/product-soil.jpg',
+      image: '../frontend/images/mockup-p21.jpg',
+      images: [
+        '../frontend/images/mockup-p21.jpg',
+        '../frontend/images/mockup-back-soil.jpg',
+        '../frontend/images/product-soil.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-07'
     },
     {
@@ -550,7 +592,13 @@
       desc: 'เมล็ดพันธุ์แตงกวาญี่ปุ่นลูกดก ทนโรคราแป้ง ผลสีเขียวเข้ม รสชาติกรอบหวาน ไม่ขม ตลาดต้องการสูง',
       crops: ['vegetable'],
       cropNames: ['ผักทั่วไป'],
-      image: '../frontend/images/vg 1.jpg',
+      image: '../frontend/images/mockup-p26.jpg',
+      images: [
+        '../frontend/images/mockup-p26.jpg',
+        '../frontend/images/mockup-back-seeds.jpg',
+        '../frontend/images/vg 1.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-08'
     },
     {
@@ -565,7 +613,13 @@
       desc: 'อาหารเสริมโปรตีนและแร่ธาตุคุณภาพสูงสำหรับโคนม ช่วยเพิ่มปริมาณน้ำนมและคุณภาพน้ำนมดิบ',
       crops: [],
       cropNames: ['ปศุสัตว์'],
-      image: '../frontend/images/vg 4.jpg',
+      image: '../frontend/images/mockup-p27.jpg',
+      images: [
+        '../frontend/images/mockup-p27.jpg',
+        '../frontend/images/mockup-back-feed.jpg',
+        '../frontend/images/vg 4.jpg',
+        '../frontend/images/cert-iso.jpg'
+      ],
       createdAt: '2026-08-09'
     }
   ];

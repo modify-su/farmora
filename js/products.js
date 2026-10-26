@@ -51,7 +51,13 @@
       fullDesc: 'FarmoGrow Plus 16-16-16 ปุ๋ยเคมีเชิงผสมสูตรมาตรฐานระดับพรีเมียม ให้ธาตุอาหารหลัก ไนโตรเจน-ฟอสฟอรัส-โพแทสเซียม ครบถ้วนในสัดส่วนที่เท่ากัน เม็ดปุ๋ยละลายน้ำได้เร็ว รากพืชดูดซึมไปใช้ได้ทันที เหมาะสำหรับรองพื้นหรือใส่บำรุงพืชทุกระยะการเจริญเติบโต',
       crops: ['rice', 'cassava', 'sugarcane', 'fruit', 'vegetable'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'อ้อย', 'ไม้ผล', 'ผักทั่วไป'],
-      image: '../images/product-fertilizer.jpg'
+      image: '../images/mockup-p1.jpg',
+      images: [
+        '../images/mockup-p1.jpg',
+        '../images/mockup-back-fertilizer.jpg',
+        '../images/product-fertilizer.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p2',
@@ -66,7 +72,13 @@
       fullDesc: 'Super Rain 46-0-0 ปุ๋ยยูเรียเกล็ดขาวคุณภาพมาตรฐานสากล ไนโตรเจนบริสุทธิ์สูงถึง 46% ละลายน้ำได้หมดจด 100% เร่งให้พืชเจริญเติบโตทางใบและลำต้นอย่างรวดเร็ว ใบเขียวเข้ม สังเคราะห์แสงได้ดีเยี่ยม เหมาะกับนาข้าว ข้าวโพด และพืชไร่',
       crops: ['rice', 'corn', 'sugarcane'],
       cropNames: ['ข้าว', 'ข้าวโพด', 'อ้อย'],
-      image: '../images/product-fertilizer.jpg'
+      image: '../images/mockup-p2.jpg',
+      images: [
+        '../images/mockup-p2.jpg',
+        '../images/mockup-back-fertilizer.jpg',
+        '../images/product-fertilizer.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p3',
@@ -81,7 +93,13 @@
       fullDesc: 'Farmora Cal-Mag เสริมสร้างความแข็งแรงของเซลล์พืช ช่วยให้ใบพืชหนาเขียวเข้ม ป้องกันปัญหาไส้กลวงในผัก ผลแตกในผลไม้ และช่วยให้ผลผลิตเก็บรักษาได้นานขึ้น ทนทานต่อการขนส่ง',
       crops: ['fruit', 'vegetable'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป'],
-      image: '../images/product-fertilizer.jpg'
+      image: '../images/mockup-p3.jpg',
+      images: [
+        '../images/mockup-p3.jpg',
+        '../images/mockup-back-fertilizer.jpg',
+        '../images/product-fertilizer.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p4',
@@ -94,7 +112,13 @@
       fullDesc: 'Farmora Potash 0-0-60 ปุ๋ยโพแทสเซียมเข้มข้นพิเศษ เหมาะสำหรับใส่ในระยะสร้างแป้งและน้ำตาล เช่น ข้าวระยะตั้งท้องออกรวง อ้อยก่อนตัด และไม้ผลระยะก่อนเก็บเกี่ยว',
       crops: ['rice', 'sugarcane', 'fruit', 'cassava'],
       cropNames: ['ข้าว', 'อ้อย', 'ไม้ผล', 'มันสำปะหลัง'],
-      image: '../images/product-fertilizer.jpg'
+      image: '../images/mockup-p4.jpg',
+      images: [
+        '../images/mockup-p4.jpg',
+        '../images/mockup-back-fertilizer.jpg',
+        '../images/product-fertilizer.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 2: ปุ๋ยอินทรีย์ (organic) ── */
@@ -111,7 +135,13 @@
       fullDesc: 'Farmora Biomax ผลิตจากมูลค้างคาวและอินทรียวัตถุคุณภาพสูง ผ่านการหมักด้วยจุลินทรีย์ที่มีประโยชน์ ช่วยฟื้นฟูดินเสีย ปรับโครงสร้างดินให้ร่วนซุย พืชกินปุ๋ยได้ดียิ่งขึ้น ผลผลิตปลอดภัยไร้สารเคมีตกค้าง',
       crops: ['vegetable', 'fruit', 'rice'],
       cropNames: ['ผักทั่วไป', 'ไม้ผล', 'ข้าว'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p5.jpg',
+      images: [
+        '../images/mockup-p5.jpg',
+        '../images/mockup-back-organic.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p6',
@@ -126,7 +156,13 @@
       fullDesc: 'Compost Plus ผ่านกระบวนการหมักแบบเติมอากาศที่ได้มาตรฐาน ปราศจากกลิ่นเหม็นและเชื้อราโรคพืช เพิ่มความสมบูรณ์ของหน้าดิน ดินร่วนซุย รากพืชชอนไชง่ายขึ้นอย่างเห็นได้ชัด',
       crops: ['vegetable', 'fruit', 'rubber'],
       cropNames: ['ผักทั่วไป', 'ไม้ผล', 'ยางพารา'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p6.jpg',
+      images: [
+        '../images/mockup-p6.jpg',
+        '../images/mockup-back-organic.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p7',
@@ -141,7 +177,13 @@
       fullDesc: 'FM-Bio อุดมไปด้วยกรดอะมิโนและเอนไซม์จากธรรมชาติ ช่วยย่อยสลายตอซังข้าวและซากพืช กระตุ้นการดูดซึมสารอาหารทางราก ใช้รดโคนต้นหรือผสมน้ำฉีดพ่นทางใบได้',
       crops: ['rice', 'vegetable', 'fruit'],
       cropNames: ['ข้าว', 'ผักทั่วไป', 'ไม้ผล'],
-      image: '../images/product-hormone.jpg'
+      image: '../images/mockup-p7.jpg',
+      images: [
+        '../images/mockup-p7.jpg',
+        '../images/mockup-back-organic.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p8',
@@ -156,7 +198,13 @@
       fullDesc: 'ฮิวมิคผงเข้มข้น BlackGold ช่วยคลายสภาพดินแข็งและดินดาน เปิดท่อน้ำท่ออาหารของพืช และช่วยให้ปุ๋ยเคมีที่ใส่ลงไปมีประสิทธิภาพสูงขึ้น 2 เท่า ลดปริมาณการใช้ปุ๋ยเคมีลงได้',
       crops: ['rice', 'cassava', 'sugarcane', 'corn'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'อ้อย', 'ข้าวโพด'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p8.jpg',
+      images: [
+        '../images/mockup-p8.jpg',
+        '../images/mockup-back-organic.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 3: สารกำจัดแมลงและศัตรูพืช (pesticide) ── */
@@ -173,7 +221,13 @@
       fullDesc: 'FarmoShield Pro ผ่านการทดสอบและวิจัยจากห้องปฏิบัติการ ออกฤทธิ์ทำลายระบบย่อยอาหารของหนอนกระทู้ หนอนใยผัก และเพลี้ยไฟได้อย่างแม่นยำ เก็บเกี่ยวผลผลิตได้หลังพ่นเพียง 1 วัน เหมาะกับพืชผักส่งออกและเกษตรปลอดภัย GAP',
       crops: ['rice', 'vegetable', 'fruit'],
       cropNames: ['ข้าว', 'ผักทั่วไป', 'ไม้ผล'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p9.jpg',
+      images: [
+        '../images/mockup-p9.jpg',
+        '../images/mockup-back-pesticide.jpg',
+        '../images/product-pesticide.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p10',
@@ -186,7 +240,13 @@
       fullDesc: 'PestOff EC 50 ออกฤทธิ์เร็วต่อแมลงปากกัดและปากดูด กำจัดหนอนกอข้าว หนอนม้วนใบข้าว เพลี้ยจักจั่น และแมลงหวี่ขาว คุ้มค่าและประหยัดต้นทุนต่อไร่',
       crops: ['rice', 'cassava', 'corn'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'ข้าวโพด'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p10.jpg',
+      images: [
+        '../images/mockup-p10.jpg',
+        '../images/mockup-back-pesticide.jpg',
+        '../images/product-pesticide.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p11',
@@ -201,7 +261,13 @@
       fullDesc: 'Bio-Kill 200 ผลิตจากเมล็ดสะเดาอินทรีย์แท้ มีสารอะซาดิแรคติน (Azadirachtin) ยับยั้งการเจริญเติบโตและการลอกคราบของหนอน แมลงวันทอง และเพลี้ยแป้ง',
       crops: ['vegetable', 'fruit'],
       cropNames: ['ผักทั่วไป', 'ไม้ผล'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p11.jpg',
+      images: [
+        '../images/mockup-p11.jpg',
+        '../images/mockup-back-pesticide.jpg',
+        '../images/product-pesticide.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p12',
@@ -216,7 +282,13 @@
       fullDesc: 'Alpha-Guard ปกป้องนาข้าวจากการระบาดของเพลี้ยกระโดดสีน้ำตาล ออกฤทธิ์เร็วภายใน 2 ชั่วโมง ยับยั้งการดูดกินน้ำเลี้ยงของต้นข้าว ป้องกันโรคจิกกอและโรคใบหงิก',
       crops: ['rice'],
       cropNames: ['ข้าว'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p12.jpg',
+      images: [
+        '../images/mockup-p12.jpg',
+        '../images/mockup-back-pesticide.jpg',
+        '../images/product-pesticide.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 4: สารกำจัดวัชพืช (herbicide) ── */
@@ -233,7 +305,13 @@
       fullDesc: 'WeedKill Pro สารกำจัดหญ้าและวัชพืชใบแคบ-ใบกว้าง สูตรดูดซึมซึมลึกถึงระบบรากและเหง้าใต้ดิน เหมาะสำหรับฉีดล้างแปลงก่อนไถปลูกพืชไร่ ในสวนยางพารา และร่องอ้อย',
       crops: ['sugarcane', 'rubber', 'cassava', 'corn'],
       cropNames: ['อ้อย', 'ยางพารา', 'มันสำปะหลัง', 'ข้าวโพด'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p13.jpg',
+      images: [
+        '../images/mockup-p13.jpg',
+        '../images/mockup-back-herbicide.jpg',
+        '../images/picture 3.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p14',
@@ -246,7 +324,13 @@
       fullDesc: 'GrassOut 10 สารคุมและฆ่าวัชพืชในนาข้าวหว่านน้ำตม ออกฤทธิ์เลือกทำลาย ปลอดภัยต่อต้นข้าว ไม่ทำให้ข้าวแคระแกร็นหรือใบเหลือง กำจัดหญ้ากระดูกไก่ หญ้าดอกขาวได้เกลี้ยงแปลง',
       crops: ['rice'],
       cropNames: ['ข้าว'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p14.jpg',
+      images: [
+        '../images/mockup-p14.jpg',
+        '../images/mockup-back-herbicide.jpg',
+        '../images/picture 3.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p15',
@@ -259,7 +343,13 @@
       fullDesc: 'CleanField ออกฤทธิ์เร็ว ยับยั้งการเจริญเติบโตของวัชพืชตระกูลเถาเลื้อยและใบกว้างที่แย่งอาหารพืชหลัก ฉีดทับข้าวโพดหรืออ้อยได้เมื่อโตตามระยะที่กำหนด',
       crops: ['sugarcane', 'corn', 'rubber'],
       cropNames: ['อ้อย', 'ข้าวโพด', 'ยางพารา'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p15.jpg',
+      images: [
+        '../images/mockup-p15.jpg',
+        '../images/mockup-back-herbicide.jpg',
+        '../images/picture 3.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p16',
@@ -274,7 +364,13 @@
       fullDesc: 'Bio-Weeder ผลิตจากสารสกัดกรดไขมันพืชธรรมชาติ ออกฤทธิ์แบบเผาไหม้ทำลายใบวัชพืชใน 3 ชั่วโมง ปลอดภัยต่อระบบนิเวศน์ เหมาะสำหรับรอบบ้านและแปลงเกษตรอินทรีย์',
       crops: ['vegetable', 'fruit'],
       cropNames: ['ผักทั่วไป', 'ไม้ผล'],
-      image: '../images/product-pesticide.jpg'
+      image: '../images/mockup-p16.jpg',
+      images: [
+        '../images/mockup-p16.jpg',
+        '../images/mockup-back-herbicide.jpg',
+        '../images/picture 3.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 5: ฮอร์โมนพืช (hormone) ── */
@@ -291,7 +387,13 @@
       fullDesc: 'Farmora Boost ช่วยกระตุ้นการแบ่งเซลล์พืชอย่างรวดเร็ว เร่งการออกรากของกิ่งตอน ท่อนพันธุ์ และเร่งยอดใหม่ในไม้ผลหลังตัดแต่งกิ่ง ช่วยให้ต้นพืชสมบูรณ์พร้อมติดดอก',
       crops: ['fruit', 'vegetable', 'rubber', 'cassava'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป', 'ยางพารา', 'มันสำปะหลัง'],
-      image: '../images/product-hormone.jpg'
+      image: '../images/mockup-p17.jpg',
+      images: [
+        '../images/mockup-p17.jpg',
+        '../images/mockup-back-hormone.jpg',
+        '../images/product-hormone.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p18',
@@ -306,7 +408,13 @@
       fullDesc: 'Flower-Max ช่วยให้พืชออกดอกพร้อมเพรียงกัน ช่อดอกสมบูรณ์ ละอองเกสรแข็งแรง ติดผลดก ขั้วดอกเหนียว ป้องกันการสลัดดอกในทุเรียน ลำไย มะม่วง และพริก',
       crops: ['fruit', 'vegetable'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป'],
-      image: '../images/product-hormone.jpg'
+      image: '../images/mockup-p18.jpg',
+      images: [
+        '../images/mockup-p18.jpg',
+        '../images/mockup-back-hormone.jpg',
+        '../images/product-hormone.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p19',
@@ -319,7 +427,13 @@
       fullDesc: 'Fruit-Up ช่วยลำเลียงน้ำตาลและอาหารสะสมเข้าสู่เนื้อผลไม้ ขยายขนาดผล เพิ่มความหวานและสีสันสดใส ช่วยลดปัญหาผลบิดเบี้ยวหรือขนาดตกเกรด',
       crops: ['fruit', 'vegetable'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป'],
-      image: '../images/product-hormone.jpg'
+      image: '../images/mockup-p19.jpg',
+      images: [
+        '../images/mockup-p19.jpg',
+        '../images/mockup-back-hormone.jpg',
+        '../images/product-hormone.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p20',
@@ -332,7 +446,13 @@
       fullDesc: 'Root-Speed ลดอาการช็อกจากการย้ายปลูก ช่วยให้ต้นกล้าตั้งตัวได้ไว แตกรากฝอยดก แข็งแรง ทนทานต่อสภาพอากาศร้อนและแล้ง',
       crops: ['rice', 'cassava', 'sugarcane', 'vegetable'],
       cropNames: ['ข้าว', 'มันสำปะหลัง', 'อ้อย', 'ผักทั่วไป'],
-      image: '../images/product-hormone.jpg'
+      image: '../images/mockup-p20.jpg',
+      images: [
+        '../images/mockup-p20.jpg',
+        '../images/mockup-back-hormone.jpg',
+        '../images/product-hormone.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 6: สารปรับปรุงดิน (soil) ── */
@@ -347,7 +467,13 @@
       fullDesc: 'Farmora SoilFix ปรับค่าความเป็นกรด-ด่าง (pH) ของดินให้เหมาะสมที่ 5.5-6.5 ช่วยปลดปล่อยธาตุอาหารที่ถูกตรึง แก้อาการใบเหลืองจากดินกรดได้อย่างถาวร',
       crops: ['rice', 'rubber', 'fruit', 'cassava'],
       cropNames: ['ข้าว', 'ยางพารา', 'ไม้ผล', 'มันสำปะหลัง'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p21.jpg',
+      images: [
+        '../images/mockup-p21.jpg',
+        '../images/mockup-back-soil.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p22',
@@ -360,7 +486,13 @@
       fullDesc: 'ยิปซั่มการเกษตรช่วยสลายอนุภาคดินเหนียวแน่นทึบ ทำให้อากาศถ่ายเทสะดวก น้ำซึมผ่านได้ดี รากพืชหยั่งลึก เหมาะสำหรับฟื้นฟูดินเค็มแถบชายทะเลและดินดานในไร่',
       crops: ['rice', 'sugarcane', 'cassava'],
       cropNames: ['ข้าว', 'อ้อย', 'มันสำปะหลัง'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p22.jpg',
+      images: [
+        '../images/mockup-p22.jpg',
+        '../images/mockup-back-soil.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p23',
@@ -375,7 +507,13 @@
       fullDesc: 'Silicon Plus ช่วยสร้างเกราะป้องกันธรรมชาติให้แก่ใบและลำต้นข้าว ข้าวตั้งชูรับแสงแดดได้ดี รวงไม่ล้มเมื่อเจอลมฝน ลดความเสียหายก่อนเก็บเกี่ยวได้อย่างมหาศาล',
       crops: ['rice', 'sugarcane'],
       cropNames: ['ข้าว', 'อ้อย'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p23.jpg',
+      images: [
+        '../images/mockup-p23.jpg',
+        '../images/mockup-back-soil.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p24',
@@ -390,7 +528,13 @@
       fullDesc: 'เชื้อราไตรโคเดอร์มาสายพันธุ์แท้เข้มข้น เข้าไปแย่งพื้นที่และทำลายสปอร์เชื้อราก่อโรคในดิน ปลอดภัยต่อคนและสิ่งแวดล้อม 100% เหมาะสำหรับรองก้นหลุมปลูก',
       crops: ['fruit', 'vegetable', 'rubber'],
       cropNames: ['ไม้ผล', 'ผักทั่วไป', 'ยางพารา'],
-      image: '../images/product-soil.jpg'
+      image: '../images/mockup-p24.jpg',
+      images: [
+        '../images/mockup-p24.jpg',
+        '../images/mockup-back-soil.jpg',
+        '../images/product-soil.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 7: เมล็ดพันธุ์ (seeds) ── */
@@ -407,7 +551,13 @@
       fullDesc: 'เมล็ดพันธุ์ข้าวพันธุ์แท้จากแหล่งปลูกทุ่งกุลาร้องไห้ คัดแยกสิ่งเจือปนและเมล็ดลีบด้วยเครื่องจักรทันสมัย ต้นข้าวเติบโตสม่ำเสมอ แตกกอดก ทนทานต่อโรคใบไหม้ ให้ผลผลิตสูง',
       crops: ['rice'],
       cropNames: ['ข้าว'],
-      image: '../images/vg 2.jpg'
+      image: '../images/mockup-p25.jpg',
+      images: [
+        '../images/mockup-p25.jpg',
+        '../images/mockup-back-seeds.jpg',
+        '../images/vg 1.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p26',
@@ -422,7 +572,13 @@
       fullDesc: 'ชุดเมล็ดพันธุ์ผักยอดนิยมที่ทุกบ้านต้องมี เพาะง่าย โตไว อัตราการงอกสูง เก็บเกี่ยวผลผลิตสดใหม่ ปลอดภัย ไร้สารเคมีสำหรับบริโภคในครัวเรือน',
       crops: ['vegetable'],
       cropNames: ['ผักทั่วไป'],
-      image: '../images/vg 1.jpg'
+      image: '../images/mockup-p26.jpg',
+      images: [
+        '../images/mockup-p26.jpg',
+        '../images/mockup-back-seeds.jpg',
+        '../images/vg 1.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
 
     /* ── หมวด 8: อาหารสัตว์ (feed) ── */
@@ -437,7 +593,13 @@
       fullDesc: 'ผลิตจากวัตถุดิบคุณภาพดี กากถั่วเหลือง ข้าวโพดบด และพรีมิกซ์แร่ธาตุจำเป็น ช่วยให้โคเจริญเติบโตรวดเร็ว กล้ามเนื้อแน่น ขนสวย และมีสุขภาพแข็งแรง',
       crops: [],
       cropNames: ['ปศุสัตว์'],
-      image: '../images/vg 4.jpg'
+      image: '../images/mockup-p27.jpg',
+      images: [
+        '../images/mockup-p27.jpg',
+        '../images/mockup-back-feed.jpg',
+        '../images/vg 4.jpg',
+        '../images/cert-iso.jpg'
+      ]
     },
     {
       id: 'p28',
@@ -450,7 +612,13 @@
       fullDesc: 'อาหารปลาเม็ดลอยน้ำคุณภาพพรีเมียม สารอาหารครบถ้วน ปลาย่อยง่าย ดูดซึมไว อัตราการแลกเนื้อ (FCR) ดีเยี่ยม ช่วยประหยัดต้นทุนค่าอาหารของเกษตรกรผู้เพาะเลี้ยง',
       crops: [],
       cropNames: ['สัตว์น้ำ'],
-      image: '../images/vg 3.jpg'
+      image: '../images/mockup-p28.jpg',
+      images: [
+        '../images/mockup-p28.jpg',
+        '../images/mockup-back-feed.jpg',
+        '../images/vg 4.jpg',
+        '../images/cert-iso.jpg'
+      ]
     }
   ];
  
@@ -461,8 +629,30 @@
     try {
       const stored = localStorage.getItem(STORAGE_KEY_PRODUCTS);
       if (stored) {
-        const parsed = JSON.parse(stored);
+        let parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          // ซิงค์อัปเดตรูป Mockup ให้กับสินค้าในเครื่องเดิมที่ยังใช้ภาพแบบเก่า
+          let needsSave = false;
+          parsed = parsed.map(p => {
+            const def = DEFAULT_PRODUCTS_DATA.find(d => d.id === p.id);
+            if (def) {
+              if (!p.image || p.image.includes('product-fertilizer') || p.image.includes('product-soil') || p.image.includes('product-hormone') || p.image.includes('product-pesticide') || p.image.includes('picture 1')) {
+                p.image = def.image;
+                needsSave = true;
+              }
+              if (!p.images || p.images.length === 0 || p.images.some(img => img.includes('picture 1') || img.includes('about-lab'))) {
+                p.images = def.images;
+                needsSave = true;
+              }
+            }
+            return p;
+          });
+
+          if (needsSave) {
+            try {
+              localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(parsed));
+            } catch (err) {}
+          }
           return parsed;
         }
       }
@@ -471,7 +661,6 @@
     }
     return DEFAULT_PRODUCTS_DATA;
   }
-
   let PRODUCTS_DATA = getActiveProducts();
 
   // ── DOM Elements ──────────────────────────────────────────
@@ -761,35 +950,38 @@
   function getProductImages(item) {
     if (!item) return [];
 
-    // 1. ถ้ามีอาร์เรย์ images กำหนดไว้ในตัวสินค้า
-    if (Array.isArray(item.images) && item.images.length > 0) {
-      return item.images;
+    // 1. ค้นหาชุดข้อมูลตั้งต้นทางการที่มี Mockup 4 ภาพเสมอ (ให้ความสำคัญอันดับหนึ่ง)
+    const def = DEFAULT_PRODUCTS_DATA.find(d => d.id === item.id);
+    if (def && Array.isArray(def.images) && def.images.length > 0) {
+      return def.images;
     }
 
-    const list = [];
-    if (item.image) list.push(item.image);
+    // 2. ถ้ามีอาร์เรย์ images กำหนดไว้ในตัวสินค้า (คัดกรองเฉพาะภาพสินค้า ไม่เอาภาพห้องสัมมนา/คนแล็บ)
+    if (Array.isArray(item.images) && item.images.length > 0) {
+      const cleanList = item.images.filter(img => !img.includes('picture 1') && !img.includes('picture 2') && !img.includes('about-lab'));
+      if (cleanList.length > 0) return cleanList;
+    }
 
-    // 2. เติมเต็มภาพประกอบคุณภาพสูงตามหมวดหมู่สินค้า เพื่อให้มีสไลด์หลากหลายมุมมอง
-    const cat = item.cat || '';
-    const categoryGalleryMap = {
-      fertilizer: ['../images/picture 1.jpg', '../images/picture 2.jpg', '../images/cert-iso.jpg'],
-      organic:    ['../images/picture 4.jpg', '../images/picture 1.jpg', '../images/cert-iso.jpg'],
-      pesticide:  ['../images/product-pesticide.jpg', '../images/picture 3.jpg', '../images/about-lab.jpg'],
-      herbicide:  ['../images/picture 3.jpg', '../images/picture 1.jpg', '../images/cert-iso.jpg'],
-      hormone:    ['../images/product-hormone.jpg', '../images/picture 2.jpg', '../images/about-lab.jpg'],
-      soil:       ['../images/product-soil.jpg', '../images/picture 4.jpg', '../images/about-lab.jpg'],
-      seeds:      ['../images/vg 2.jpg', '../images/vg 1.jpg', '../images/picture 1.jpg'],
-      feed:       ['../images/vg 4.jpg', '../images/vg 3.jpg', '../images/picture 5.jpg']
+    // 3. Fallback สร้างชุด Mockup 4 ภาพตามหมวดหมู่
+    const cat = item.cat || 'fertilizer';
+    const catContentMap = {
+      fertilizer: '../images/product-fertilizer.jpg',
+      organic:    '../images/product-soil.jpg',
+      pesticide:  '../images/product-pesticide.jpg',
+      herbicide:  '../images/picture 3.jpg',
+      hormone:    '../images/product-hormone.jpg',
+      soil:       '../images/product-soil.jpg',
+      seeds:      '../images/vg 1.jpg',
+      feed:       '../images/vg 4.jpg'
     };
 
-    const extras = categoryGalleryMap[cat] || ['../images/picture 1.jpg', '../images/picture 2.jpg', '../images/cert-iso.jpg'];
-    extras.forEach(img => {
-      if (!list.includes(img)) list.push(img);
-    });
+    const frontImg = (item.id && /^p\d+$/.test(item.id)) ? `../images/mockup-${item.id}.jpg` : (item.image || '../images/mockup-p1.jpg');
+    const backImg = `../images/mockup-back-${cat}.jpg`;
+    const contentImg = catContentMap[cat] || '../images/product-fertilizer.jpg';
+    const certImg = '../images/cert-iso.jpg';
 
-    return list.slice(0, 4); // สูงสุด 4 ภาพต่อสินค้า
+    return [frontImg, backImg, contentImg, certImg];
   }
-
   // เริ่มต้นสร้างสไลด์รูปภาพสินค้าใน Modal
   function initModalSlider(item) {
     modalSlideImages = getProductImages(item);
