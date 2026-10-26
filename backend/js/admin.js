@@ -19,6 +19,7 @@
   const DS = window.FarmoraDataStore;
   let currentTab = 'overview';
   let activeModal = null;
+  let modalStack = [];
 
   /* --------------------------------------------------------------------------
      1. Initialization
@@ -1098,6 +1099,146 @@
     `).join('');
   }
 
+  /* --------------------------------------------------------------------------
+     8.1 Product Gallery & Slider Management (อัลบั้มรูปภาพสไลด์สินค้า)
+     -------------------------------------------------------------------------- */
+  let currentProductSlideImages = [];
+
+  function renderProductSlideImagesList() {
+    const container = document.getElementById('productSlideImagesList');
+    if (!container) return;
+
+    if (!Array.isArray(currentProductSlideImages) || currentProductSlideImages.length === 0) {
+      container.innerHTML = `
+        <div class="product-slide-empty">
+          <i class="fa-regular fa-images" style="font-size: 28px; margin-bottom: 8px; color: #94a3b8; display: block;"></i>
+          ยังไม่มีรูปภาพในสไลด์เพิ่มเติม (ระบบจะใช้รูปภาพหลักเป็นภาพสไลด์เดี่ยว)<br>
+          <span style="font-size: 12px; color: #64748b;">กดปุ่ม <strong>"+ เพิ่มภาพสไลด์"</strong> หรือ <strong>"โหลด 4 ภาพ Mockup"</strong> เพื่อเพิ่มมุมมองสินค้า</span>
+        </div>
+      `;
+      return;
+    }
+
+    const defaultLabels = [
+      'ภาพที่ 1: ด้านหน้าบรรจุภัณฑ์ (ภาพหลัก)',
+      'ภาพที่ 2: ด้านหลังบรรจุภัณฑ์ (ตารางธาตุอาหาร/วิธีใช้)',
+      'ภาพที่ 3: เม็ดปุ๋ย / เนื้อผลิตภัณฑ์ / การใช้งานจริง',
+      'ภาพที่ 4: ใบรับรองมาตรฐานคุณภาพ (ISO 9001)'
+    ];
+
+    container.innerHTML = currentProductSlideImages.map((src, idx) => {
+      const label = defaultLabels[idx] || `ภาพที่ ${idx + 1}: ภาพเพิ่มเติม`;
+      const resolvedSrc = DS.resolveImg(src);
+      const isFirst = idx === 0;
+      const isLast = idx === currentProductSlideImages.length - 1;
+
+      return `
+        <div class="product-slide-card" data-index="${idx}">
+          <div class="product-slide-thumb">
+            <img id="preview_productSlideImg_${idx}" src="${resolvedSrc}" alt="Slide ${idx + 1}" onerror="this.src='../frontend/images/product-fertilizer.jpg'">
+          </div>
+          <div class="product-slide-content">
+            <div class="product-slide-meta">
+              <span class="product-slide-tag"><i class="fa-regular fa-image"></i> ${label}</span>
+              <div style="display: flex; gap: 4px;">
+                <button type="button" class="btn btn-outline btn-sm" style="padding: 2px 7px; font-size: 11px;" onclick="AdminApp.moveProductSlideImage(${idx}, -1)" ${isFirst ? 'disabled' : ''} title="เลื่อนขึ้น">
+                  <i class="fa-solid fa-arrow-up"></i>
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="padding: 2px 7px; font-size: 11px;" onclick="AdminApp.moveProductSlideImage(${idx}, 1)" ${isLast ? 'disabled' : ''} title="เลื่อนลง">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" style="padding: 2px 7px; font-size: 11px;" onclick="AdminApp.removeProductSlideImage(${idx})" title="ลบภาพนี้">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <input type="text" id="productSlideImg_${idx}" class="form-control" style="font-size: 12.5px; padding: 6px 10px;" value="${src}" placeholder="วาง URL ลิงก์รูปภาพ หรือ path เช่น ../frontend/images/..." oninput="AdminApp.updateProductSlideImgValue(${idx}, this.value)">
+              <div class="product-slide-actions">
+                <label class="btn btn-outline btn-sm" style="margin: 0; cursor: pointer; white-space: nowrap; padding: 6px 10px;" title="อัปโหลดจากเครื่อง">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลด
+                  <input type="file" accept="image/*" style="display: none;" onchange="AdminApp.handleImageUpload(event, 'productSlideImg_${idx}')">
+                </label>
+                <button type="button" class="btn btn-outline btn-sm" style="white-space: nowrap; padding: 6px 10px;" onclick="AdminApp.openMediaPicker('productSlideImg_${idx}')" title="เลือกจากคลังรูปภาพ">
+                  <i class="fa-solid fa-photo-film"></i> คลังภาพ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function addProductSlideImage(src = '') {
+    currentProductSlideImages.push(src || '../frontend/images/product-fertilizer.jpg');
+    renderProductSlideImagesList();
+  }
+
+  function removeProductSlideImage(idx) {
+    if (idx >= 0 && idx < currentProductSlideImages.length) {
+      currentProductSlideImages.splice(idx, 1);
+      renderProductSlideImagesList();
+      showToast('ลบรูปภาพสไลด์แล้ว');
+    }
+  }
+
+  function moveProductSlideImage(idx, dir) {
+    const targetIdx = idx + dir;
+    if (targetIdx < 0 || targetIdx >= currentProductSlideImages.length) return;
+    const temp = currentProductSlideImages[idx];
+    currentProductSlideImages[idx] = currentProductSlideImages[targetIdx];
+    currentProductSlideImages[targetIdx] = temp;
+    renderProductSlideImagesList();
+  }
+
+  function updateProductSlideImgValue(idx, val) {
+    if (currentProductSlideImages[idx] !== undefined) {
+      currentProductSlideImages[idx] = val;
+      const preview = document.getElementById(`preview_productSlideImg_${idx}`);
+      if (preview) {
+        preview.src = DS.resolveImg(val);
+      }
+      if (idx === 0) {
+        const mainInput = document.getElementById('productImage');
+        if (mainInput) {
+          mainInput.value = val;
+          const mainPrev = document.getElementById('previewProductImg');
+          if (mainPrev) mainPrev.src = DS.resolveImg(val);
+        }
+      }
+    }
+  }
+
+  function loadDefaultMockupSlides() {
+    const id = document.getElementById('productId').value;
+    const cat = document.getElementById('productCat').value || 'fertilizer';
+    const mainImg = document.getElementById('productImage').value.trim();
+
+    const catContentMap = {
+      fertilizer: '../frontend/images/product-fertilizer.jpg',
+      organic:    '../frontend/images/product-soil.jpg',
+      pesticide:  '../frontend/images/product-pesticide.jpg',
+      herbicide:  '../frontend/images/picture 3.jpg',
+      hormone:    '../frontend/images/product-hormone.jpg',
+      soil:       '../frontend/images/product-soil.jpg',
+      seeds:      '../frontend/images/vg 1.jpg',
+      feed:       '../frontend/images/vg 4.jpg'
+    };
+
+    const frontImg = (id && /^p\d+$/.test(id)) ? `../frontend/images/mockup-${id}.jpg` : (mainImg || '../frontend/images/mockup-p1.jpg');
+    const backImg = `../frontend/images/mockup-back-${cat}.jpg`;
+    const contentImg = catContentMap[cat] || '../frontend/images/product-fertilizer.jpg';
+    const certImg = '../frontend/images/cert-iso.jpg';
+
+    currentProductSlideImages = [frontImg, backImg, contentImg, certImg];
+    document.getElementById('productImage').value = frontImg;
+    document.getElementById('previewProductImg').src = DS.resolveImg(frontImg);
+
+    renderProductSlideImagesList();
+    showToast('✨ โหลดชุด 4 ภาพ Mockup มาตรฐานเรียบร้อยแล้ว');
+  }
+
   function openProductModal(id) {
     const modal = document.getElementById('productModal');
     if (!modal) return;
@@ -1122,6 +1263,15 @@
         document.querySelectorAll('.crop-chk').forEach(chk => {
           chk.checked = crops.includes(chk.value);
         });
+
+        if (Array.isArray(p.images) && p.images.length > 0) {
+          currentProductSlideImages = [...p.images];
+        } else if (p.image) {
+          currentProductSlideImages = [p.image];
+        } else {
+          currentProductSlideImages = [];
+        }
+        renderProductSlideImagesList();
       }
     } else {
       document.getElementById('productForm').reset();
@@ -1131,6 +1281,8 @@
       document.getElementById('productImage').value = '../frontend/images/product-fertilizer.jpg';
       document.getElementById('previewProductImg').src = '../frontend/images/product-fertilizer.jpg';
       document.querySelectorAll('.crop-chk').forEach(chk => { chk.checked = false; });
+      currentProductSlideImages = ['../frontend/images/product-fertilizer.jpg'];
+      renderProductSlideImagesList();
     }
 
     openModal('productModal');
@@ -1154,6 +1306,14 @@
       selectedCropNames.push(chk.dataset.name || chk.value);
     });
 
+    // รวบรวมรูปภาพสไลด์สินค้าทั้งหมด
+    const slideImages = currentProductSlideImages.map((img, i) => {
+      const el = document.getElementById(`productSlideImg_${i}`);
+      return el ? el.value.trim() : (img || '').trim();
+    }).filter(Boolean);
+
+    const mainImg = document.getElementById('productImage').value.trim() || (slideImages[0] || '../frontend/images/product-fertilizer.jpg');
+
     const productData = {
       id: id || undefined,
       name: document.getElementById('productName').value.trim(),
@@ -1163,7 +1323,8 @@
       unit: document.getElementById('productUnit').value.trim() || '/หน่วย',
       badge: badgeVal,
       badgeText: badgeMap[badgeVal] || '',
-      image: document.getElementById('productImage').value.trim() || '../frontend/images/product-fertilizer.jpg',
+      image: mainImg,
+      images: slideImages.length > 0 ? slideImages : [mainImg],
       desc: document.getElementById('productDesc').value.trim(),
       crops: selectedCrops,
       cropNames: selectedCropNames
@@ -1414,6 +1575,25 @@
       } else if (targetInputId === 'productImage') {
         const p = document.getElementById('previewProductImg');
         if (p) p.src = base64;
+        if (currentProductSlideImages.length > 0) {
+          currentProductSlideImages[0] = base64;
+          const sp = document.getElementById('preview_productSlideImg_0');
+          if (sp) sp.src = base64;
+          const si = document.getElementById('productSlideImg_0');
+          if (si) si.value = base64;
+        }
+      } else if (targetInputId.startsWith('productSlideImg_')) {
+        const p = document.getElementById('preview_' + targetInputId);
+        if (p) p.src = base64;
+        const idx = parseInt(targetInputId.replace('productSlideImg_', ''), 10);
+        if (!isNaN(idx) && currentProductSlideImages[idx] !== undefined) {
+          currentProductSlideImages[idx] = base64;
+          if (idx === 0) {
+            document.getElementById('productImage').value = base64;
+            const mp = document.getElementById('previewProductImg');
+            if (mp) mp.src = base64;
+          }
+        }
       } else if (targetInputId === 'aboutStoryImage') {
         updateAboutStoryImgPreview();
       }
@@ -1494,6 +1674,25 @@
     } else if (activeMediaPickerTargetId === 'productImage') {
       const p = document.getElementById('previewProductImg');
       if (p) p.src = DS.resolveImg(url);
+      if (currentProductSlideImages.length > 0) {
+        currentProductSlideImages[0] = url;
+        const sp = document.getElementById('preview_productSlideImg_0');
+        if (sp) sp.src = DS.resolveImg(url);
+        const si = document.getElementById('productSlideImg_0');
+        if (si) si.value = url;
+      }
+    } else if (activeMediaPickerTargetId.startsWith('productSlideImg_')) {
+      const p = document.getElementById('preview_' + activeMediaPickerTargetId);
+      if (p) p.src = DS.resolveImg(url);
+      const idx = parseInt(activeMediaPickerTargetId.replace('productSlideImg_', ''), 10);
+      if (!isNaN(idx) && currentProductSlideImages[idx] !== undefined) {
+        currentProductSlideImages[idx] = url;
+        if (idx === 0) {
+          document.getElementById('productImage').value = url;
+          const mp = document.getElementById('previewProductImg');
+          if (mp) mp.src = DS.resolveImg(url);
+        }
+      }
     } else if (activeMediaPickerTargetId === 'aboutStoryImage') {
       updateAboutStoryImgPreview();
     }
@@ -2427,17 +2626,37 @@
      13. Modal Helpers & Toast
      -------------------------------------------------------------------------- */
   function openModal(id) {
-    activeModal = document.getElementById(id);
-    if (activeModal) {
-      activeModal.classList.add('open');
+    const modal = typeof id === 'string' ? document.getElementById(id) : id;
+    if (modal) {
+      modal.classList.add('open');
+      if (!modalStack.includes(modal)) {
+        modalStack.push(modal);
+      }
+      activeModal = modal;
       document.body.style.overflow = 'hidden';
     }
   }
 
-  function closeModal() {
-    if (activeModal) {
+  function closeModal(id) {
+    if (id) {
+      const modal = typeof id === 'string' ? document.getElementById(id) : id;
+      if (modal) {
+        modal.classList.remove('open');
+        modalStack = modalStack.filter(m => m !== modal);
+      }
+    } else if (modalStack.length > 0) {
+      const modal = modalStack.pop();
+      if (modal) modal.classList.remove('open');
+    } else if (activeModal) {
       activeModal.classList.remove('open');
       activeModal = null;
+    } else {
+      // Fallback: ปิดทุก modal ที่เปิดค้างอยู่
+      document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+    }
+
+    activeModal = modalStack.length > 0 ? modalStack[modalStack.length - 1] : null;
+    if (modalStack.length === 0) {
       document.body.style.overflow = '';
     }
   }
@@ -2465,7 +2684,7 @@
   // Close modal on backdrop click
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-backdrop')) {
-      closeModal();
+      closeModal(e.target);
     }
   });
 
@@ -2537,6 +2756,12 @@
     openProductModal,
     saveProduct,
     deleteProduct,
+    renderProductSlideImagesList,
+    addProductSlideImage,
+    removeProductSlideImage,
+    moveProductSlideImage,
+    updateProductSlideImgValue,
+    loadDefaultMockupSlides,
     // Orders Management
     renderOrdersTable,
     changeOrderStatus,

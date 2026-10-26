@@ -130,9 +130,15 @@
 
   /* ── ตัวช่วยแปลงและตรวจสอบ Path รูปภาพ ─────────────────── */
   function resolveImg(path, defaultImg) {
-    const fallback = defaultImg || '../frontend/images/picture 1.jpg';
+    const fallback = defaultImg || '../frontend/images/mockup-p1.jpg';
     if (!path) return fallback;
     if (path.startsWith('data:') || path.startsWith('http://') || path.startsWith('https://')) return path;
+    if (path.startsWith('../images/')) {
+      return '../frontend/images/' + path.substring('../images/'.length);
+    }
+    if (path.startsWith('images/')) {
+      return '../frontend/images/' + path.substring('images/'.length);
+    }
     return path;
   }
 

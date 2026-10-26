@@ -950,16 +950,16 @@
   function getProductImages(item) {
     if (!item) return [];
 
-    // 1. ค้นหาชุดข้อมูลตั้งต้นทางการที่มี Mockup 4 ภาพเสมอ (ให้ความสำคัญอันดับหนึ่ง)
+    // 1. ถ้ามีอาร์เรย์ images กำหนดไว้ในตัวสินค้า (คัดกรองเฉพาะภาพสินค้า ไม่เอาภาพห้องสัมมนา/คนแล็บ)
+    if (Array.isArray(item.images) && item.images.length > 0) {
+      const cleanList = item.images.filter(img => img && !img.includes('picture 1') && !img.includes('picture 2') && !img.includes('about-lab'));
+      if (cleanList.length > 0) return cleanList;
+    }
+
+    // 2. ถ้าไม่มี ให้ค้นหาจากชุดข้อมูลตั้งต้นทางการ (DEFAULT_PRODUCTS_DATA)
     const def = DEFAULT_PRODUCTS_DATA.find(d => d.id === item.id);
     if (def && Array.isArray(def.images) && def.images.length > 0) {
       return def.images;
-    }
-
-    // 2. ถ้ามีอาร์เรย์ images กำหนดไว้ในตัวสินค้า (คัดกรองเฉพาะภาพสินค้า ไม่เอาภาพห้องสัมมนา/คนแล็บ)
-    if (Array.isArray(item.images) && item.images.length > 0) {
-      const cleanList = item.images.filter(img => !img.includes('picture 1') && !img.includes('picture 2') && !img.includes('about-lab'));
-      if (cleanList.length > 0) return cleanList;
     }
 
     // 3. Fallback สร้างชุด Mockup 4 ภาพตามหมวดหมู่

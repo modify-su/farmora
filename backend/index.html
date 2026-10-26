@@ -1653,7 +1653,7 @@
     <div class="modal-card modal-lg">
       <div class="modal-header">
         <h3 class="modal-title" id="slideModalTitle">✏️ แก้ไขสไลด์</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('slideModal')">&times;</button>
       </div>
       <form id="slideForm" onsubmit="AdminApp.saveSlide(event)">
         <div class="modal-body">
@@ -1788,7 +1788,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="newsModalTitle">✏️ แก้ไขข่าวสาร</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('newsModal')">&times;</button>
       </div>
       <form id="newsForm" onsubmit="AdminApp.saveNews(event)">
         <div class="modal-body">
@@ -1880,7 +1880,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="articleModalTitle">✏️ แก้ไขบทความ</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('articleModal')">&times;</button>
       </div>
       <form id="articleForm" onsubmit="AdminApp.saveArticle(event)">
         <div class="modal-body">
@@ -1958,8 +1958,8 @@
   <div class="modal-backdrop" id="productModal">
     <div class="modal-card modal-lg">
       <div class="modal-header">
-        <h3 class="modal-title" id="productModalTitle">✏️ แก้ไขสินค้า</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <h3 class="modal-title" id="productModalTitle">✏️ แก้ไขข้อมูลสินค้า</h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('productModal')">&times;</button>
       </div>
       <form id="productForm" onsubmit="AdminApp.saveProduct(event)">
         <div class="modal-body">
@@ -2009,7 +2009,7 @@
 
           <div class="form-row" style="align-items: start;">
             <div class="form-group">
-              <label class="form-label"><i class="fa-solid fa-image"></i> รูปภาพสินค้า *</label>
+              <label class="form-label"><i class="fa-solid fa-image"></i> รูปภาพสินค้าหลัก (หน้าปก) *</label>
               <div class="upload-action-bar">
                 <label class="upload-btn-label">
                   <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพจากเครื่อง
@@ -2020,13 +2020,39 @@
                 </button>
               </div>
               <input type="text" id="productImage" class="form-control" required oninput="document.getElementById('previewProductImg').src = DS.resolveImg(this.value)" placeholder="ระบุ URL ลิงก์รูปภาพ หรือ path เช่น ../frontend/images/...">
-              <span class="form-hint">สามารถกดอัปโหลดไฟล์จากเครื่อง หรือวางลิงก์รูปภาพ (URL) ได้ทันที</span>
+              <span class="form-hint">ภาพปกหลักที่แสดงบนการ์ดสินค้า และภาพสไลด์แรก</span>
             </div>
             <div class="form-group">
-              <label class="form-label"><i class="fa-regular fa-image"></i> ตัวอย่างรูปภาพ (Preview)</label>
+              <label class="form-label"><i class="fa-regular fa-image"></i> ตัวอย่างรูปภาพหลัก (Preview)</label>
               <div class="img-preview-box" style="margin-top: 0;">
                 <img id="previewProductImg" src="../frontend/images/product-fertilizer.jpg" alt="ตัวอย่างรูปภาพสินค้า" onerror="this.src='../frontend/images/product-fertilizer.jpg'">
               </div>
+            </div>
+          </div>
+
+          <!-- Product Slider / Gallery Images Manager -->
+          <div class="product-slides-container">
+            <div class="product-slides-header">
+              <div>
+                <label class="form-label" style="margin-bottom: 2px; font-weight: 700; color: #1e293b;">
+                  <i class="fa-solid fa-images" style="color: var(--primary-green);"></i> อัลบั้มรูปภาพสไลด์สินค้า (Gallery & Slider)
+                </label>
+                <div style="font-size: 12.5px; color: var(--text-muted);">
+                  รูปภาพที่แสดงในตัวสไลด์ของ Modal สินค้า (เช่น ด้านหน้า, ด้านหลัง, เนื้อสินค้า, ใบรับรอง)
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.loadDefaultMockupSlides()" title="โหลดชุด 4 ภาพมาตรฐาน (หน้า/หลัง/เนื้อปุ๋ย/ใบเซอร์)">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> โหลด 4 ภาพ Mockup
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="AdminApp.addProductSlideImage()">
+                  <i class="fa-solid fa-plus"></i> เพิ่มภาพสไลด์
+                </button>
+              </div>
+            </div>
+
+            <div id="productSlideImagesList" class="product-slides-list">
+              <!-- Rendered dynamically by AdminApp.renderProductSlideImagesList() -->
             </div>
           </div>
 
@@ -2048,7 +2074,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal()">ยกเลิก</button>
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal('productModal')">ยกเลิก</button>
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกสินค้า</button>
         </div>
       </form>
@@ -2061,7 +2087,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="menuModalTitle">✏️ แก้ไขเมนู</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('menuModal')">&times;</button>
       </div>
       <form id="menuForm" onsubmit="AdminApp.saveMenu(event)">
         <div class="modal-body">
@@ -2104,7 +2130,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="timelineModalTitle">➕ เพิ่มหมุดไทม์ไลน์</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('timelineModal')">&times;</button>
       </div>
       <form id="timelineForm" onsubmit="AdminApp.saveTimeline(event)">
         <div class="modal-body">
@@ -2138,7 +2164,7 @@
     <div class="modal-card modal-lg">
       <div class="modal-header">
         <h3 class="modal-title"><i class="fa-solid fa-photo-film"></i> 🖼️ เลือกรูปภาพจากคลังรูปภาพ (Media Library)</h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('mediaPickerModal')">&times;</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
@@ -2170,7 +2196,7 @@
         <h3 class="modal-title" id="orderDetailModalTitle">
           <i class="fa-solid fa-file-invoice"></i> รายละเอียดคำสั่งซื้อ
         </h3>
-        <button type="button" class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('orderDetailModal')">&times;</button>
       </div>
       <div class="modal-body" id="orderDetailPrintArea">
         <!-- Printable Invoice Box -->
