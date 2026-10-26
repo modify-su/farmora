@@ -184,6 +184,11 @@
   gap: 14px;
 }
 
+/* ── ซ่อนไอคอนตะกร้าสินค้าชั่วคราวตามคำขอ ─ */
+#cart-icon {
+  display: none !important;
+}
+
 /* ── ไอคอน (cart / user) ✏️ ปรับปรุงลูกเล่นเรืองแสงและเด้งลอย ─ */
 .icon {
   position: relative;
