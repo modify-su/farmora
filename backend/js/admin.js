@@ -1229,6 +1229,8 @@
     let frontImg = (id && /^p\d+$/.test(id)) ? `../frontend/images/mockup-${id}.jpg` : (mainImg || '../frontend/images/mockup-p1.jpg');
     if (cat === 'seeds' && (!id || !/^p(25|26|8|29)$/.test(id))) {
       frontImg = '../frontend/images/mockup-seed-blank.jpg';
+    } else if (cat === 'feed' && (!id || !/^p(27|28|9)$/.test(id))) {
+      frontImg = '../frontend/images/mockup-feed-blank.jpg';
     }
     const backImg = `../frontend/images/mockup-back-${cat}.jpg`;
     const contentImg = catContentMap[cat] || '../frontend/images/product-fertilizer.jpg';

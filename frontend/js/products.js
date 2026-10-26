@@ -668,6 +668,11 @@
                 p.images = def.images;
                 needsSave = true;
               }
+              if (p.cat === 'feed' || p.id === 'p27' || p.id === 'p28') {
+                p.image = def.image;
+                p.images = def.images;
+                needsSave = true;
+              }
               if (!p.image || p.image.includes('product-fertilizer') || p.image.includes('product-soil') || p.image.includes('product-hormone') || p.image.includes('product-pesticide') || p.image.includes('picture 1')) {
                 p.image = def.image;
                 needsSave = true;
@@ -1007,7 +1012,7 @@
       feed:       '../images/vg 4.jpg'
     };
 
-    const frontImg = (item.id && /^p\d+$/.test(item.id)) ? `../images/mockup-${item.id}.jpg` : (cat === 'seeds' ? '../images/mockup-seed-blank.jpg' : (item.image || '../images/mockup-p1.jpg'));
+    const frontImg = (item.id && /^p\d+$/.test(item.id)) ? `../images/mockup-${item.id}.jpg` : (cat === 'seeds' ? '../images/mockup-seed-blank.jpg' : (cat === 'feed' ? '../images/mockup-feed-blank.jpg' : (item.image || '../images/mockup-p1.jpg')));
     const backImg = `../images/mockup-back-${cat}.jpg`;
     const contentImg = catContentMap[cat] || '../images/product-fertilizer.jpg';
     const certImg = '../images/cert-iso.jpg';

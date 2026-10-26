@@ -619,9 +619,9 @@
       desc: 'อาหารเสริมโปรตีนและแร่ธาตุคุณภาพสูงสำหรับโคนม ช่วยเพิ่มปริมาณน้ำนมและคุณภาพน้ำนมดิบ',
       crops: [],
       cropNames: ['ปศุสัตว์'],
-      image: '../frontend/images/mockup-p27.jpg',
+      image: '../frontend/images/mockup-p9.jpg',
       images: [
-        '../frontend/images/mockup-p27.jpg',
+        '../frontend/images/mockup-p9.jpg',
         '../frontend/images/mockup-back-feed.jpg',
         '../frontend/images/vg 4.jpg',
         '../frontend/images/cert-iso.jpg'
