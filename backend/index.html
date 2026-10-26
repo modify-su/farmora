@@ -112,6 +112,7 @@
         </a>
       </li>
 
+      <!-- 🛒 ซ่อนเมนูคำสั่งซื้อชั่วคราวตามคำขอ
       <li class="sidebar-heading">คำสั่งซื้อและการขาย</li>
       <li>
         <a class="sidebar-link" data-tab="orders">
@@ -120,6 +121,7 @@
           <span class="sidebar-badge" id="badgeOrdersCount" style="background:#ff6f22;">0</span>
         </a>
       </li>
+      -->
 
       <li class="sidebar-heading">ระบบและโครงสร้าง</li>
       <li>
@@ -237,6 +239,7 @@
               <span class="value" id="statMedia">0</span>
             </div>
           </div>
+          <!-- 🛒 ซ่อนสถิติคำสั่งซื้อชั่วคราว
           <div class="stat-card">
             <div class="stat-icon-wrap green" style="background:#e6f9ed; color:#00a64c;"><i class="fa-solid fa-cart-shopping"></i></div>
             <div class="stat-info">
@@ -251,6 +254,7 @@
               <span class="value" id="statRevenue" style="font-size: 24px;">฿0</span>
             </div>
           </div>
+          -->
         </div>
 
         <!-- Quick Actions Card -->
@@ -259,9 +263,11 @@
             <h2 class="card-title"><i class="fa-solid fa-bolt"></i> ทางลัดด่วน (Quick Actions)</h2>
           </div>
           <div class="card-body" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <!-- 🛒 ซ่อนปุ่มทางลัดคำสั่งซื้อชั่วคราว
             <button class="btn btn-primary" onclick="AdminApp.switchTab('orders')" style="background: linear-gradient(135deg, #ff6f22, #e65100);">
               <i class="fa-solid fa-cart-shopping"></i> จัดการคำสั่งซื้อ (<span id="quickPendingOrders">0</span> รอส่ง)
             </button>
+            -->
             <button class="btn btn-primary" onclick="AdminApp.openSlideModal()">
               <i class="fa-solid fa-plus"></i> เพิ่มสไลด์ใหม่
             </button>
@@ -812,7 +818,7 @@
                   <option value="herbicide">สารกำจัดวัชพืช</option>
                   <option value="hormone">ฮอร์โมนพืช</option>
                   <option value="soil">สารปรับปรุงดิน</option>
-                  <option value="seeds">เมล็ดพันธุ์ผักและข้าว</option>
+                  <option value="seeds">เมล็ดพันธุ์ผัก ข้าว หญ้า</option>
                   <option value="feed">อาหารสัตว์</option>
                 </select>
               </div>
@@ -1980,7 +1986,7 @@
                 <option value="herbicide">สารกำจัดวัชพืช</option>
                 <option value="hormone">ฮอร์โมนพืช</option>
                 <option value="soil">สารปรับปรุงดิน</option>
-                <option value="seeds">เมล็ดพันธุ์ผักและข้าว</option>
+                <option value="seeds">เมล็ดพันธุ์ผัก ข้าว หญ้า</option>
                 <option value="feed">อาหารสัตว์</option>
               </select>
             </div>

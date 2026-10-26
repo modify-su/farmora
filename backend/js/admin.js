@@ -1226,7 +1226,10 @@
       feed:       '../frontend/images/vg 4.jpg'
     };
 
-    const frontImg = (id && /^p\d+$/.test(id)) ? `../frontend/images/mockup-${id}.jpg` : (mainImg || '../frontend/images/mockup-p1.jpg');
+    let frontImg = (id && /^p\d+$/.test(id)) ? `../frontend/images/mockup-${id}.jpg` : (mainImg || '../frontend/images/mockup-p1.jpg');
+    if (cat === 'seeds' && (!id || !/^p(25|26|8|29)$/.test(id))) {
+      frontImg = '../frontend/images/mockup-seed-blank.jpg';
+    }
     const backImg = `../frontend/images/mockup-back-${cat}.jpg`;
     const contentImg = catContentMap[cat] || '../frontend/images/product-fertilizer.jpg';
     const certImg = '../frontend/images/cert-iso.jpg';

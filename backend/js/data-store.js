@@ -590,7 +590,7 @@
       id: 'p8',
       name: 'เมล็ดพันธุ์แตงกวาญี่ปุ่น F1 พรีเมียม',
       cat: 'seeds',
-      catName: 'เมล็ดพันธุ์ผักและข้าว',
+      catName: 'เมล็ดพันธุ์ผัก ข้าว หญ้า',
       price: 180,
       unit: '/ซอง 100 เมล็ด',
       badge: 'new',
@@ -598,9 +598,9 @@
       desc: 'เมล็ดพันธุ์แตงกวาญี่ปุ่นลูกดก ทนโรคราแป้ง ผลสีเขียวเข้ม รสชาติกรอบหวาน ไม่ขม ตลาดต้องการสูง',
       crops: ['vegetable'],
       cropNames: ['ผักทั่วไป'],
-      image: '../frontend/images/mockup-p26.jpg',
+      image: '../frontend/images/mockup-p8.jpg',
       images: [
-        '../frontend/images/mockup-p26.jpg',
+        '../frontend/images/mockup-p8.jpg',
         '../frontend/images/mockup-back-seeds.jpg',
         '../frontend/images/vg 1.jpg',
         '../frontend/images/cert-iso.jpg'

@@ -542,9 +542,9 @@
       id: 'p25',
       name: 'เมล็ดพันธุ์ข้าวหอมมะลิ 105 คัดพิเศษ',
       cat: 'seeds',
-      catName: 'เมล็ดพันธุ์',
+      catName: 'เมล็ดพันธุ์ผัก ข้าว หญ้า',
       price: 550,
-      unit: '/กระสอบ 25 กก.',
+      unit: '/ซอง 1 กก.',
       badge: 'star',
       badgeText: '⭐ ยอดนิยม',
       desc: 'เมล็ดพันธุ์ข้าวหอมมะลิ 105 แท้ บริสุทธิ์ 99% อัตราการงอกสูงกว่า 95% หุงนุ่ม หอมกรุ่น',
@@ -563,9 +563,9 @@
       id: 'p26',
       name: 'ชุดรวมเมล็ดพันธุ์ผักสวนครัวพอเพียง (10 ซอง)',
       cat: 'seeds',
-      catName: 'เมล็ดพันธุ์',
+      catName: 'เมล็ดพันธุ์ผัก ข้าว หญ้า',
       price: 180,
-      unit: '/ชุด 10 ชนิด',
+      unit: '/ชุด 10 ซอง',
       badge: 'new',
       badgeText: '✨ สินค้าใหม่',
       desc: 'กะเพรา พริกขี้หนู มะเขือเปราะ โหระพา ผักบุ้งจีน คะน้า แตงกวา ถั่วฝักยาว ผักชี ตะไคร้',
@@ -575,6 +575,27 @@
       image: '../images/mockup-p26.jpg',
       images: [
         '../images/mockup-p26.jpg',
+        '../images/mockup-back-seeds.jpg',
+        '../images/vg 1.jpg',
+        '../images/cert-iso.jpg'
+      ]
+    },
+    {
+      id: 'p29',
+      name: 'เมล็ดพันธุ์หญ้ารูซี่ / หญ้าแพงโกล่า คัดพิเศษ',
+      cat: 'seeds',
+      catName: 'เมล็ดพันธุ์ผัก ข้าว หญ้า',
+      price: 250,
+      unit: '/ซอง 1 กก.',
+      badge: 'star',
+      badgeText: '⭐ ยอดนิยม',
+      desc: 'เมล็ดพันธุ์หญ้าเลี้ยงสัตว์และจัดสวน แตกกอแน่น โตไว โปรตีนสูง สัตว์ชอบกิน ทนแล้ง',
+      fullDesc: 'เมล็ดพันธุ์หญ้ารูซี่และหญ้าแพงโกล่าคัดพิเศษ อัตราการงอกสูงกว่า 90% ทนทานต่อการเหยียบย่ำและการแทะเล็ม เหมาะสำหรับทำแปลงหญ้าสด หญ้าหมัก หรือหญ้าแห้งสำหรับโคเนื้อ โคนม และสัตว์เคี้ยวเอื้องทุกชนิด',
+      crops: ['rice', 'corn'],
+      cropNames: ['ข้าวโพด', 'พืชอาหารสัตว์'],
+      image: '../images/mockup-seed-grass.jpg',
+      images: [
+        '../images/mockup-seed-grass.jpg',
         '../images/mockup-back-seeds.jpg',
         '../images/vg 1.jpg',
         '../images/cert-iso.jpg'
@@ -633,9 +654,20 @@
         if (Array.isArray(parsed) && parsed.length > 0) {
           // ซิงค์อัปเดตรูป Mockup ให้กับสินค้าในเครื่องเดิมที่ยังใช้ภาพแบบเก่า
           let needsSave = false;
+          // ซิงค์สินค้าหมวดเมล็ดพันธุ์และรูปภาพ Mockup ซองใหม่
+          if (!parsed.some(p => p.id === 'p29')) {
+            const p29 = DEFAULT_PRODUCTS_DATA.find(d => d.id === 'p29');
+            if (p29) { parsed.push(p29); needsSave = true; }
+          }
           parsed = parsed.map(p => {
             const def = DEFAULT_PRODUCTS_DATA.find(d => d.id === p.id);
             if (def) {
+              if (p.cat === 'seeds' || p.id === 'p25' || p.id === 'p26' || p.id === 'p29') {
+                p.catName = 'เมล็ดพันธุ์ผัก ข้าว หญ้า';
+                p.image = def.image;
+                p.images = def.images;
+                needsSave = true;
+              }
               if (!p.image || p.image.includes('product-fertilizer') || p.image.includes('product-soil') || p.image.includes('product-hormone') || p.image.includes('product-pesticide') || p.image.includes('picture 1')) {
                 p.image = def.image;
                 needsSave = true;
@@ -778,7 +810,7 @@
       herbicide: 'สารกำจัดวัชพืช',
       hormone: 'ฮอร์โมนพืช',
       soil: 'สารปรับปรุงดิน',
-      seeds: 'เมล็ดพันธุ์',
+      seeds: 'เมล็ดพันธุ์ผัก ข้าว หญ้า',
       feed: 'อาหารสัตว์'
     };
 
@@ -975,7 +1007,7 @@
       feed:       '../images/vg 4.jpg'
     };
 
-    const frontImg = (item.id && /^p\d+$/.test(item.id)) ? `../images/mockup-${item.id}.jpg` : (item.image || '../images/mockup-p1.jpg');
+    const frontImg = (item.id && /^p\d+$/.test(item.id)) ? `../images/mockup-${item.id}.jpg` : (cat === 'seeds' ? '../images/mockup-seed-blank.jpg' : (item.image || '../images/mockup-p1.jpg'));
     const backImg = `../images/mockup-back-${cat}.jpg`;
     const contentImg = catContentMap[cat] || '../images/product-fertilizer.jpg';
     const certImg = '../images/cert-iso.jpg';
