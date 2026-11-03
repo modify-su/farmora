@@ -46,7 +46,8 @@
     'farmora_articles_v2',
     'farmora_theme_v2',
     'farmora_menus_v2',
-    'farmora_maintenance_v4'
+    'farmora_maintenance_v4',
+    'farmora_members_v1'
   ];
 
   let isRemoteSyncing = false;

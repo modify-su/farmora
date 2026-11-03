@@ -1,0 +1,487 @@
+/* ==========================================================================
+   🌿 FARMORA OFFICIAL — Member System (member.css)
+   ==========================================================================
+   ระบบสมาชิก: เข้าสู่ระบบ (Sign In), สมัครสมาชิก (Register), และโปรไฟล์สมาชิก
+   ========================================================================== */
+
+/* ── 1. Modal Backdrop ─────────────────────────────────────────── */
+.member-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 38, 21, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.member-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── 2. Modal Dialog Card ──────────────────────────────────────── */
+.member-modal-dialog {
+  background: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 104, 55, 0.1);
+  overflow: hidden;
+  transform: translateY(24px) scale(0.96);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-modal-backdrop.open .member-modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* ── 3. Modal Header ───────────────────────────────────────────── */
+.member-modal-header {
+  position: relative;
+  background: linear-gradient(135deg, #092615 0%, #006837 100%);
+  color: #ffffff;
+  padding: 24px 24px 20px;
+  text-align: center;
+}
+
+.member-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8ec64f;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.member-modal-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.member-modal-subtitle {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.member-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.member-close-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: rotate(90deg);
+}
+
+/* ── 4. Tabs Navigation ────────────────────────────────────────── */
+.member-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 6px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.member-tab-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.22s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.member-tab-btn.active {
+  background: #ffffff;
+  color: #006837;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* ── 5. Modal Body & Forms ─────────────────────────────────────── */
+.member-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.member-form-pane {
+  display: none;
+}
+
+.member-form-pane.active {
+  display: block;
+  animation: memberFadeIn 0.25s ease;
+}
+
+@keyframes memberFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.member-form-group {
+  margin-bottom: 16px;
+}
+
+.member-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.member-input-wrap {
+  position: relative;
+}
+
+.member-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.member-form-input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #0f172a;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.member-form-input:focus {
+  outline: none;
+  border-color: #00a64c;
+  box-shadow: 0 0 0 3px rgba(0, 166, 76, 0.15);
+}
+
+.member-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.member-password-toggle:hover {
+  color: #006837;
+}
+
+.member-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.member-type-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.member-type-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.member-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  text-align: center;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  gap: 4px;
+}
+
+.member-type-card i {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.member-type-option input:checked + .member-type-card {
+  border-color: #00a64c;
+  background: #f0fdf4;
+  color: #006837;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 166, 76, 0.12);
+}
+
+.member-type-option input:checked + .member-type-card i {
+  color: #00a64c;
+}
+
+/* ── 6. Submit Button ──────────────────────────────────────────── */
+.btn-member-submit {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #00a64c, #006837);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 104, 55, 0.25);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.btn-member-submit:hover {
+  background: linear-gradient(135deg, #02b755, #007940);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 104, 55, 0.32);
+}
+
+.btn-member-submit:active {
+  transform: translateY(0);
+}
+
+.member-form-footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.member-form-footer a {
+  color: #006837;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.member-form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── 7. Profile Card (Logged-in view) ──────────────────────────── */
+.member-profile-card {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.member-avatar-lg {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00a64c, #006837);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 16px rgba(0, 104, 55, 0.28);
+}
+
+.member-profile-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.member-profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  margin: 6px 0 16px;
+}
+
+.member-stats-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.member-stat-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #006837;
+}
+
+.member-stat-lbl {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.btn-member-logout {
+  width: 100%;
+  padding: 11px 16px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-member-logout:hover {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+/* ── 8. Active Logged-in Navbar User Icon Dot ───────────────────── */
+.icon.member-logged-in {
+  background: #f0fdf4 !important;
+  border-color: #00a64c !important;
+  color: #006837 !important;
+}
+
+.icon.member-logged-in::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+/* ── 9. Alert Box & Forgot / Change Password Styling ─────────────── */
+.member-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #166534;
+}
+
+.member-alert-box.info {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+  color: #0369a1;
+}
+
+.member-alert-box i {
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.member-profile-section {
+  width: 100%;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+  margin-top: 14px;
+  margin-bottom: 16px;
+}
+
+.btn-member-outline-sm {
+  background: #f8fafc;
+  color: #006837;
+  border: 1px solid #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-member-outline-sm:hover {
+  background: #e6f4ea;
+  border-color: #00a64c;
+  color: #004d25;
+}

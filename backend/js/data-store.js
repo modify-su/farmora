@@ -26,6 +26,7 @@
     MENUS: 'farmora_menus_v2',
     MEDIA: 'farmora_media_v2',
     MAINTENANCE: 'farmora_maintenance_v4',
+    MEMBERS: 'farmora_members_v1',
     AUTH: 'farmora_auth_v2',
     INITIALIZED: 'farmora_backend_initialized_v2'
   };
@@ -784,6 +785,36 @@
   ];
 
   /* --------------------------------------------------------------------------
+     7.5 ข้อมูลสมาชิกเริ่มต้น (Default Farmora Members)
+     -------------------------------------------------------------------------- */
+  const DEFAULT_MEMBERS = [
+    {
+      id: 'm_demo_1',
+      name: 'สมชาย เกษตรพัฒนา',
+      phone: '0812345678',
+      pass: '123456',
+      type: 'farmer',
+      typeName: 'เกษตรกรผู้ปลูก',
+      crops: 'นาข้าว, ข้าวโพด',
+      province: 'นครราชสีมา',
+      points: 150,
+      createdAt: '2026-10-01'
+    },
+    {
+      id: 'm_demo_2',
+      name: 'สมหญิง การเกษตร (ตัวแทนจำหน่าย)',
+      phone: '0898765432',
+      pass: '123456',
+      type: 'dealer',
+      typeName: 'ร้านค้าตัวแทนจำหน่าย',
+      crops: 'ปุ๋ยและยาเคมีเกษตร',
+      province: 'ขอนแก่น',
+      points: 450,
+      createdAt: '2026-10-05'
+    }
+  ];
+
+  /* --------------------------------------------------------------------------
      Core Data Access Functions (CRUD)
      -------------------------------------------------------------------------- */
   function getRaw(key, defaultData) {
@@ -822,6 +853,7 @@
       setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
       setRaw(STORAGE_KEYS.MENUS, DEFAULT_MENUS);
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
+      setRaw(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS);
       localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
     }
     // ตรวจสอบและตั้งค่าเริ่มต้นธีม CI หากยังไม่มี
@@ -863,6 +895,7 @@
     // ตรวจสอบและตั้งค่าเริ่มต้นคลังสื่อหากยังไม่มี
     if (!localStorage.getItem(STORAGE_KEYS.MEDIA)) {
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
+      setRaw(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS);
     }
   }
 
@@ -1141,6 +1174,53 @@
     }
   };
 
+  // ── Members API (จัดการข้อมูลสมาชิก) ──
+  const Members = {
+    getAll: () => getRaw(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS),
+    getById: (id) => Members.getAll().find(m => m.id === id),
+    getByPhone: (phone) => Members.getAll().find(m => m.phone === phone),
+    save: (member) => {
+      const list = Members.getAll();
+      const index = list.findIndex(m => m.id === member.id);
+      if (index >= 0) {
+        list[index] = { ...list[index], ...member, updatedAt: new Date().toISOString() };
+      } else {
+        member.id = member.id || 'm_' + Date.now();
+        member.createdAt = member.createdAt || new Date().toISOString();
+        member.points = member.points !== undefined ? Number(member.points) : 100;
+        list.unshift(member);
+      }
+      setRaw(STORAGE_KEYS.MEMBERS, list);
+      return member;
+    },
+    resetPassword: (id, newPass) => {
+      const list = Members.getAll();
+      const index = list.findIndex(m => m.id === id);
+      if (index >= 0) {
+        list[index].pass = newPass;
+        list[index].updatedAt = new Date().toISOString();
+        setRaw(STORAGE_KEYS.MEMBERS, list);
+        return list[index];
+      }
+      return null;
+    },
+    adjustPoints: (id, amount) => {
+      const list = Members.getAll();
+      const index = list.findIndex(m => m.id === id);
+      if (index >= 0) {
+        list[index].points = Math.max(0, (Number(list[index].points) || 0) + Number(amount));
+        list[index].updatedAt = new Date().toISOString();
+        setRaw(STORAGE_KEYS.MEMBERS, list);
+        return list[index];
+      }
+      return null;
+    },
+    delete: (id) => {
+      const filtered = Members.getAll().filter(m => m.id !== id);
+      setRaw(STORAGE_KEYS.MEMBERS, filtered);
+    }
+  };
+
   // ── Cart Storage API ──
   const Cart = {
     get: () => getRaw(STORAGE_KEYS.CART, []),
@@ -1198,7 +1278,8 @@
         products: Products.getAll(),
         orders: Orders.getAll(),
         menus: Menus.getAll(),
-        media: Media.getAll()
+        media: Media.getAll(),
+        members: Members.getAll()
       };
       return JSON.stringify(data, null, 2);
     },
@@ -1215,6 +1296,7 @@
         if (parsed.orders) setRaw(STORAGE_KEYS.ORDERS, parsed.orders);
         if (parsed.menus) setRaw(STORAGE_KEYS.MENUS, parsed.menus);
         if (parsed.media) setRaw(STORAGE_KEYS.MEDIA, parsed.media);
+        if (parsed.members) setRaw(STORAGE_KEYS.MEMBERS, parsed.members);
         return { success: true };
       } catch (e) {
         return { success: false, error: e.message };
@@ -1231,6 +1313,7 @@
       setRaw(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
       setRaw(STORAGE_KEYS.MENUS, DEFAULT_MENUS);
       setRaw(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
+      setRaw(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS);
       return true;
     }
   };
@@ -1251,6 +1334,7 @@
     Cart,
     Menus,
     Media,
+    Members,
     Backup,
     resolveImg
   };

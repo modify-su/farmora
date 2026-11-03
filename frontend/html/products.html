@@ -17,7 +17,8 @@
   <link rel="stylesheet" href="../css/navbar.css">       <!-- สไตล์ Navbar -->
   <link rel="stylesheet" href="../css/products.css">     <!-- สไตล์เฉพาะหน้าสินค้า -->
   <link rel="stylesheet" href="../css/footer.css">       <!-- สไตล์ Footer (คงเดิมตามสั่ง 100%) -->
-  <link rel="stylesheet" href="../css/maintenance.css">  <!-- 🚨 ป้ายเตือนปิดปรับปรุงชั่วคราว -->
+  <link rel="stylesheet" href="../css/maintenance.css">
+  <link rel="stylesheet" href="../css/member.css">       <!-- 👤 ระบบสมาชิก -->  <!-- 🚨 ป้ายเตือนปิดปรับปรุงชั่วคราว -->
 
   <!-- 🎨 Dynamic CI Theme & Colors -->
   <script src="../js/theme.js"></script>
@@ -69,9 +70,9 @@
 
     <!-- กลุ่มขวา: icons + ปุ่มติดต่อเรา -->
     <div class="right-group">
-      <a href="../../backend/index.html" class="icon" title="เข้าสู่ระบบ (Sign in)">
+      <button type="button" class="icon" id="memberNavBtn" onclick="FarmoraMember.openModal()" title="เข้าสู่ระบบสมาชิก / สมัครสมาชิก">
         <i class="fa-solid fa-user"></i>
-      </a>
+      </button>
       <a href="#contact" class="btn-contact">
         <i class="fa-regular fa-paper-plane"></i>
         <span>ติดต่อเรา</span>
@@ -413,7 +414,12 @@
 
     <!-- Bottom bar -->
     <div class="footer-bottom">
-      &copy; 2026 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ
+      <div class="footer-bottom-inner">
+        <span>&copy; 2026 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ</span>
+        <a href="../../backend/index.html" class="admin-staff-link" title="ระบบจัดการหลังบ้านสำหรับเจ้าหน้าที่">
+          <i class="fa-solid fa-lock"></i> เจ้าหน้าที่ดูแลระบบ (Staff Only)
+        </a>
+      </div>
     </div>
   </footer><!-- /footer -->
 
@@ -429,6 +435,7 @@
 <script src="../js/navbar.js"></script>
   <script src="../js/products.js"></script>
   <script src="../js/maintenance.js"></script>
+  <script src="../js/member.js"></script>
 
 </body>
 </html>

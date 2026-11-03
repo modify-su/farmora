@@ -123,6 +123,15 @@
       </li>
       -->
 
+            <li class="sidebar-heading">ระบบสมาชิกและลูกค้า</li>
+      <li>
+        <a class="sidebar-link" data-tab="members">
+          <i class="fa-solid fa-users"></i>
+          <span>จัดการสมาชิก</span>
+          <span class="sidebar-badge" id="badgeMembersCount" style="background:#00a64c;">0</span>
+        </a>
+      </li>
+
       <li class="sidebar-heading">ระบบและโครงสร้าง</li>
       <li>
         <a class="sidebar-link" data-tab="menus">
@@ -244,6 +253,13 @@
               <span class="value" id="statMedia">0</span>
             </div>
           </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap green" style="background:#e8f5e9; color:#006837;"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-info">
+              <span class="label">สมาชิกในระบบ</span>
+              <span class="value" id="statMembers">0</span>
+            </div>
+          </div>
           <!-- 🛒 ซ่อนสถิติคำสั่งซื้อชั่วคราว
           <div class="stat-card">
             <div class="stat-icon-wrap green" style="background:#e6f9ed; color:#00a64c;"><i class="fa-solid fa-cart-shopping"></i></div>
@@ -273,6 +289,9 @@
               <i class="fa-solid fa-cart-shopping"></i> จัดการคำสั่งซื้อ (<span id="quickPendingOrders">0</span> รอส่ง)
             </button>
             -->
+            <button class="btn btn-primary" onclick="AdminApp.switchTab('members')" style="background: linear-gradient(135deg, #006837, #00a64c);">
+              <i class="fa-solid fa-users"></i> จัดการสมาชิก (<span id="quickMembersCount">0</span> ท่าน)
+            </button>
             <button class="btn btn-primary" onclick="AdminApp.openSlideModal()">
               <i class="fa-solid fa-plus"></i> เพิ่มสไลด์ใหม่
             </button>
@@ -960,6 +979,105 @@
         </div>
       </section>
 
+
+            <!-- ──────────────────────────────────────────
+           TAB: จัดการข้อมูลสมาชิกและลูกค้า (MEMBERS)
+           ────────────────────────────────────────── -->
+      <section class="tab-pane" id="pane-members">
+        <!-- KPI Cards -->
+        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
+          <div class="stat-card">
+            <div class="stat-icon-wrap green" style="background:#e8f5e9; color:#006837;"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-info">
+              <span class="label">สมาชิกทั้งหมด</span>
+              <span class="value" id="statMembersTotal">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap lime" style="background:#f0fdf4; color:#16a34a;"><i class="fa-solid fa-seedling"></i></div>
+            <div class="stat-info">
+              <span class="label">เกษตรกรผู้ปลูก</span>
+              <span class="value" id="statMembersFarmers">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap blue" style="background:#eff6ff; color:#2563eb;"><i class="fa-solid fa-store"></i></div>
+            <div class="stat-info">
+              <span class="label">ร้านค้าตัวแทน</span>
+              <span class="value" id="statMembersDealers">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrap orange" style="background:#fff7ed; color:#ea580c;"><i class="fa-solid fa-coins"></i></div>
+            <div class="stat-info">
+              <span class="label">คะแนนสะสมรวม</span>
+              <span class="value" id="statMembersTotalPoints">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h2 class="card-title"><i class="fa-solid fa-users"></i> จัดการข้อมูลสมาชิกและลูกค้า (Members Management)</h2>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">
+                รายชื่อสมาชิกที่สมัครผ่านหน้าเว็บ ระบบสะสมคะแนน รีเซ็ตรหัสผ่าน และซิงค์ข้อมูลแบบเรียลไทม์
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-outline" onclick="AdminApp.exportMembersCSV()">
+                <i class="fa-solid fa-file-csv"></i> ส่งออกข้อมูล (CSV)
+              </button>
+              <button class="btn btn-primary" onclick="AdminApp.openMemberModal()">
+                <i class="fa-solid fa-user-plus"></i> เพิ่มสมาชิกใหม่
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Filter & Search Bar -->
+            <div class="filter-bar" style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+              <div class="search-wrap" style="flex: 1; min-width: 240px;">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchMembers" class="search-input" placeholder="ค้นหาชื่อ, เบอร์โทร, พืชที่ปลูก, จังหวัด..." oninput="AdminApp.renderMembersTable()">
+              </div>
+              <select id="filterMemberType" class="filter-select" onchange="AdminApp.renderMembersTable()">
+                <option value="all">ประเภทสมาชิกทั้งหมด</option>
+                <option value="farmer">🌾 เกษตรกรผู้ปลูก</option>
+                <option value="dealer">🏪 ร้านค้าตัวแทนจำหน่าย</option>
+                <option value="general">👤 บุคคลทั่วไป</option>
+              </select>
+              <select id="sortMembers" class="filter-select" onchange="AdminApp.renderMembersTable()">
+                <option value="newest">สมัครล่าสุด</option>
+                <option value="points">คะแนนมากที่สุด</option>
+                <option value="name">เรียงตามชื่อ ก-ฮ</option>
+              </select>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">#</th>
+                    <th>ข้อมูลสมาชิก / ชื่อ-นามสกุล</th>
+                    <th style="width: 140px;">เบอร์โทรศัพท์</th>
+                    <th style="width: 150px;">ประเภทสมาชิก</th>
+                    <th>พืชที่ปลูก / ข้อมูลเกษตร</th>
+                    <th style="width: 120px; text-align: right;">คะแนนสะสม</th>
+                    <th style="width: 110px; text-align: center;">รหัสผ่าน</th>
+                    <th style="width: 120px;">วันที่สมัคร</th>
+                    <th style="width: 180px; text-align: center;">การจัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- ──────────────────────────────────────────
            TAB 7: เมนูเว็บไซต์ (NAVIGATION MENUS)
@@ -2313,7 +2431,161 @@
     </div>
   </div>
 
-  <!-- Toast Container -->
+
+  <!-- Modal 8: จัดการสมาชิก (Member Admin Modal) -->
+  <div class="modal-backdrop" id="memberAdminModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="memberAdminModalTitle">
+          <i class="fa-solid fa-user-pen"></i> ข้อมูลสมาชิก
+        </h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('memberAdminModal')">&times;</button>
+      </div>
+      <form onsubmit="AdminApp.saveMember(event)">
+        <div class="modal-body">
+          <input type="hidden" id="memberAdminId">
+
+          <div class="form-group">
+            <label class="form-label">ชื่อ - นามสกุล *</label>
+            <input type="text" id="memberAdminName" class="form-control" required placeholder="เช่น นายสมชาย เกษตรพัฒนา">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">เบอร์โทรศัพท์ (ชื่อผู้ใช้) *</label>
+              <input type="tel" id="memberAdminPhone" class="form-control" required maxlength="10" placeholder="เช่น 0812345678">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">ประเภทสมาชิก *</label>
+              <select id="memberAdminType" class="form-control">
+                <option value="farmer">🌾 เกษตรกรผู้ปลูก</option>
+                <option value="dealer">🏪 ร้านค้าตัวแทน</option>
+                <option value="general">👤 บุคคลทั่วไป</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">พืชหลักที่ปลูก / ข้อมูลเกษตร</label>
+              <input type="text" id="memberAdminCrops" class="form-control" placeholder="เช่น นาข้าว, ข้าวโพด, ทุเรียน">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">จังหวัด / พื้นที่</label>
+              <input type="text" id="memberAdminProvince" class="form-control" placeholder="เช่น นครราชสีมา">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">คะแนนสะสม (Points)</label>
+              <input type="number" id="memberAdminPoints" class="form-control" min="0" value="100">
+            </div>
+            <div class="form-group" style="flex: 1;" id="memberAdminPassGroup">
+              <label class="form-label">รหัสผ่านเริ่มต้น *</label>
+              <input type="text" id="memberAdminPass" class="form-control" placeholder="อย่างน้อย 6 ตัวอักษร" value="123456">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal('memberAdminModal')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลสมาชิก
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 9: รีเซ็ตรหัสผ่านสมาชิก (Member Reset Password Modal) -->
+  <div class="modal-backdrop" id="memberResetPassModal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #c2410c;">
+          <i class="fa-solid fa-key"></i> รีเซ็ตรหัสผ่านสมาชิก
+        </h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('memberResetPassModal')">&times;</button>
+      </div>
+      <form onsubmit="AdminApp.saveResetMemberPassword(event)">
+        <div class="modal-body">
+          <input type="hidden" id="resetPassMemberId">
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 16px;">
+            <div style="font-size: 13px; color: var(--text-muted);">ข้อมูลสมาชิก:</div>
+            <div style="font-weight: 700; font-size: 15px; color: #006837;" id="resetPassMemberName">-</div>
+            <div style="font-size: 13px; color: #64748b;" id="resetPassMemberPhone">-</div>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" style="margin: 0;">รหัสผ่านใหม่ (New Password) *</label>
+              <button type="button" class="btn btn-sm btn-outline" style="padding: 3px 8px; font-size: 11.5px;" onclick="AdminApp.generateRandomMemberPass()">
+                <i class="fa-solid fa-shuffle"></i> สุ่มรหัสผ่าน
+              </button>
+            </div>
+            <div style="position: relative;">
+              <input type="text" id="resetPassNewPass" class="form-control" required minlength="6" placeholder="กำหนดรหัสผ่านใหม่" style="font-weight: 600; letter-spacing: 1px;">
+            </div>
+            <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px;">
+              สามารถกดสุ่มรหัสผ่านอัตโนมัติ หรือพิมพ์รหัสที่ลูกค้าต้องการ แล้วส่งแจ้งลูกค้าทาง SMS/LINE
+            </small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal('memberResetPassModal')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary" style="background: #ea580c; border-color: #c2410c;">
+            <i class="fa-solid fa-check"></i> ยืนยันการเปลี่ยนรหัสผ่าน
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 10: ปรับคะแนนสะสมสมาชิก (Member Points Modal) -->
+  <div class="modal-backdrop" id="memberPointsModal">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #006837;">
+          <i class="fa-solid fa-coins"></i> ปรับคะแนนสะสม (Points)
+        </h3>
+        <button type="button" class="modal-close" onclick="AdminApp.closeModal('memberPointsModal')">&times;</button>
+      </div>
+      <form onsubmit="AdminApp.saveAdjustMemberPoints(event)">
+        <div class="modal-body">
+          <input type="hidden" id="pointsMemberId">
+
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 14px; margin-bottom: 16px;">
+            <div style="font-size: 13px; color: #166534;">สมาชิก: <strong id="pointsMemberName">-</strong></div>
+            <div style="font-size: 14px; color: #006837; margin-top: 4px;">คะแนนปัจจุบัน: <strong id="pointsMemberCurrent" style="font-size: 18px;">0</strong> Points</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">การปรับคะแนน *</label>
+            <select id="pointsActionType" class="form-control">
+              <option value="add">➕ เพิ่มคะแนนสะสม (เช่น ซื้อสินค้า, ร่วมกิจกรรม)</option>
+              <option value="deduct">➖ หักคะแนนสะสม (เช่น แลกของรางวัล, ใช้ส่วนลด)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">จำนวนคะแนน *</label>
+            <input type="number" id="pointsAmount" class="form-control" required min="1" step="1" placeholder="ระบุจำนวนคะแนน">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="AdminApp.closeModal('memberPointsModal')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-floppy-disk"></i> บันทึกคะแนน
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- Scripts -->

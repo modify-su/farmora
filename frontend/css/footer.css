@@ -151,14 +151,58 @@
 /* ── 7. แถบลิขสิทธิ์ด้านล่างสุด (Footer Bottom Copyright) ─────────── */
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.08);
-  /* ✏️ [ปรับความหนาแถบล่าง ปรับอัตโนมัติ 14px - 18px] */
+  background: rgba(0, 0, 0, 0.12);
   padding: clamp(14px, 2vw, 18px) 20px;
-  text-align: center;
-  /* ✏️ [ปรับขนาดตัวหนังสือข้อความลิขสิทธิ์] */
   font-size: clamp(12px, 1vw, 13.5px);
   color: #ffffff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.footer-bottom-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-staff-link {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+  letter-spacing: 0.2px;
+}
+
+.admin-staff-link:hover {
+  color: #ffffff;
+  background: rgba(0, 104, 55, 0.55);
+  border-color: rgba(142, 198, 79, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-staff-link i {
+  font-size: 11px;
+  color: #ffe327;
+}
+
+@media (max-width: 600px) {
+  .footer-bottom-inner {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 /* ================================================================

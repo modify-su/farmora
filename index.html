@@ -24,7 +24,8 @@
   <link rel="stylesheet" href="frontend/css/products.css">     <!-- ใหม่: หมวดหมู่สินค้า -->
   <link rel="stylesheet" href="frontend/css/footer.css">       <!-- ใหม่: footer -->
   <link rel="stylesheet" href="frontend/css/cart.css">         <!-- 🛒 ระบบตะกร้าสินค้าและสั่งซื้อ -->
-  <link rel="stylesheet" href="frontend/css/maintenance.css">  <!-- 🚨 ป้ายเตือนปิดปรับปรุงชั่วคราว -->
+  <link rel="stylesheet" href="frontend/css/maintenance.css">
+  <link rel="stylesheet" href="frontend/css/member.css">       <!-- 👤 ระบบสมาชิก -->  <!-- 🚨 ป้ายเตือนปิดปรับปรุงชั่วคราว -->
 
   <!-- 🎨 Dynamic CI Theme & Colors -->
   <script src="frontend/js/theme.js"></script>
@@ -83,9 +84,9 @@
         <span id="cart-count" style="display:none">0</span>
       </a>
       -->
-      <a href="backend/index.html" class="icon" title="เข้าสู่ระบบ (Sign in)">
+      <button type="button" class="icon" id="memberNavBtn" onclick="FarmoraMember.openModal()" title="เข้าสู่ระบบสมาชิก / สมัครสมาชิก">
         <i class="fa-solid fa-user"></i>
-      </a>
+      </button>
       <a href="#contact" class="btn-contact">
         <i class="fa-regular fa-paper-plane"></i>
         <span>ติดต่อเรา</span>
@@ -476,7 +477,12 @@
 
     <!-- Bottom bar -->
     <div class="footer-bottom">
-      &copy; Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ
+      <div class="footer-bottom-inner">
+        <span>&copy; 2026 Farmora Co., Ltd. — สงวนลิขสิทธิ์ทุกประการ</span>
+        <a href="backend/index.html" class="admin-staff-link" title="ระบบจัดการหลังบ้านสำหรับเจ้าหน้าที่">
+          <i class="fa-solid fa-lock"></i> เจ้าหน้าที่ดูแลระบบ (Staff Only)
+        </a>
+      </div>
     </div>
   </footer><!-- /footer -->
 
@@ -495,6 +501,7 @@
   <script src="frontend/js/cart.js"></script>
   <script src="frontend/js/slide.js"></script>
   <script src="frontend/js/maintenance.js"></script>
+  <script src="frontend/js/member.js"></script>
 
 </body>
 </html>

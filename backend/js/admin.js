@@ -57,6 +57,7 @@
     renderArticlesTable();
     renderProductsTable();
     renderOrdersTable();
+    renderMembersTable();
     renderMenusTable();
     renderMediaGrid();
     renderThemeSettings();
@@ -169,6 +170,7 @@
     articles: 'จัดการบทความเกษตร (Articles)',
     products: 'จัดการสินค้า (Products)',
     orders: 'รายการคำสั่งซื้อและการจัดส่ง (Orders Management)',
+    members: 'จัดการข้อมูลสมาชิกและลูกค้า (Members Management)',
     menus: 'ตั้งค่าเมนูเว็บไซต์ (Navigation Menus)',
     media: 'คลังรูปภาพ (Media Library)',
     theme: 'ปรับแต่งธีมและสี UX/UI (Theme & Colors)',
@@ -278,6 +280,12 @@
     document.getElementById('statOrders') && (document.getElementById('statOrders').textContent = orderStats.totalOrders);
     document.getElementById('statRevenue') && (document.getElementById('statRevenue').textContent = `฿${orderStats.totalRevenue.toLocaleString('th-TH')}`);
     document.getElementById('quickPendingOrders') && (document.getElementById('quickPendingOrders').textContent = orderStats.pendingCount);
+
+    // Members stats
+    const members = (DS.Members && typeof DS.Members.getAll === 'function') ? DS.Members.getAll() : [];
+    document.getElementById('statMembers') && (document.getElementById('statMembers').textContent = members.length);
+    document.getElementById('badgeMembersCount') && (document.getElementById('badgeMembersCount').textContent = members.length);
+    document.getElementById('quickMembersCount') && (document.getElementById('quickMembersCount').textContent = members.length);
 
     // Sidebar badges
     document.getElementById('badgeSlidesCount') && (document.getElementById('badgeSlidesCount').textContent = slides.length);
@@ -2362,6 +2370,368 @@
   }
 
   /* --------------------------------------------------------------------------
+     12.2. Members Management (จัดการข้อมูลสมาชิกและลูกค้า)
+     -------------------------------------------------------------------------- */
+  function renderMembersTable() {
+    renderStats();
+    const tbody = document.getElementById('membersTableBody');
+    if (!tbody) return;
+
+    if (!DS.Members || typeof DS.Members.getAll !== 'function') {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#999; padding: 24px;">กำลังโหลดระบบสมาชิก...</td></tr>';
+      return;
+    }
+
+    let members = DS.Members.getAll();
+    const search = (document.getElementById('searchMembers')?.value || '').toLowerCase().trim();
+    const filterType = document.getElementById('filterMemberType')?.value || 'all';
+    const sortBy = document.getElementById('sortMembers')?.value || 'newest';
+
+    // Update KPI cards in Members tab
+    const totalCount = members.length;
+    const farmersCount = members.filter(m => m.type === 'farmer').length;
+    const dealersCount = members.filter(m => m.type === 'dealer').length;
+    const totalPoints = members.reduce((sum, m) => sum + (Number(m.points) || 0), 0);
+
+    const elTotal = document.getElementById('statMembersTotal');
+    const elFarmers = document.getElementById('statMembersFarmers');
+    const elDealers = document.getElementById('statMembersDealers');
+    const elPoints = document.getElementById('statMembersTotalPoints');
+
+    if (elTotal) elTotal.textContent = totalCount;
+    if (elFarmers) elFarmers.textContent = farmersCount;
+    if (elDealers) elDealers.textContent = dealersCount;
+    if (elPoints) elPoints.textContent = totalPoints.toLocaleString('th-TH');
+
+    // Filter
+    if (search) {
+      members = members.filter(m =>
+        (m.name || '').toLowerCase().includes(search) ||
+        (m.phone || '').toLowerCase().includes(search) ||
+        (m.crops || '').toLowerCase().includes(search) ||
+        (m.province || '').toLowerCase().includes(search)
+      );
+    }
+
+    if (filterType !== 'all') {
+      members = members.filter(m => m.type === filterType);
+    }
+
+    // Sort
+    if (sortBy === 'newest') {
+      members.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    } else if (sortBy === 'points') {
+      members.sort((a, b) => (Number(b.points) || 0) - (Number(a.points) || 0));
+    } else if (sortBy === 'name') {
+      members.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'th'));
+    }
+
+    if (members.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 36px; color: var(--text-muted);"><i class="fa-solid fa-user-slash" style="font-size: 28px; margin-bottom: 8px; display: block; opacity: 0.5;"></i>ไม่พบข้อมูลสมาชิกตามเงื่อนไขที่ค้นหา</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = members.map((m, idx) => {
+      let badgeClass = 'badge-green';
+      let typeLabel = m.typeName || 'เกษตรกร';
+      if (m.type === 'dealer') {
+        badgeClass = 'badge-blue';
+        typeLabel = 'ร้านค้าตัวแทน';
+      } else if (m.type === 'general') {
+        badgeClass = 'badge-gray';
+        typeLabel = 'บุคคลทั่วไป';
+      }
+
+      const dateStr = m.createdAt ? new Date(m.createdAt).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+      const initial = (m.name || 'F').charAt(0).toUpperCase();
+
+      return `
+        <tr>
+          <td style="text-align: center; color: var(--text-muted); font-size: 13px;">${idx + 1}</td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #006837, #8ec64f); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0;">
+                ${initial}
+              </div>
+              <div>
+                <strong style="color: var(--dark-green); font-size: 14.5px;">${m.name}</strong>
+                <div style="font-size: 11.5px; color: var(--text-muted); font-family: monospace;">ID: ${m.id}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <a href="tel:${m.phone}" style="text-decoration: none; color: #006837; font-weight: 600;">
+              <i class="fa-solid fa-phone" style="font-size: 11px; margin-right: 4px;"></i>${m.phone}
+            </a>
+          </td>
+          <td>
+            <span class="badge ${badgeClass}">${typeLabel}</span>
+          </td>
+          <td>
+            <span style="font-size: 13.5px; color: #334155;">${m.crops || '-'}</span>
+            ${m.province ? `<span style="font-size: 12px; color: #64748b; display: block;">📍 ${m.province}</span>` : ''}
+          </td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; align-items: center; gap: 6px;">
+              <strong style="color: #ea580c; font-size: 15px;">${(Number(m.points) || 0).toLocaleString('th-TH')}</strong>
+              <button type="button" class="btn btn-sm btn-outline" style="padding: 2px 6px; font-size: 11px; border-radius: 4px;" title="ปรับคะแนน" onclick="AdminApp.openAdjustMemberPointsModal('${m.id}')">
+                <i class="fa-solid fa-coins"></i>
+              </button>
+            </div>
+          </td>
+          <td style="text-align: center;">
+            <div style="display: inline-flex; align-items: center; gap: 4px;">
+              <span id="passMask_${m.id}" style="font-family: monospace; font-size: 13px; color: #64748b;">••••••</span>
+              <button type="button" class="btn btn-sm btn-outline" style="padding: 2px 6px; font-size: 11px; border-radius: 4px;" title="แสดง/ซ่อนรหัสผ่าน" onclick="AdminApp.toggleShowMemberPass(this, '${m.id}', '${m.pass || ''}')">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </td>
+          <td style="font-size: 12.5px; color: var(--text-muted);">${dateStr}</td>
+          <td style="text-align: center;">
+            <div style="display: inline-flex; gap: 4px; justify-content: center;">
+              <button type="button" class="btn btn-sm btn-outline" title="แก้ไขข้อมูลสมาชิก" onclick="AdminApp.openMemberModal('${m.id}')">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" style="color: #ea580c; border-color: #fdba74;" title="รีเซ็ตรหัสผ่าน" onclick="AdminApp.openResetMemberPassModal('${m.id}')">
+                <i class="fa-solid fa-key"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" title="ลบสมาชิก" onclick="AdminApp.deleteMember('${m.id}')">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function toggleShowMemberPass(btn, id, pass) {
+    const span = document.getElementById('passMask_' + id);
+    if (!span) return;
+    const isMasked = span.textContent === '••••••';
+    span.textContent = isMasked ? (pass || '-') : '••••••';
+    span.style.color = isMasked ? '#006837' : '#64748b';
+    span.style.fontWeight = isMasked ? '700' : 'normal';
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.className = isMasked ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+    }
+  }
+
+  function openMemberModal(id) {
+    const modal = document.getElementById('memberAdminModal');
+    if (!modal) return;
+
+    const titleEl = document.getElementById('memberAdminModalTitle');
+    const passGroup = document.getElementById('memberAdminPassGroup');
+
+    if (id) {
+      const member = DS.Members.getById(id);
+      if (!member) return;
+      if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูลสมาชิก';
+      document.getElementById('memberAdminId').value = member.id || '';
+      document.getElementById('memberAdminName').value = member.name || '';
+      document.getElementById('memberAdminPhone').value = member.phone || '';
+      document.getElementById('memberAdminType').value = member.type || 'farmer';
+      document.getElementById('memberAdminCrops').value = member.crops || '';
+      document.getElementById('memberAdminProvince').value = member.province || '';
+      document.getElementById('memberAdminPoints').value = member.points !== undefined ? member.points : 100;
+      if (passGroup) passGroup.style.display = 'none';
+    } else {
+      if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-plus"></i> เพิ่มสมาชิกใหม่';
+      document.getElementById('memberAdminId').value = '';
+      document.getElementById('memberAdminName').value = '';
+      document.getElementById('memberAdminPhone').value = '';
+      document.getElementById('memberAdminType').value = 'farmer';
+      document.getElementById('memberAdminCrops').value = '';
+      document.getElementById('memberAdminProvince').value = '';
+      document.getElementById('memberAdminPoints').value = '100';
+      if (passGroup) passGroup.style.display = 'block';
+      const passInp = document.getElementById('memberAdminPass');
+      if (passInp) passInp.value = '123456';
+    }
+
+    openModal('memberAdminModal');
+  }
+
+  function saveMember(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const id = document.getElementById('memberAdminId')?.value;
+    const name = (document.getElementById('memberAdminName')?.value || '').trim();
+    const phone = (document.getElementById('memberAdminPhone')?.value || '').trim();
+    const type = document.getElementById('memberAdminType')?.value || 'farmer';
+    const crops = (document.getElementById('memberAdminCrops')?.value || '').trim();
+    const province = (document.getElementById('memberAdminProvince')?.value || '').trim();
+    const points = Number(document.getElementById('memberAdminPoints')?.value || 0);
+
+    const typeLabels = {
+      farmer: 'เกษตรกรผู้ปลูก',
+      dealer: 'ร้านค้าตัวแทน',
+      general: 'บุคคลทั่วไป'
+    };
+
+    if (!name || !phone) {
+      showToast('กรุณากรอกชื่อและเบอร์โทรศัพท์ให้ครบถ้วน');
+      return;
+    }
+
+    const memberData = {
+      name,
+      phone,
+      type,
+      typeName: typeLabels[type] || 'สมาชิกทั่วไป',
+      crops: crops || 'ทั่วไป',
+      province: province || '',
+      points
+    };
+
+    if (id) {
+      memberData.id = id;
+      DS.Members.save(memberData);
+      showToast('อัปเดตข้อมูลสมาชิกเรียบร้อยแล้ว');
+    } else {
+      const existing = DS.Members.getByPhone(phone);
+      if (existing) {
+        showToast('⚠️ หมายเลขโทรศัพท์นี้มีในระบบสมาชิกแล้ว');
+        return;
+      }
+      const initialPass = (document.getElementById('memberAdminPass')?.value || '123456').trim();
+      memberData.pass = initialPass;
+      DS.Members.save(memberData);
+      showToast('เพิ่มสมาชิกใหม่เรียบร้อยแล้ว');
+    }
+
+    closeModal('memberAdminModal');
+    renderMembersTable();
+  }
+
+  function deleteMember(id) {
+    const member = DS.Members.getById(id);
+    const name = member ? member.name : id;
+    if (!confirm(`คุณต้องการลบข้อมูลสมาชิก "${name}" ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`)) return;
+
+    DS.Members.delete(id);
+    showToast(`ลบข้อมูลสมาชิก "${name}" เรียบร้อยแล้ว`);
+    renderMembersTable();
+  }
+
+  function openResetMemberPassModal(id) {
+    const member = DS.Members.getById(id);
+    if (!member) return;
+
+    document.getElementById('resetPassMemberId').value = member.id;
+    document.getElementById('resetPassMemberName').textContent = member.name;
+    document.getElementById('resetPassMemberPhone').textContent = `เบอร์โทรศัพท์: ${member.phone} (${member.typeName || 'สมาชิก'})`;
+    
+    // ตั้งค่ารหัสผ่านสุ่มเริ่มต้น 6 หลัก
+    const randomPass = Math.floor(100000 + Math.random() * 900000).toString();
+    const passInput = document.getElementById('resetPassNewPass');
+    if (passInput) passInput.value = randomPass;
+
+    openModal('memberResetPassModal');
+  }
+
+  function generateRandomMemberPass() {
+    const randomPass = Math.floor(100000 + Math.random() * 900000).toString();
+    const passInput = document.getElementById('resetPassNewPass');
+    if (passInput) {
+      passInput.value = randomPass;
+      showToast(`สุ่มรหัสผ่านใหม่: ${randomPass}`);
+    }
+  }
+
+  function saveResetMemberPassword(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const id = document.getElementById('resetPassMemberId')?.value;
+    const newPass = (document.getElementById('resetPassNewPass')?.value || '').trim();
+
+    if (!newPass || newPass.length < 6) {
+      showToast('รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+      return;
+    }
+
+    const updated = DS.Members.resetPassword(id, newPass);
+    if (updated) {
+      showToast(`🔑 รีเซ็ตรหัสผ่านสำหรับ "${updated.name}" เป็น "${newPass}" สำเร็จแล้ว`);
+      try {
+        navigator.clipboard.writeText(newPass);
+      } catch (_) {}
+    }
+
+    closeModal('memberResetPassModal');
+    renderMembersTable();
+  }
+
+  function openAdjustMemberPointsModal(id) {
+    const member = DS.Members.getById(id);
+    if (!member) return;
+
+    document.getElementById('pointsMemberId').value = member.id;
+    document.getElementById('pointsMemberName').textContent = member.name;
+    document.getElementById('pointsMemberCurrent').textContent = (Number(member.points) || 0).toLocaleString('th-TH');
+    document.getElementById('pointsAmount').value = '';
+    document.getElementById('pointsActionType').value = 'add';
+
+    openModal('memberPointsModal');
+  }
+
+  function saveAdjustMemberPoints(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const id = document.getElementById('pointsMemberId')?.value;
+    const action = document.getElementById('pointsActionType')?.value || 'add';
+    const amountVal = Number(document.getElementById('pointsAmount')?.value || 0);
+
+    if (amountVal <= 0) {
+      showToast('กรุณาระบุจำนวนคะแนนที่มากกว่า 0');
+      return;
+    }
+
+    const change = action === 'deduct' ? -amountVal : amountVal;
+    const updated = DS.Members.adjustPoints(id, change);
+
+    if (updated) {
+      showToast(`ปรับคะแนนสมาชิก "${updated.name}" เป็น ${Number(updated.points).toLocaleString('th-TH')} Points แล้ว`);
+    }
+
+    closeModal('memberPointsModal');
+    renderMembersTable();
+  }
+
+  function exportMembersCSV() {
+    const list = DS.Members ? DS.Members.getAll() : [];
+    if (list.length === 0) {
+      showToast('ไม่มีข้อมูลสมาชิกให้ส่งออก');
+      return;
+    }
+
+    const headers = ['ID', 'ชื่อ-นามสกุล', 'เบอร์โทรศัพท์', 'ประเภทสมาชิก', 'พืชที่ปลูก', 'จังหวัด', 'คะแนนสะสม', 'รหัสผ่าน', 'วันที่สมัคร'];
+    const rows = list.map(m => [
+      `"${m.id || ''}"`,
+      `"${(m.name || '').replace(/"/g, '""')}"`,
+      `"${m.phone || ''}"`,
+      `"${m.typeName || m.type || ''}"`,
+      `"${(m.crops || '').replace(/"/g, '""')}"`,
+      `"${(m.province || '').replace(/"/g, '""')}"`,
+      `"${m.points !== undefined ? m.points : 0}"`,
+      `"${m.pass || ''}"`,
+      `"${m.createdAt || ''}"`
+    ]);
+
+    const csvContent = '﻿' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `farmora_members_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📥 ส่งออกข้อมูลสมาชิกเป็นไฟล์ CSV สำเร็จแล้ว');
+  }
+
+  /* --------------------------------------------------------------------------
      12.5. Maintenance Mode Management (ระบบป้ายเตือนปิดปรับปรุงชั่วคราว)
      -------------------------------------------------------------------------- */
   function renderMaintenanceSettings() {
@@ -2769,6 +3139,18 @@
     loadDefaultMockupSlides,
     // Orders Management
     renderOrdersTable,
+    // Members Management
+    renderMembersTable,
+    openMemberModal,
+    saveMember,
+    deleteMember,
+    toggleShowMemberPass,
+    openResetMemberPassModal,
+    generateRandomMemberPass,
+    saveResetMemberPassword,
+    openAdjustMemberPointsModal,
+    saveAdjustMemberPoints,
+    exportMembersCSV,
     changeOrderStatus,
     changeSelectedOrderStatus,
     openOrderDetailModal,
