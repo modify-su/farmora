@@ -30,15 +30,20 @@ pages.forEach(file => {
   }
 });
 
-// Sync JS files from frontend/js/ to root js/
+// Sync JS files from frontend/js/ to root js/ and backend/js/
 const frontendJsDir = path.join(rootDir, 'frontend', 'js');
 const rootJsDir = path.join(rootDir, 'js');
+const backendJsDir = path.join(rootDir, 'backend', 'js');
 if (!fs.existsSync(rootJsDir)) fs.mkdirSync(rootJsDir, { recursive: true });
 if (fs.existsSync(frontendJsDir)) {
   fs.readdirSync(frontendJsDir).forEach(f => {
     if (f.endsWith('.js')) {
       fs.copyFileSync(path.join(frontendJsDir, f), path.join(rootJsDir, f));
       console.log(`  ✓ Synced js: ${f}`);
+      if (f === 'firebase-sync.js') {
+        fs.copyFileSync(path.join(frontendJsDir, f), path.join(backendJsDir, f));
+        console.log(`  ✓ Synced backend js: ${f}`);
+      }
     }
   });
 }

@@ -803,6 +803,11 @@
     } catch (e) {
       console.error('Error saving to localStorage for key:', key, e);
     }
+
+    // ซิงค์บันทึกข้อมูลขึ้น Google Cloud Firestore แบบ Real-time ทันที
+    if (window.FarmoraFirebase && typeof window.FarmoraFirebase.save === 'function') {
+      window.FarmoraFirebase.save(key, data);
+    }
   }
 
   /* ── Initialize Data Store ── */

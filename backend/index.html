@@ -185,7 +185,12 @@
         </button>
         <h1 class="header-title" id="pageHeaderTitle">ภาพรวมระบบ (Overview)</h1>
       </div>
-      <div class="header-right">
+      <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
+        <div id="cloudSyncStatusBadge" style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; padding:4px 10px; border-radius:20px; background:#fff8e1; color:#f57f17; border:1px solid #ffe082;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#f57f17; display:inline-block;"></span>
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>กำลังเชื่อมต่อคลาวด์...</span>
+        </div>
         <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> ไปที่หน้าเว็บ
         </a>
@@ -2310,6 +2315,12 @@
 
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <!-- Firebase Cloud Real-time SDK & Sync Engine -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-sync.js"></script>
 
   <!-- Scripts -->
   <script src="js/data-store.js"></script>
