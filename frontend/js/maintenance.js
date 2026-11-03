@@ -26,7 +26,7 @@
 
   // ข้อมูลเริ่มต้น: ปิดปรับปรุงและล็อกหน้าจอ นำปุ่มเข้าเว็บออกทั้งหมด
   const DEFAULT_CONFIG = {
-    isActive: true,                   // เปิดใช้งานเป็นค่าเริ่มต้น
+    isActive: false,                  // ค่าเริ่มต้น: ปิดการแจ้งเตือน (เว็บไซต์เปิดบริการตามปกติ)
     mode: 'lockout',                  // โหมดล็อกทั้งเว็บไซต์ นำปุ่มเข้าเว็บออกทั้งหมด
     iconType: 'stop',                 // ป้ายหยุด 🛑 พร้อมเอฟเฟกต์ไฟเรืองแสง
     badgeText: 'ระงับการเข้าถึงชั่วคราว: กำลังปรับปรุงระบบ',
@@ -62,18 +62,12 @@
         return { ...DEFAULT_CONFIG, ...JSON.parse(stored) };
       }
 
-      // 2. ถ้ายังไม่มี v4 ให้อ่านจากเวอร์ชันเดิมแล้วอัปเกรดเป็น v4 (บังคับ mode: lockout)
+      // 2. ล้างคีย์เก่าที่อาจค้างในเครื่อง
       for (const legacyKey of LEGACY_STORAGE_KEYS) {
-        const legacyStored = localStorage.getItem(legacyKey);
-        if (legacyStored) {
-          const legacy = JSON.parse(legacyStored);
-          const migrated = { ...DEFAULT_CONFIG, ...legacy, mode: 'lockout', isActive: true };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-          return migrated;
-        }
+        try { localStorage.removeItem(legacyKey); } catch (_) {}
       }
 
-      // 3. ถ้าไม่มีเลย ให้บันทึกค่าเริ่มต้นลงใน localStorage
+      // 3. ถ้าไม่มีเลย ให้บันทึกค่าเริ่มต้น (isActive: false) ลงใน localStorage
       localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_CONFIG));
     } catch (e) {
       console.warn('Error reading maintenance config:', e);
@@ -395,8 +389,18 @@
     // 1. ถ้าไม่ได้เปิดใช้งาน (แอดมินเปิดให้เข้าถึงได้ตามปกติ)
     if (!config.isActive) {
       const overlay = document.getElementById('farmoraMaintenanceOverlay');
-      if (overlay) overlay.remove();
-      document.body.style.overflow = '';
+      if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.opacity = '0';
+        overlay.style.visibility = 'hidden';
+        setTimeout(() => {
+          const el = document.getElementById('farmoraMaintenanceOverlay');
+          if (el) el.remove();
+          document.body.style.overflow = '';
+        }, 150);
+      } else {
+        document.body.style.overflow = '';
+      }
       return;
     }
 
@@ -431,7 +435,7 @@
     initMaintenance();
   }
 
-  // ดักจับการเปลี่ยนแปลงแบบเรียลไทม์ (เมื่อแอดมินเปิด/ปิดในแท็บอื่น)
+  // ดักจับการเปลี่ยนแปลงแบบเรียลไทม์ (เมื่อแอดมินเปิด/ปิดในแท็บอื่น หรือคลาวด์ซิงค์)
   window.addEventListener('storage', (e) => {
     if (e.key === STORAGE_KEY || LEGACY_STORAGE_KEYS.includes(e.key)) {
       initMaintenance();
@@ -440,6 +444,12 @@
 
   window.addEventListener('farmora:maintenanceChanged', () => {
     initMaintenance();
+  });
+
+  window.addEventListener('farmora:dataChanged', (e) => {
+    if (!e.detail || e.detail.key === STORAGE_KEY || e.detail.key === 'farmora_maintenance_v4') {
+      initMaintenance();
+    }
   });
 
   // ส่งออกฟังก์ชันสู่ Global Scope

@@ -115,7 +115,16 @@
                 window.dispatchEvent(new CustomEvent('farmora:themeChanged', { detail: cloudData.payload }));
               }
 
+              if (key === 'farmora_maintenance_v4') {
+                window.dispatchEvent(new CustomEvent('farmora:maintenanceChanged', { detail: cloudData.payload }));
+              }
+
               setTimeout(() => { isRemoteSyncing = false; }, 80);
+            } else {
+              // หากข้อมูลตรงกัน แต่เป็น maintenance ให้ยืนยัน event เพื่อปิด/ปลดล็อกหน้าจอที่อาจค้าง
+              if (key === 'farmora_maintenance_v4') {
+                window.dispatchEvent(new CustomEvent('farmora:maintenanceChanged', { detail: cloudData.payload }));
+              }
             }
           }
         } else {
