@@ -19,6 +19,7 @@ pages.forEach(file => {
     content = content
       .replace(/href="\.\.\/css\//g, 'href="frontend/css/')
       .replace(/src="\.\.\/images\//g, 'src="frontend/images/')
+      .replace(/href="\.\.\/images\//g, 'href="frontend/images/')
       .replace(/src="\.\.\/js\//g, 'src="frontend/js/')
       .replace(/href="\.\.\/\.\.\/backend\/index\.html"/g, 'href="backend/index.html"')
       .replace(/href="\.\.\/fonts\//g, 'href="frontend/fonts/');
